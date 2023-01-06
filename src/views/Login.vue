@@ -322,7 +322,7 @@
 </template>
 <script>
 import { HTTP } from "../axios/http-axios";
-
+import {localStorageImport,localStorageExport} from "../localStorage/local-storage"
 export default {
   data() {
     return {
@@ -337,6 +337,8 @@ export default {
         password: this.password,
       })
         .then((res) => {
+          localStorageImport("jwtToken",res.data.token)
+          
           this.$router.push('/home')
         })
         .catch(error => {

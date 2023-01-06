@@ -7,7 +7,9 @@ import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/Signup.vue'
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+
+import AuthMiddleware from './middleware/auth';
 
 
 import App from './App.vue'
@@ -15,16 +17,53 @@ import App from './App.vue'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        {path: '/Home',name: 'Home',component: Home},
-        {path: '/About',name: 'About',component: About},
-        {path: '/Services',name: 'Services',component: Services},
-        {path: '/Pricing',name: 'Pricing',component: Pricing},
-        {path: '/ContactUs',name: 'ContactUs',component: ContactUs},
-        {path: '/Login',name: 'Login',component: Login},
-        {path: '/SignUp',name: 'SignUp',component: SignUp},
+        {
+            path: '/home', name: 'Home', component: Home, meta: { authOnly: true }
+        },
+        
+        { path: '/about', name: 'About', component: About },
+        { path: '/services', name: 'Services', component: Services },
+        { path: '/pricing', name: 'Pricing', component: Pricing },
+        { path: '/contactus', name: 'ContactUs', component: ContactUs },
+        {
+            path: '/login', name: 'Login', component: Login, meta: { guestOnly: true }
+
+        },
+        {
+            path: '/SignUp', name: 'Register', component: SignUp, meta: { guestOnly: true }
+        },
     ]
 })
-
+function isLoggedIn() {
+    return localStorage.getItem("jwtToken");
+}
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authOnly)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (!isLoggedIn()) {
+            next({
+                path: "/login",
+                query: { redirect: to.fullPath }
+            });
+        } else {
+            next();
+        }
+    } else if (to.matched.some(record => record.meta.guestOnly)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (isLoggedIn()) {
+            next({
+                path: "/home",
+                query: { redirect: to.fullPath }
+            });
+        } else {
+            next();
+        }
+    } else {
+        next(); // make sure to always call next()!
+    }
+});
 const app = createApp(App)
 app.use(router)
 app.mount('#app')

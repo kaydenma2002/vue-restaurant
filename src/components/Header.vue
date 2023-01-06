@@ -1,7 +1,6 @@
 <template>
   <nav
     class="
-      
       transition
       duration-700
       ease-in-out
@@ -40,6 +39,7 @@
           "
           >SIGNUP</router-link
         >
+        <button @click="Logout()">Logout</button>
       </div>
       <div class="flex md:order-2">
         <button
@@ -257,6 +257,9 @@
 
 
 <script>
+import axios from "axios";
+import { localStorageExport } from "../localStorage/local-storage";
+
 export default {
   data() {
     return { scrollPosition: null };
@@ -264,6 +267,16 @@ export default {
   methods: {
     updateScroll() {
       this.scrollPosition = window.scrollY;
+    },
+    Logout() {
+      axios
+        .post("http://127.0.0.1:8000/api/logout", {
+          headers: {
+            Authorization: 'Bearer' + localStorageExport("jwtToken") ,
+          },
+        })
+        .then((res) => console.log(res))
+        
     },
   },
   mounted() {
