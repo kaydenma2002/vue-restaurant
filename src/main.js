@@ -9,7 +9,6 @@ import Login from './views/Login.vue'
 import SignUp from './views/Signup.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import AuthMiddleware from './middleware/auth';
 
 
 import App from './App.vue'

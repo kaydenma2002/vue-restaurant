@@ -5,14 +5,11 @@ import About from "./views/About.vue"
 import Login from "./views/Login.vue"
 
 import Footer from "./components/Footer.vue";
-
 </script>
 
 <template>
-  
-
   <Header />
-  <router-view></router-view>
+  <router-view ></router-view>
   <div class="container-fluid">
     <div class="container mx-auto">
       <Footer />
