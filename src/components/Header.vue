@@ -23,10 +23,14 @@
         <h1>Your site Logo</h1>
       </a>
       <div class="flex space-x-4 items-center md:order-3">
-        <router-link to="/Login" class="text-gray-800 text-sm"
+        <router-link
+          v-if="!isLoggedIn"
+          to="/Login"
+          class="text-gray-800 text-sm"
           >LOGIN</router-link
         >
         <router-link
+          v-if="!isLoggedIn"
           to="/SignUp"
           class="
             bg-indigo-600
@@ -39,69 +43,29 @@
           "
           >SIGNUP</router-link
         >
-        <button @click="Logout()">Logout</button>
-      </div>
-      <div class="flex md:order-2">
         <button
+          v-if="isLoggedIn"
           class="
-            transition
-            ease-in-out
-            delay-150
-            hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500
-            duration-300
-            px-8
-            py-3
-            rounded-lg
+            bg-indigo-600
+            px-4
+            py-2
+            rounded
+            text-white
+            hover:bg-indigo-500
+            text-sm
           "
         >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-            ></path>
-          </svg>
+          {{ user.name }}
         </button>
-        <button
-          data-collapse-toggle=""
-          type="button"
-          class="
-            inline-flex
-            items-center
-            p-2
-            text-sm text-gray-500
-            rounded-lg
-            md:hidden
-            hover:bg-gray-100
-            focus:outline-none focus:ring-2 focus:ring-gray-200
-            dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600
-          "
-          aria-controls=""
-          aria-expanded="false"
+        <a
+          class="nav-item nav-link"
+          v-if="isLoggedIn"
+          @click.prevent="Logout"
+          href="#"
+          >Logout</a
         >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-6 h-6"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
       </div>
+
       <div
         class="
           items-center
@@ -259,28 +223,71 @@
 <script>
 import axios from "axios";
 import { localStorageExport } from "../localStorage/local-storage";
-
+import Swal from "sweetalert2";
 export default {
   data() {
-    return { scrollPosition: null };
+    return {
+      scrollPosition: null,
+      isLoggedIn: false,
+      user: {
+        name: "",
+        email: "",
+      },
+    };
   },
   methods: {
     updateScroll() {
       this.scrollPosition = window.scrollY;
     },
     Logout() {
-      axios
-        .post("http://127.0.0.1:8000/api/logout", {
-          headers: {
-            Authorization: 'Bearer' + localStorageExport("jwtToken") ,
-          },
-        })
-        .then((res) => console.log(res))
+      Swal.fire({
+        title: "Are you sure to logout ?",
         
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Log out my account",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(
+            "http://127.0.0.1:8000/api/logout",
+            {
+              key: "value",
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorageExport("jwtToken")}`,
+              },
+            }
+          );
+          Swal.fire("", "User logged out!", "success");
+          localStorage.removeItem("jwtToken");
+          this.isLoggedIn = false;
+          this.$router.push("/login");
+        }
+      });
     },
   },
   mounted() {
     window.addEventListener("scroll", this.updateScroll);
+    this.emitter.on("login", () => {
+      this.isLoggedIn = true;
+    });
+    this.isLoggedIn = !!localStorage.getItem("jwtToken");
+    if (this.isLoggedIn) {
+      axios
+        .get("http://127.0.0.1:8000/api/user", {
+          headers: {
+            Authorization: `Bearer ${localStorageExport("jwtToken")}`,
+          },
+        })
+        .then((res) => {
+          
+          this.user.name = res.data.name;
+          this.user.email = res.data.email;
+        });
+    }
   },
 };
 </script>

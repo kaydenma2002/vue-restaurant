@@ -39,7 +39,6 @@
             >
               <p class="text-lg mb-0 mr-4">Sign in with</p>
               <button
-                
                 class="
                   inline-block
                   p-3
@@ -271,7 +270,6 @@
 
             <div class="text-center lg:text-left">
               <button
-                
                 type="submit"
                 class="
                   inline-block
@@ -322,7 +320,12 @@
 </template>
 <script>
 import { HTTP } from "../axios/http-axios";
-import {localStorageImport,localStorageExport} from "../localStorage/local-storage"
+import Swal from "sweetalert2";
+
+import {
+  localStorageImport,
+  localStorageExport,
+} from "../localStorage/local-storage";
 export default {
   data() {
     return {
@@ -337,14 +340,23 @@ export default {
         password: this.password,
       })
         .then((res) => {
-          localStorageImport("jwtToken",res.data.token)
-          
-          this.$router.push('/home')
+          localStorageImport("jwtToken", res.data.token);
+          console.log(res)
+          Swal.fire("Logged In successfully", "Welcome back", "success").then(
+            (res) => {
+              this.emitter.emit("login", true);
+              this.$router.push("/home");
+            }
+          );
         })
-        .catch(error => {
-          console.log(1)
-        })
-        
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Wrong username or password",
+            // footer: '<a href="">Why do I have this issue?</a>',
+          });
+        });
     },
   },
 };

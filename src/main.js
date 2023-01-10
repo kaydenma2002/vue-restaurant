@@ -7,11 +7,14 @@ import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/Signup.vue'
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 
 
 import App from './App.vue'
+import mitt from 'mitt';
+const emitter = mitt();
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,7 +29,6 @@ const router = createRouter({
         { path: '/contactus', name: 'ContactUs', component: ContactUs },
         {
             path: '/login', name: 'Login', component: Login, meta: { guestOnly: true }
-
         },
         {
             path: '/SignUp', name: 'Register', component: SignUp, meta: { guestOnly: true }
@@ -65,4 +67,5 @@ router.beforeEach((to, from, next) => {
 });
 const app = createApp(App)
 app.use(router)
+app.config.globalProperties.emitter = emitter;
 app.mount('#app')
