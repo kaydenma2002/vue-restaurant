@@ -178,7 +178,7 @@
             <div class="mb-6">
               <input
                 type="text"
-                id="emai"
+                id="email"
                 v-model="email"
                 class="
                   form-control

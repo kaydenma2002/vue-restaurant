@@ -55,7 +55,7 @@
             text-sm
           "
         >
-          {{ user.name }}
+          {{ user.email }}
         </button>
         <a
           class="nav-item nav-link"
@@ -283,7 +283,7 @@ export default {
           },
         })
         .then((res) => {
-          
+
           this.user.name = res.data.name;
           this.user.email = res.data.email;
         });
