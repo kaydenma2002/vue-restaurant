@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, h } from "vue";
 import './style.css'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
@@ -7,6 +7,8 @@ import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/Signup.vue'
+
+
 
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -65,7 +67,10 @@ router.beforeEach((to, from, next) => {
         next(); // make sure to always call next()!
     }
 });
-const app = createApp(App)
+const app = createApp({
+    render: () => h(App),
+  });
 app.use(router)
 app.config.globalProperties.emitter = emitter;
 app.mount('#app')
+

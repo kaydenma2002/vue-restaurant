@@ -286,7 +286,9 @@ export default {
 
           this.user.name = res.data.name;
           this.user.email = res.data.email;
-        });
+        }).catch(error => {
+          this.$router.push("/login") ;localStorage.removeItem("jwtToken"); });
+        ;
     }
   },
 };
