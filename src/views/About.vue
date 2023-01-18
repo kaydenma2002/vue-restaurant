@@ -44,14 +44,7 @@
           class="box-content border-4 ..."
         >
           <div class="overlay">
-            <img
-              style="width:240px;max-width:100%"
-              ref="appetizers"
-              @click.prevent="ChooseImage(index)"
-              class="hover:scale-110 transition-all duration-700 cursor-pointer"
-              src="https://getstamped.co.uk/wp-content/uploads/WebsiteAssets/Placeholder.jpg"
-              alt="image description"
-            />
+            <FoodCard />
           </div>
         </div>
       </div>
@@ -158,8 +151,10 @@
 </template>
 <script>
 import Swal from "sweetalert2";
+import FoodCard from "../components/FoodCard.vue"
 
 export default {
+  components: { FoodCard },
   mounted() {},
   methods: {
     ChooseImage(index) {
@@ -177,7 +172,6 @@ export default {
           var canvas = document.createElement("canvas");
           const reader = new FileReader();
           reader.onload = (e) => {
-            
             this.$refs.appetizers[index].src = e.target.result;
           };
           reader.readAsDataURL(file);

@@ -269,7 +269,7 @@ export default {
       });
     },
   },
-  mounted() {
+  created() {
     window.addEventListener("scroll", this.updateScroll);
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
@@ -283,8 +283,6 @@ export default {
           },
         })
         .then((res) => {
-
-          this.user.name = res.data.name;
           this.user.email = res.data.email;
         }).catch(error => {
           this.$router.push("/login") ;localStorage.removeItem("jwtToken"); });

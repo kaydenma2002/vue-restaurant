@@ -33,7 +33,7 @@
           />
         </div>
         <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-          <form @submit.prevent="TraditionalLogin()">
+          <form @submit.stop.prevent="TraditionalLogin()">
             <div
               class="flex flex-row items-center justify-center lg:justify-start"
             >

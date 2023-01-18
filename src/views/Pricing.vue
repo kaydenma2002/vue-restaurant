@@ -1,19 +1,431 @@
 <template>
-  <div v-if="cardComponent" class="mb-6">
-    <Card
-      :fields="fields"
-      :labels="formData"
-      :isCardNumberMasked="isCardNumberMasked"
-      :randomBackgrounds="randomBackgrounds"
-      :backgroundImage="backgroundImage"
-    />
-    <div class="text-center text-2xl">OR</div>
-    <div id="paypal-button-container" class="text-center"></div>
-  </div>
+  <Wizard
+    squared-tabs
+    card-background
+    scrollable-tabs
+    :nextButton="{
+      text: 'Next',
+      icon: '',
+      hideIcon: false, // default false but selected for sample
+      hideText: false, // default false but selected for sample
+    }"
+    :custom-tabs="[
+      {
+        title: 'Step 1',
+      },
+      {
+        title: 'Step 2',
+      },
+      {
+        title: 'Step 3',
+      },
+      {
+        title: 'Step 4',
+      },
+    ]"
+    :beforeChange="onTabBeforeChange"
+    @change="onChangeCurrentTab"
+    @complete:wizard="wizardCompleted"
+  >
+    <form action="" @submit.prevent="SubmitCardDetail()">
+      <h5 v-if="currentTabIndex === 0"></h5>
+      <h5 v-if="currentTabIndex === 1">
+        
+        
+        <div class="relative z-0 w-full mb-6 group">
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="
+              block
+              py-2.5
+              px-0
+              w-full
+              text-sm text-gray-900
+              bg-transparent
+              border-0 border-b-2 border-gray-300
+              appearance-none
+              dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+              focus:outline-none focus:ring-0 focus:border-blue-600
+              peer
+            "
+            placeholder=" "
+            required
+          />
+          <label
+            for="email"
+            class="
+              peer-focus:font-medium
+              absolute
+              text-sm text-gray-500
+              dark:text-gray-400
+              duration-300
+              transform
+              -translate-y-6
+              scale-75
+              top-3
+              -z-10
+              origin-[0]
+              peer-focus:left-0
+              peer-focus:text-blue-600
+              peer-focus:dark:text-blue-500
+              peer-placeholder-shown:scale-100
+              peer-placeholder-shown:translate-y-0
+              peer-focus:scale-75 peer-focus:-translate-y-6
+            "
+            >Email</label
+          >
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="floating_first_name"
+              id="floating_first_name"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_first_name"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >First name</label
+            >
+          </div>
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="floating_last_name"
+              id="floating_last_name"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_last_name"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >Last name</label
+            >
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="tel"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              name="floating_phone"
+              id="floating_phone"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_phone"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >Phone number (123-456-7890)</label
+            >
+          </div>
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="floating_company"
+              id="floating_company"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_company"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >Company (Ex. Google)</label
+            >
+          </div>
+        </div>
+        <div class="relative z-0 w-full mb-6 group">
+          <input
+            type="street_address"
+            name="street_address"
+            id="street_address"
+            class="
+              block
+              py-2.5
+              px-0
+              w-full
+              text-sm text-gray-900
+              bg-transparent
+              border-0 border-b-2 border-gray-300
+              appearance-none
+              dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+              focus:outline-none focus:ring-0 focus:border-blue-600
+              peer
+            "
+            placeholder=" "
+            required
+          />
+          <label
+            for="street_address"
+            class="
+              peer-focus:font-medium
+              absolute
+              text-sm text-gray-500
+              dark:text-gray-400
+              duration-300
+              transform
+              -translate-y-6
+              scale-75
+              top-3
+              -z-10
+              origin-[0]
+              peer-focus:left-0
+              peer-focus:text-blue-600
+              peer-focus:dark:text-blue-500
+              peer-placeholder-shown:scale-100
+              peer-placeholder-shown:translate-y-0
+              peer-focus:scale-75 peer-focus:-translate-y-6
+            "
+            >Street Address</label
+          >
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+          
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="text"
+              name="city"
+              id="city"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="city"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >City</label
+            >
+          </div>
+          <div class="relative z-0 w-full mb-6 group">
+            <input
+              type="email"
+              name="zip_code"
+              id="zip_code"
+              class="
+                block
+                py-2.5
+                px-0
+                w-full
+                text-sm text-gray-900
+                bg-transparent
+                border-0 border-b-2 border-gray-300
+                appearance-none
+                dark:text-white dark:border-gray-600 dark:focus:border-blue-500
+                focus:outline-none focus:ring-0 focus:border-blue-600
+                peer
+              "
+              placeholder=" "
+              required
+            />
+            <label
+              for="zip_code"
+              class="
+                peer-focus:font-medium
+                absolute
+                text-sm text-gray-500
+                dark:text-gray-400
+                duration-300
+                transform
+                -translate-y-6
+                scale-75
+                top-3
+                -z-10
+                origin-[0]
+                peer-focus:left-0
+                peer-focus:text-blue-600
+                peer-focus:dark:text-blue-500
+                peer-placeholder-shown:scale-100
+                peer-placeholder-shown:translate-y-0
+                peer-focus:scale-75 peer-focus:-translate-y-6
+              "
+              >ZIP CODE</label
+            >
+          </div>
+        </div>
+      </h5>
+      <h5 v-if="currentTabIndex === 2">
+        <div v-if="cardComponent" class="mb-6">
+          <Card
+            :fields="fields"
+            :labels="formData"
+            :isCardNumberMasked="isCardNumberMasked"
+            :randomBackgrounds="randomBackgrounds"
+            :backgroundImage="backgroundImage"
+          />
+        </div>
+      </h5>
+      <h5 v-if="currentTabIndex === 3"></h5>
+    </form>
+  </Wizard>
 </template>
 <script>
+import "form-wizard-vue3/dist/form-wizard-vue3.css";
+import Wizard from "form-wizard-vue3";
+
 import Card from "../components/Card.vue";
 export default {
+  components: {
+    Card,
+    Wizard,
+  },
   directives: {
     "number-only": {
       bind(el) {
@@ -59,11 +471,10 @@ export default {
       default: true,
     },
   },
-  components: {
-    Card,
-  },
+
   data() {
     return {
+      currentTabIndex: 0,
       cardComponent: true,
       fields: {
         cardNumber: "v-card-number",
@@ -97,41 +508,57 @@ export default {
     if (this.cardComponent === true) {
       this.$emit("handle-card");
     }
-    paypal
-      .Buttons({
-        style: {
-          color: "gold",
-          shape: "pill",
-          layout: "horizontal",
-        },
-        createOrder: (data, actions) => {
-          const createOrderPayload = {
-            purchase_units: [
-              {
-                amount: {
-                  value: "4000.0",
-                },
-              },
-            ],
-          };
-          return actions.order.create(createOrderPayload);
-        },
-        onApprove: (data, actions) => {
-          const captureOrderHandler = (details) => {
-            const payerName = details.payer.name.given_name;
-            console.log("Transaction completed");
-          };
-          return actions.order.capture().then(captureOrderHandler);
-        },
-        onError: (err) => {
-          console.error(
-            "An error prevented the buyer from checking out with PayPal"
-          );
-        },
-      })
-      .render("#paypal-button-container");
   },
+  // updated() {
+  //   paypal
+  //     .Buttons({
+  //       style: {
+  //         color: "gold",
+  //         shape: "pill",
+  //         layout: "horizontal",
+  //       },
+  //       createOrder: (data, actions) => {
+  //         const createOrderPayload = {
+  //           purchase_units: [
+  //             {
+  //               amount: {
+  //                 value: "4000.0",
+  //               },
+  //             },
+  //           ],
+  //         };
+  //         return actions.order.create(createOrderPayload);
+  //       },
+  //       onApprove: (data, actions) => {
+  //         const captureOrderHandler = (details) => {
+  //           const payerName = details.payer.name.given_name;
+  //           console.log("Transaction completed");
+  //         };
+  //         return actions.order.capture().then(captureOrderHandler);
+  //       },
+  //       onError: (err) => {
+  //         console.error(
+  //           "An error prevented the buyer from checking out with PayPal"
+  //         );
+  //       },
+  //     })
+  //     .render("#paypal-button-container");
+  // },
   methods: {
+    onChangeCurrentTab(index, oldIndex) {
+      console.log(index, oldIndex);
+      this.currentTabIndex = index;
+    },
+    onTabBeforeChange() {
+      if (this.currentTabIndex === 0) {
+        console.log("First Tab");
+      }
+      console.log("All Tabs");
+    },
+    wizardCompleted() {
+      alert("Thanks you for purchasing ");
+      console.log("Wizard Completed");
+    },
     generateMonthValue(n) {
       return n < 10 ? `0${n}` : n;
     },

@@ -7,7 +7,10 @@ import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
 import SignUp from './views/Signup.vue'
-
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -17,6 +20,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import mitt from 'mitt';
 const emitter = mitt();
+const vuetify = createVuetify({
+    components,
+    directives,
+  })
 
 const router = createRouter({
     history: createWebHistory(),
@@ -70,7 +77,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp({
     render: () => h(App),
   });
-app.use(router)
+app.use(router).use(vuetify)
 app.config.globalProperties.emitter = emitter;
 app.mount('#app')
 

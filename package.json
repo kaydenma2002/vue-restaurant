@@ -19,6 +19,7 @@
     "@paypal/paypal-js": "^5.1.4",
     "@vue-stripe/vue-stripe": "^4.4.4",
     "axios": "^1.2.2",
+    "form-wizard-vue3": "^1.0.0",
     "mitt": "^3.0.0",
     "regenerator-runtime": "^0.13.11",
     "sweetalert2": "^11.6.16",
@@ -26,7 +27,8 @@
     "vue": "^3.2.45",
     "vue-paycard": "^0.7.0",
     "vue-router": "^4.1.6",
-    "vue-router-middleware-plugin": "^3.1.1"
+    "vue-router-middleware-plugin": "^3.1.1",
+    "vuetify": "^3.1.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
