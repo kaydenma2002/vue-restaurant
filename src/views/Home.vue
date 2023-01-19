@@ -5,14 +5,40 @@
 <template>
 
   <div class="container mx-auto ">
-    <center>
-      <img
-        class="h-auto w-5/6"
-        src="https://images.squarespace-cdn.com/content/v1/5c51cb9e12b13f88415552be/1557423196571-2JJ54Z42KGHSG4LLDWSK/The-Lonely-Broccoli-Restaurant-3-.jpg?format=2500w"
-        alt="image description"
-      />
-    </center>
-    <div class="text-center mt-5 box-border h-46 w-full p-4 border-4 ...">
+    <div class="grid grid-cols-2 gap 4 mt-20">
+      <div class="">
+        <p style="font-weight:600" class="text-7xl">Claim Your</p>
+        <br>
+        <p style="font-weight:600" class="text-7xl">Restaurant</p>
+        <br>
+        <p style="font-weight:600" class="text-7xl text-indigo-500	">Online.</p>
+        <div class="mt-10 mb-10 text-2xl text-slate-400 pr-11">Thousands of restaurant owners use the SKIPLI platform to take back control, create stunning websites, drive direct sales, save money on fees, and manage their online presence & marketing all-in-one. 0% Commission Fee</div>
+        <div>
+          <button
+          @click.prevent="RegisterforRestaurant()"
+          class="
+            bg-indigo-600
+            px-4
+            py-4
+            rounded-lg
+            text-white
+            hover:bg-indigo-500
+            text-sm
+            shadow-lg
+            shadow-indigo-500/50
+            mb-10
+          "
+        >
+          Claim your own restaurant
+        </button>
+        </div>
+        
+      </div>
+      
+      <div><img src="https://skipli.s3.amazonaws.com/Skipli+Website/Home+Page/Landing+Page+Intro+Image.jpg" alt=""></div>
+    </div>
+    
+    <div class="text-center mt-20 box-border h-46 w-full p-4 border-4 ...">
       <h1
         class="
           mb-4
@@ -20,12 +46,12 @@
           font-extrabold
           leading-none
           tracking-tight
-          text-gray-900
+          
           sm:text-3xl
           md:text-4xl
           lg:text-4xl
           dark:text-white
-          text-ellipsis
+          text-indigo-500
         "
       >
         Since opening in 2004, We have been one of New York's leading
@@ -44,7 +70,7 @@
           font-extrabold
           leading-none
           tracking-tight
-          text-slate-400
+          
           md:text-4xl
           lg:text-5xl
           animate-bounce
@@ -95,7 +121,7 @@
           font-extrabold
           leading-none
           tracking-tight
-          text-slate-400
+          
           md:text-4xl
           lg:text-5xl
           animate-bounce
@@ -112,6 +138,15 @@
   </div>
   
 </template>
+<script>
+export default {
+  methods : {
+    RegisterforRestaurant(){
+      this.$router.push("/get-started")
+    }
+  }
+}
+</script>
 <style scoped>
 .overlay {
   text-align: center;

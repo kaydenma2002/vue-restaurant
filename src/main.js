@@ -6,11 +6,10 @@ import Services from './views/Services.vue'
 import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
+import getStarted from './views/getStarted.vue'
 import SignUp from './views/Signup.vue'
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+
+
 
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -20,18 +19,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import mitt from 'mitt';
 const emitter = mitt();
-const vuetify = createVuetify({
-    components,
-    directives,
-  })
+
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: '/home', name: 'Home', component: Home, meta: { authOnly: true }
+            path: '/home', name: 'Home', component: Home
         },
-        
+        {
+            path: '/get-started', name: 'getStarted', component: getStarted
+        },
         { path: '/about', name: 'About', component: About },
         { path: '/services', name: 'Services', component: Services },
         { path: '/pricing', name: 'Pricing', component: Pricing },
@@ -77,7 +75,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp({
     render: () => h(App),
   });
-app.use(router).use(vuetify)
+app.use(router)
 app.config.globalProperties.emitter = emitter;
 app.mount('#app')
 

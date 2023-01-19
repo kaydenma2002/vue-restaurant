@@ -1,5 +1,6 @@
 <template>
   <nav
+  
     class="
       transition
       duration-700
@@ -14,7 +15,7 @@
       z-20
       top-0
       left-0
-      border-b border-gray-200
+      border-b-4 border-indigo-500
       dark:border-gray-600
     "
   >
