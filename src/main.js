@@ -13,6 +13,7 @@ import SignUp from './views/Signup.vue'
 
 
 import { createRouter, createWebHistory } from 'vue-router'
+import VueStripeElements from 'vue-stripe-elements-plus'
 
 
 
@@ -25,7 +26,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: '/home', name: 'Home', component: Home
+            path: '/', name: 'Home', component: Home
         },
         {
             path: '/get-started', name: 'getStarted', component: getStarted
@@ -75,7 +76,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp({
     render: () => h(App),
   });
-app.use(router)
+app.use(router).use(VueStripeElements)
 app.config.globalProperties.emitter = emitter;
 app.mount('#app')
 

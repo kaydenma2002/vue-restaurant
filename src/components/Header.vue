@@ -1,36 +1,170 @@
 <template>
-  <nav
-  
-    class="
-      transition
-      duration-700
-      ease-in-out
-      bg-white
-      px-2
-      sm:px-4
-      py-2.5
-      dark:bg-gray-900
-      sticky
-      w-full
-      z-20
-      top-0
-      left-0
-      border-b-4 border-indigo-500
-      dark:border-gray-600
-    "
-  >
-    <div class="container flex flex-wrap items-center justify-between mx-auto">
-      <a href="https://flowbite.com/" class="flex items-center">
-        <h1>Your site Logo</h1>
-      </a>
-      <div class="flex space-x-4 items-center md:order-3">
-        <router-link
+  <div class="bg-gray-100">
+    <nav
+      class="
+        container
+        px-6
+        py-8
+        mx-auto
+        md:flex md:justify-between md:items-center
+      "
+    >
+      <div class="flex items-center justify-between">
+        <a href="https://flowbite.com/" class="flex items-center">
+          <h1>Your site Logo</h1>
+        </a>
+        
+        <!-- Mobile menu button -->
+        <div @click="showMenu = !showMenu" class="flex md:hidden">
+          <button
+            type="button"
+            class="
+              text-gray-800
+              hover:text-gray-400
+              focus:outline-none focus:text-gray-400
+            "
+          >
+            <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+              <path
+                fill-rule="evenodd"
+                d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        
+      </div>
+
+      <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+      <ul
+        :class="showMenu ? 'flex' : 'hidden'"
+        class="
+          flex-col
+          mt-8
+          space-y-4
+          md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
+        "
+      >
+        <li>
+          <router-link
+            to="/"
+            class="
+              block
+              py-2
+              pl-3
+              pr-4
+              rounded
+              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              text-gray-700
+              md:dark:hover:text-white md:dark:hover:bg-transparent
+            "
+            aria-current="page"
+            >Home</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            to="/About"
+            class="
+              block
+              py-2
+              pl-3
+              pr-4
+              text-gray-700
+              rounded
+              hover:bg-gray-100
+              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              dark:text-gray-400
+              md:dark:hover:text-white
+              dark:hover:bg-gray-700 dark:hover:text-white
+              md:dark:hover:bg-transparent
+            "
+            aria-current="page"
+            >About</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            to="/Services"
+            class="
+              block
+              py-2
+              pl-3
+              pr-4
+              text-gray-700
+              rounded
+              hover:bg-gray-100
+              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              dark:text-gray-400
+              md:dark:hover:text-white
+              dark:hover:bg-gray-700 dark:hover:text-white
+              md:dark:hover:bg-transparent
+            "
+            aria-current="page"
+            >Services</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            to="/Pricing"
+            class="
+              block
+              py-2
+              pl-3
+              pr-4
+              text-gray-700
+              rounded
+              hover:bg-gray-100
+              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              dark:text-gray-400
+              md:dark:hover:text-white
+              dark:hover:bg-gray-700 dark:hover:text-white
+              md:dark:hover:bg-transparent
+            "
+            aria-current="page"
+            >Pricing</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            to="/ContactUs"
+            class="
+              block
+              py-2
+              pl-3
+              pr-4
+              text-gray-700
+              rounded
+              hover:bg-gray-100
+              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              dark:text-gray-400
+              md:dark:hover:text-white
+              dark:hover:bg-gray-700 dark:hover:text-white
+              md:dark:hover:bg-transparent
+            "
+            aria-current="page"
+            >Contact Us</router-link
+          >
+        </li>
+        
+      </ul>
+      <ul :class="showMenu ? 'flex' : 'hidden'"
+        class="
+        sm
+          flex-col
+          mt-8
+          space-y-4
+          md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
+        ">
+        <li>
+          <router-link
           v-if="!isLoggedIn"
           to="/Login"
           class="text-gray-800 text-sm"
           >LOGIN</router-link
         >
-        <router-link
+        
+          <router-link
           v-if="!isLoggedIn"
           to="/SignUp"
           class="
@@ -41,10 +175,13 @@
             text-white
             hover:bg-indigo-500
             text-sm
+            ml-2
           "
           >SIGNUP</router-link
         >
-        <button
+        </li>
+        <li>
+          <button
           v-if="isLoggedIn"
           class="
             bg-indigo-600
@@ -65,157 +202,10 @@
           href="#"
           >Logout</a
         >
-      </div>
-
-      <div
-        class="
-          items-center
-          justify-between
-          hidden
-          w-full
-          text-white
-          md:flex md:w-auto md:order-1
-        "
-        id=""
-      >
-        <ul
-          class="
-            flex flex-col
-            p-4
-            mt-4
-            border border-gray-100
-            rounded-lg
-            md:flex-row
-            md:space-x-8
-            md:mt-0
-            md:text-sm
-            md:font-medium
-            md:border-0
-            dark:bg-gray-800
-            md:dark:bg-gray-900
-            dark:border-gray-700
-          "
-        >
-          <li>
-            <router-link
-              to="/home"
-              class="
-                block
-                py-2
-                pl-3
-                pr-4
-                rounded
-                md:hover:bg-transparent
-                md:border-0
-                md:hover:text-blue-700
-                md:p-0
-                text-gray-700
-                md:dark:hover:text-white md:dark:hover:bg-transparent
-              "
-              aria-current="page"
-              >Home</router-link
-            >
-          </li>
-          <li>
-            <router-link
-              to="/About"
-              class="
-                block
-                py-2
-                pl-3
-                pr-4
-                text-gray-700
-                rounded
-                hover:bg-gray-100
-                md:hover:bg-transparent
-                md:border-0
-                md:hover:text-blue-700
-                md:p-0
-                dark:text-gray-400
-                md:dark:hover:text-white
-                dark:hover:bg-gray-700 dark:hover:text-white
-                md:dark:hover:bg-transparent
-              "
-              aria-current="page"
-              >About</router-link
-            >
-          </li>
-          <li>
-            <router-link
-              to="/Services"
-              class="
-                block
-                py-2
-                pl-3
-                pr-4
-                text-gray-700
-                rounded
-                hover:bg-gray-100
-                md:hover:bg-transparent
-                md:border-0
-                md:hover:text-blue-700
-                md:p-0
-                dark:text-gray-400
-                md:dark:hover:text-white
-                dark:hover:bg-gray-700 dark:hover:text-white
-                md:dark:hover:bg-transparent
-              "
-              aria-current="page"
-              >Services</router-link
-            >
-          </li>
-          <li>
-            <router-link
-              to="/Pricing"
-              class="
-                block
-                py-2
-                pl-3
-                pr-4
-                text-gray-700
-                rounded
-                hover:bg-gray-100
-                md:hover:bg-transparent
-                md:border-0
-                md:hover:text-blue-700
-                md:p-0
-                dark:text-gray-400
-                md:dark:hover:text-white
-                dark:hover:bg-gray-700 dark:hover:text-white
-                md:dark:hover:bg-transparent
-              "
-              aria-current="page"
-              >Pricing</router-link
-            >
-          </li>
-          <li>
-            <router-link
-              to="/ContactUs"
-              class="
-                block
-                py-2
-                pl-3
-                pr-4
-                text-gray-700
-                rounded
-                hover:bg-gray-100
-                md:hover:bg-transparent
-                md:border-0
-                md:hover:text-blue-700
-                md:p-0
-                dark:text-gray-400
-                md:dark:hover:text-white
-                dark:hover:bg-gray-700 dark:hover:text-white
-                md:dark:hover:bg-transparent
-              "
-              aria-current="page"
-              >Contact Us</router-link
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
   
@@ -225,9 +215,11 @@
 import axios from "axios";
 import { localStorageExport } from "../localStorage/local-storage";
 import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
+      showMenu: false,
       scrollPosition: null,
       isLoggedIn: false,
       user: {
@@ -243,7 +235,7 @@ export default {
     Logout() {
       Swal.fire({
         title: "Are you sure to logout ?",
-        
+
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -270,6 +262,7 @@ export default {
       });
     },
   },
+  
   created() {
     window.addEventListener("scroll", this.updateScroll);
     this.emitter.on("login", () => {
@@ -285,9 +278,11 @@ export default {
         })
         .then((res) => {
           this.user.email = res.data.email;
-        }).catch(error => {
-          this.$router.push("/login") ;localStorage.removeItem("jwtToken"); });
-        ;
+        })
+        .catch((error) => {
+          this.$router.push("/login");
+          localStorage.removeItem("jwtToken");
+        });
     }
   },
 };

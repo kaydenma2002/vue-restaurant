@@ -345,7 +345,7 @@ export default {
           Swal.fire("Logged In successfully", "Welcome back", "success").then(
             (res) => {
               this.emitter.emit("login", true);
-              this.$router.push("/home");
+              this.$router.push("/");
             }
           );
         })

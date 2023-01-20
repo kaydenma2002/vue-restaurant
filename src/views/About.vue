@@ -22,16 +22,16 @@
       <div
         class="
           xl:w-auto
-          sm:w-3/4
+          sm:w-auto
           lg:w-auto
-          md:w-3/4
-          w-3/4
+          md:w-auto
+          w-auto
           m-auto
           h-auto
           mt-5
           grid grid-cols-2
           xl:grid-cols-3
-          lg:grid-cols-3
+          lg:grid-cols-2
           md:grid-cols-2
           sm:grid-cols-2
           gap-4
