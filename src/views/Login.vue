@@ -293,6 +293,7 @@
                   duration-150
                   ease-in-out
                 "
+                :disabled="submitting"
               >
                 Login
               </button>
@@ -329,19 +330,21 @@ import {
 export default {
   data() {
     return {
+      submitting: false,
       email: "",
       password: "",
     };
   },
   methods: {
     TraditionalLogin: function () {
+      this.submitting = true;
       HTTP.post("/login", {
         email: this.email,
         password: this.password,
       })
         .then((res) => {
           localStorageImport("jwtToken", res.data.token);
-          console.log(res)
+          
           Swal.fire("Logged In successfully", "Welcome back", "success").then(
             (res) => {
               this.emitter.emit("login", true);
@@ -350,6 +353,7 @@ export default {
           );
         })
         .catch((error) => {
+          this.submitting = false;
           Swal.fire({
             icon: "error",
             title: "Oops...",

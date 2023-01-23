@@ -12,7 +12,10 @@
         <p class="underline">571.505.1131</p>
       </div>
     </div>
-    <form @submit.prevent="submitForm()" class="w-1/2 mx-auto mt-20 px-2.5 py-10 bg-white rounded py-16">
+    <form
+      @submit.prevent="submitReservation()"
+      class="w-1/2 mx-auto mt-20 px-2.5 py-10 bg-white rounded py-16"
+    >
       <div class="relative z-0 w-full mb-6 group">
         <input
           type="text"
@@ -33,6 +36,13 @@
           "
           placeholder=" "
         />
+        <div
+          class="input-errors"
+          v-for="error of v$.name.$errors"
+          :key="error.$uid"
+        >
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
         <label
           for="floating_name"
           class="
@@ -60,9 +70,9 @@
       </div>
       <div class="relative z-0 w-full mb-6 group">
         <input
-          v-model="restaurant"
+          v-model="company"
           type="text"
-          id="floating_restaurant"
+          id="floating_company"
           class="
             block
             py-2.5
@@ -78,8 +88,15 @@
           "
           placeholder=" "
         />
+        <div
+          class="input-errors"
+          v-for="error of v$.company.$errors"
+          :key="error.$uid"
+        >
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
         <label
-          for="floating_restaurant"
+          for="floating_company"
           class="
             peer-focus:font-medium
             absolute
@@ -122,6 +139,13 @@
           "
           placeholder=" "
         />
+        <div
+          class="input-errors"
+          v-for="error of v$.zip_code.$errors"
+          :key="error.$uid"
+        >
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
         <label
           for="floating_zip_code"
           class="
@@ -167,6 +191,13 @@
             "
             placeholder=" "
           />
+          <div
+            class="input-errors"
+            v-for="error of v$.phone.$errors"
+            :key="error.$uid"
+          >
+            <div class="error-msg">{{ error.$message }}</div>
+          </div>
           <label
             for="floating_phone"
             class="
@@ -211,6 +242,13 @@
             "
             placeholder=" "
           />
+          <div
+            class="input-errors"
+            v-for="error of v$.email.$errors"
+            :key="error.$uid"
+          >
+            <div class="error-msg">{{ error.$message }}</div>
+          </div>
           <label
             for="email"
             class="
@@ -261,38 +299,57 @@
   </div>
 </template>
 <script>
+import Swal from "sweetalert2";
+import { HTTP } from "../axios/http-axios";
 import useValidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import {
+  required,
+  between,
+  email,
+  numeric,
+  minLength,
+} from "@vuelidate/validators";
 export default {
   data() {
     return {
       v$: useValidate(),
       name: "",
       email: "",
-      restaurant: "",
+      company: "",
       phone: "",
       zip_code: "",
     };
   },
-   methods: {
-    submitForm() {
-      this.v$.$validate() // checks all 
-      console.log(this.v$)
+  methods: {
+    submitReservation() {
+      this.v$.$validate(); // checks all
+      console.log(this.v$);
       if (!this.v$.$error) {
         // if ANY fail validation
-        alert('Form successfully submitted.')
-      } else {
-        console.log(this.v$)
+        HTTP.post("/createReservation", {
+          name: this.name,
+          company: this.company,
+          zip_code: this.zip_code,
+          email: this.email,
+          phone: this.phone,
+        }).then(Swal.fire(
+          "Thank you for submit!",
+          "You will be contacted soon!",
+          "success"
+        ).then((res) => {
+          this.$router.push("/");
+        }));
+        
       }
     },
   },
   validations() {
     return {
       name: { required },
-      email: { required },
-      restaurant: { required },
+      email: { required, minLengthValue: minLength(10), email },
+      company: { required, minLengthValue: minLength(10) },
       phone: { required },
-      zip_code: { required },
+      zip_code: { required, numeric },
     };
   },
 };

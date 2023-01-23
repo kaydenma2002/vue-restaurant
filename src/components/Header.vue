@@ -2,11 +2,12 @@
   <div class="bg-gray-100">
     <nav
       class="
-        container
+        container-fluid
         px-6
         py-8
         mx-auto
         md:flex md:justify-between md:items-center
+        bg-white  dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600
       "
     >
       <div class="flex items-center justify-between">
@@ -146,7 +147,25 @@
             >Contact Us</router-link
           >
         </li>
-        
+        <li>
+          <button
+          @click.prevent="RegisterforRestaurant()"
+          class="
+            bg-indigo-600
+            px-3
+            py-3
+            rounded-lg
+            text-white
+            hover:bg-indigo-500
+            text-sm
+            shadow-lg
+            shadow-indigo-500/50
+
+          "
+        >
+          Your restaurant
+        </button>
+        </li>
       </ul>
       <ul :class="showMenu ? 'flex' : 'hidden'"
         class="
@@ -231,6 +250,9 @@ export default {
   methods: {
     updateScroll() {
       this.scrollPosition = window.scrollY;
+    },
+    RegisterforRestaurant(){
+      this.$router.push("/get-started")
     },
     Logout() {
       Swal.fire({

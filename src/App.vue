@@ -11,6 +11,7 @@ import Footer from "./components/Footer.vue";
   <div class="container-fluid" style="position: relative;
     min-height: 100vh;">
     <Header />
+    <div style="margin-top:8rem"></div>
     <router-view></router-view>
 
     <Footer />
