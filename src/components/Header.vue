@@ -65,7 +65,7 @@
         </li>
         <li>
           <router-link
-            to="/About"
+            to="/menu"
             class="
               block
               py-2
@@ -81,7 +81,7 @@
               md:dark:hover:bg-transparent
             "
             aria-current="page"
-            >About</router-link
+            >Menu</router-link
           >
         </li>
         <li>
@@ -299,6 +299,7 @@ export default {
           },
         })
         .then((res) => {
+          
           this.user.email = res.data.email;
         })
         .catch((error) => {

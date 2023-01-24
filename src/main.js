@@ -1,7 +1,7 @@
 import { createApp, h } from "vue";
 import './style.css'
 import Home from './views/Home.vue'
-import About from './views/About.vue'
+import Menu from './views/Menu.vue'
 import Services from './views/Services.vue'
 import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
@@ -31,7 +31,7 @@ const router = createRouter({
         {
             path: '/get-started', name: 'getStarted', component: getStarted
         },
-        { path: '/about', name: 'About', component: About },
+        { path: '/menu', name: 'Menu', component: Menu },
         { path: '/services', name: 'Services', component: Services },
         { path: '/pricing', name: 'Pricing', component: Pricing },
         { path: '/contactus', name: 'ContactUs', component: ContactUs },

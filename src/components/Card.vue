@@ -279,7 +279,7 @@
             </div>
           </div>
         </div>
-        <button type="submit" :disabled="submitting" class="card-form__button">
+        <button type="submit"  class="card-form__button">
           Submit
         </button>
       </div>
@@ -295,7 +295,7 @@ import { HTTP } from "../axios/http-axios";
 export default {
   data() {
     return {
-      submitting: false,
+      
       currentCardBackground: Math.floor(Math.random() * 25 + 1), // just for fun :D
       cardName: "",
       cardNumber: "",
@@ -354,7 +354,7 @@ export default {
   },
   methods: {
     payByCreditCard() {
-      this.submitting = true;
+      
       HTTP.post("/stripe", {
         number: this.cardNumber,
         exp_month: this.cardMonth,

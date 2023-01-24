@@ -1,7 +1,7 @@
 <script setup>
 import Header from "./components/Header.vue";
 import Home from "./views/Home.vue";
-import About from "./views/About.vue";
+import Menu from "./views/Menu.vue";
 import Login from "./views/Login.vue";
 
 import Footer from "./components/Footer.vue";

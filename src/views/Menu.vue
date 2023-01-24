@@ -11,7 +11,6 @@
           font-extrabold
           leading-none
           tracking-tight
-          
           md:text-4xl
           lg:text-5xl
           animate-bounce
@@ -38,13 +37,9 @@
           mb-10
         "
       >
-        <div
-          v-for="(item, index) in 24"
-          :key="index"
-          class="box-content  ..."
-        >
+        <div v-for="(item, index) in (this.item)" :key="index" class="box-content ...">
           <div class="overlay">
-            <FoodCard />
+            <FoodCard :name="this.item[index].name" :description="this.item[index].description" :price="this.item[index].price" />
           </div>
         </div>
       </div>
@@ -60,7 +55,6 @@
           font-extrabold
           leading-none
           tracking-tight
-          
           md:text-4xl
           lg:text-5xl
           animate-bounce
@@ -109,7 +103,6 @@
           font-extrabold
           leading-none
           tracking-tight
-          
           md:text-4xl
           lg:text-5xl
           animate-bounce
@@ -151,13 +144,24 @@
 </template>
 <script>
 import Swal from "sweetalert2";
-import FoodCard from "../components/FoodCard.vue"
-import {HTTPS} from "../axios/http-axios"
+import FoodCard from "../components/FoodCard.vue";
+import { HTTPS } from "../axios/http-axios";
 
 export default {
   components: { FoodCard },
+  data() {
+    return {
+      
+      item: String
+    }
+  },
   mounted() {
-    // HTTPS.get("/menu").then(res => console.log(res))
+    HTTPS.get("/menu").then((res) => {
+      this.item = res.data.item
+      console.log(this.item[0].description)
+      }
+      
+      );
   },
   methods: {
     ChooseImage(index) {
