@@ -293,7 +293,7 @@
                   duration-150
                   ease-in-out
                 "
-                :disabled="submitting"
+                
               >
                 Login
               </button>
@@ -330,14 +330,14 @@ import {
 export default {
   data() {
     return {
-      submitting: false,
+      
       email: "",
       password: "",
     };
   },
   methods: {
     TraditionalLogin: function () {
-      this.submitting = true;
+      
       HTTP.post("/login", {
         email: this.email,
         password: this.password,

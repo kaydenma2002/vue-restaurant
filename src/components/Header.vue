@@ -291,6 +291,7 @@ export default {
       this.isLoggedIn = true;
     });
     this.isLoggedIn = !!localStorage.getItem("jwtToken");
+    console.log(this.isLoggedIn)
     if (this.isLoggedIn) {
       axios
         .get("http://127.0.0.1:8000/api/user", {

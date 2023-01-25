@@ -37,9 +37,17 @@
           mb-10
         "
       >
-        <div v-for="(item, index) in (this.item)" :key="index" class="box-content ...">
+        <div
+          v-for="(item, index) in MainDish"
+          :key="index"
+          class="box-content ..."
+        >
           <div class="overlay">
-            <FoodCard :name="this.item[index].name" :description="this.item[index].description" :price="this.item[index].price" />
+            <FoodCard
+              :name="MainDish[index].name"
+              :description="MainDish[index].description"
+              :price="MainDish[index].price"
+            />
           </div>
         </div>
       </div>
@@ -65,28 +73,32 @@
       <div
         class="
           xl:w-auto
-          sm:w-3/4
+          sm:w-auto
           lg:w-auto
-          md:w-3/4
-          w-3/4
+          md:w-auto
+          w-auto
           m-auto
           h-auto
           mt-5
           grid grid-cols-2
-          xl:grid-cols-6
-          lg:grid-cols-4
+          xl:grid-cols-3
+          lg:grid-cols-2
           md:grid-cols-2
           sm:grid-cols-2
           gap-4
           mb-10
         "
       >
-        <div v-for="n in 24" :key="n" class="box-content border-4 ...">
+        <div
+          v-for="(item, index) in Appetizer"
+          :key="index"
+          class="box-content ..."
+        >
           <div class="overlay">
-            <img
-              class="hover:scale-110 transition-all duration-700 cursor-pointer"
-              src="https://getstamped.co.uk/wp-content/uploads/WebsiteAssets/Placeholder.jpg"
-              alt="image description"
+            <FoodCard
+              :name="Appetizer[index].name"
+              :description="Appetizer[index].description"
+              :price="Appetizer[index].price"
             />
           </div>
         </div>
@@ -113,28 +125,32 @@
       <div
         class="
           xl:w-auto
-          sm:w-3/4
+          sm:w-auto
           lg:w-auto
-          md:w-3/4
-          w-3/4
+          md:w-auto
+          w-auto
           m-auto
           h-auto
           mt-5
           grid grid-cols-2
-          xl:grid-cols-6
-          lg:grid-cols-4
+          xl:grid-cols-3
+          lg:grid-cols-2
           md:grid-cols-2
           sm:grid-cols-2
           gap-4
           mb-10
         "
       >
-        <div v-for="n in 24" :key="n" class="box-content border-4 ...">
+        <div
+          v-for="(item, index) in Drink"
+          :key="index"
+          class="box-content ..."
+        >
           <div class="overlay">
-            <img
-              class="hover:scale-110 transition-all duration-700 cursor-pointer"
-              src="https://getstamped.co.uk/wp-content/uploads/WebsiteAssets/Placeholder.jpg"
-              alt="image description"
+            <FoodCard
+              :name="Drink[index].name"
+              :description="Drink[index].description"
+              :price="Drink[index].price"
             />
           </div>
         </div>
@@ -151,17 +167,21 @@ export default {
   components: { FoodCard },
   data() {
     return {
-      
-      item: String
-    }
+      item: String,
+    };
   },
-  mounted() {
-    HTTPS.get("/menu").then((res) => {
-      this.item = res.data.item
-      console.log(this.item[0].description)
-      }
-      
-      );
+  created() {
+    this.emitter.on("login", () => {
+      this.isLoggedIn = true;
+    });
+    this.isLoggedIn = !!localStorage.getItem("jwtToken");
+    
+    if (this.isLoggedIn) {
+      HTTPS.get("/menu").then((res) => {
+        this.item = res.data.item;
+        console.log(this.item);
+      });
+    }
   },
   methods: {
     ChooseImage(index) {
@@ -184,6 +204,17 @@ export default {
           reader.readAsDataURL(file);
         }
       })();
+    },
+  },
+  computed: {
+    MainDish: function () {
+      return Object.values(this.item).filter((i) => i.food_type == 0);
+    },
+    Appetizer: function () {
+      return Object.values(this.item).filter((i) => i.food_type == 1);
+    },
+    Drink: function () {
+      return Object.values(this.item).filter((i) => i.food_type == 2);
     },
   },
 };
