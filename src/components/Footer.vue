@@ -1,80 +1,147 @@
 <template>
-    
-<footer class="bg-white dark:bg-gray-900" style="position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 0rem;">
+  <footer
+    class=""
+    style="position: absolute; bottom: 0; width: 100%; height: 0rem"
+  >
+    <div class="row contact-us">
+      <div
+        class="
+          mt-5
+          underline underline-offset-3
+          text-center
+          mb-4
+          text-4xl
+          font-extrabold
+          leading-none
+          tracking-tight
+          md:text-4xl
+          lg:text-5xl
+          animate-bounce
+        "
+      >
+        Contact Us
+      </div>
+      <img
+        class="h-auto w-screen"
+        src="https://images.squarespace-cdn.com/content/v1/5a626e77d7bdce030797264e/1529366828831-CHTDV7RQ8X9JH2OR895I/Papis.Food.ChickenBarbacoa.April2015.TJG_6742.HR.1500px.jpg?format=2500w"
+        alt=""
+      />
+    </div>
+
     <div class="container mx-auto">
-        <div class="grid grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
+      <div class="grid grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
         <div>
-            <h2 class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Company</h2>
-            <ul class="text-gray-500 dark:text-gray-400">
-                <li class="mb-4">
-                    <a href="#" class=" hover:underline">About</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Careers</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Brand Center</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Blog</a>
-                </li>
-            </ul>
+          <h2
+            class="
+              mb-6
+              text-sm
+              font-semibold
+              text-gray-500
+              uppercase
+              dark:text-gray-400
+            "
+          >
+            Company
+          </h2>
+          <ul class="text-gray-500 dark:text-gray-400">
+            <li class="mb-4">
+              <a href="#" class="hover:underline">About</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Careers</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Brand Center</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Blog</a>
+            </li>
+          </ul>
         </div>
         <div>
-            <h2 class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Help center</h2>
-            <ul class="text-gray-500 dark:text-gray-400">
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Discord Server</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Twitter</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Facebook</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Contact Us</a>
-                </li>
-            </ul>
+          <h2
+            class="
+              mb-6
+              text-sm
+              font-semibold
+              text-gray-500
+              uppercase
+              dark:text-gray-400
+            "
+          >
+            Help center
+          </h2>
+          <ul class="text-gray-500 dark:text-gray-400">
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Discord Server</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Twitter</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Facebook</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Contact Us</a>
+            </li>
+          </ul>
         </div>
         <div>
-            <h2 class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Legal</h2>
-            <ul class="text-gray-500 dark:text-gray-400">
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Privacy Policy</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Licensing</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Terms &amp; Conditions</a>
-                </li>
-            </ul>
+          <h2
+            class="
+              mb-6
+              text-sm
+              font-semibold
+              text-gray-500
+              uppercase
+              dark:text-gray-400
+            "
+          >
+            Legal
+          </h2>
+          <ul class="text-gray-500 dark:text-gray-400">
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Privacy Policy</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Licensing</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+            </li>
+          </ul>
         </div>
         <div>
-            <h2 class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Download</h2>
-            <ul class="text-gray-500 dark:text-gray-400">
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">iOS</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Android</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">Windows</a>
-                </li>
-                <li class="mb-4">
-                    <a href="#" class="hover:underline">MacOS</a>
-                </li>
-            </ul>
+          <h2
+            class="
+              mb-6
+              text-sm
+              font-semibold
+              text-gray-500
+              uppercase
+              dark:text-gray-400
+            "
+          >
+            Download
+          </h2>
+          <ul class="text-gray-500 dark:text-gray-400">
+            <li class="mb-4">
+              <a href="#" class="hover:underline">iOS</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Android</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">Windows</a>
+            </li>
+            <li class="mb-4">
+              <a href="#" class="hover:underline">MacOS</a>
+            </li>
+          </ul>
         </div>
-        
+      </div>
     </div>
-    </div>
-    
+
     <div
       class="
         px-4
@@ -179,6 +246,5 @@
         </a>
       </div>
     </div>
-</footer>
-
+  </footer>
 </template>

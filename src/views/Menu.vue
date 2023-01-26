@@ -47,6 +47,7 @@
               :name="MainDish[index].name"
               :description="MainDish[index].description"
               :price="MainDish[index].price"
+              :image="MainDish[index].image"
             />
           </div>
         </div>
@@ -68,7 +69,7 @@
           animate-bounce
         "
       >
-        Appetizer
+        Side Order
       </div>
       <div
         class="
@@ -90,15 +91,18 @@
         "
       >
         <div
-          v-for="(item, index) in Appetizer"
+          v-for="(item, index) in SideOrder"
           :key="index"
+          @click="ChooseImage(index)"
+          ref="sideOrder"
           class="box-content ..."
         >
           <div class="overlay">
             <FoodCard
-              :name="Appetizer[index].name"
-              :description="Appetizer[index].description"
-              :price="Appetizer[index].price"
+              :name="SideOrder[index].name"
+              :description="SideOrder[index].description"
+              :price="SideOrder[index].price"
+              :image="SideOrder[index].image"
             />
           </div>
         </div>
@@ -151,6 +155,7 @@
               :name="Drink[index].name"
               :description="Drink[index].description"
               :price="Drink[index].price"
+              :image="Drink[index].image"
             />
           </div>
         </div>
@@ -162,7 +167,10 @@
 import Swal from "sweetalert2";
 import FoodCard from "../components/FoodCard.vue";
 import { HTTPS } from "../axios/http-axios";
-
+import {
+  localStorageImport,
+  localStorageExport,
+} from "../localStorage/local-storage";
 export default {
   components: { FoodCard },
   data() {
@@ -174,12 +182,13 @@ export default {
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
     });
-    this.isLoggedIn = !!localStorage.getItem("jwtToken");
-    
+    this.isLoggedIn = !!localStorageExport("jwtToken");
+    console.log(this.isLoggedIn)
     if (this.isLoggedIn) {
-      HTTPS.get("/menu").then((res) => {
+      
+      HTTPS.get("/menu").then(res => {
         this.item = res.data.item;
-        console.log(this.item);
+        console.log(this.item)
       });
     }
   },
@@ -199,7 +208,8 @@ export default {
           var canvas = document.createElement("canvas");
           const reader = new FileReader();
           reader.onload = (e) => {
-            this.$refs.appetizers[index].src = e.target.result;
+            this.$refs.sideOrder[index].image = e.target.result;
+            console.log(e)
           };
           reader.readAsDataURL(file);
         }
@@ -210,7 +220,7 @@ export default {
     MainDish: function () {
       return Object.values(this.item).filter((i) => i.food_type == 0);
     },
-    Appetizer: function () {
+    SideOrder: function () {
       return Object.values(this.item).filter((i) => i.food_type == 1);
     },
     Drink: function () {

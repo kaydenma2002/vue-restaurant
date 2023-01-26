@@ -1,5 +1,5 @@
 <template>
-  <a
+  <div
     href="#"
     class="
       flex flex-col
@@ -20,7 +20,7 @@
         h-96
         md:h-auto md:w-48 md:rounded-none md:rounded-l-lg
       "
-      src="https://flowbite.com/docs/images/blog/image-4.jpg"
+      v-bind:src=image
       alt=""
     />
     <div class="flex flex-col justify-between p-4 leading-normal">
@@ -43,7 +43,7 @@
         ${{ price }}
       </p>
     </div>
-  </a>
+  </div>
 </template>
 <script>
 export default {
@@ -52,6 +52,7 @@ export default {
     category: String,
     price: String,
     description: String,
+    image: String
   },
 };
 </script>

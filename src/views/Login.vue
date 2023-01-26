@@ -344,7 +344,7 @@ export default {
       })
         .then((res) => {
           localStorageImport("jwtToken", res.data.token);
-          
+          console.log(localStorageExport("jwtToken"))
           Swal.fire("Logged In successfully", "Welcome back", "success").then(
             (res) => {
               this.emitter.emit("login", true);
