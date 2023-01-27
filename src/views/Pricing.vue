@@ -17,20 +17,14 @@
       {
         title: 'Step 2',
       },
-      {
-        title: 'Step 3',
-      },
-      {
-        title: 'Step 4',
-      },
+      
     ]"
     :beforeChange="onTabBeforeChange"
     @change="onChangeCurrentTab"
     @complete:wizard="wizardCompleted"
   >
     <form action="" @submit.prevent="SubmitCardDetail()">
-      <h5 v-if="currentTabIndex === 0"></h5>
-      <h5 v-if="currentTabIndex === 1">
+      <h5 v-if="currentTabIndex === 0">
         
         
         <div class="relative z-0 w-full mb-6 group">
@@ -402,7 +396,7 @@
           </div>
         </div>
       </h5>
-      <h5 v-if="currentTabIndex === 2">
+      <h5 v-if="currentTabIndex === 1">
         <div v-if="cardComponent" class="mb-6">
           <Card
             :fields="fields"
@@ -411,9 +405,10 @@
             :randomBackgrounds="randomBackgrounds"
             :backgroundImage="backgroundImage"
           />
+          
         </div>
       </h5>
-      <h5 v-if="currentTabIndex === 3"></h5>
+      
     </form>
   </Wizard>
 </template>

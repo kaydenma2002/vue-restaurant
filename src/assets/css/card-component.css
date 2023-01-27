@@ -8,9 +8,8 @@
 	}
 }
  .card-form {
-	 max-width: 570px;
-	 margin: auto;
-	 width: 100%;
+	
+	 
 }
  @media screen and (max-width: 576px) {
 	 .card-form {
@@ -21,7 +20,7 @@
 	 background: #fff;
 	 
 	 border-radius: 10px;
-	 padding: 35px;
+	 
 	 padding-top: 180px;
 }
  @media screen and (max-width: 480px) {
@@ -103,12 +102,9 @@
 	}
 }
  .card-item {
-	 max-width: 430px;
-	 height: 270px;
-	 margin-left: auto;
-	 margin-right: auto;
-	 position: relative;
-	 z-index: 2;
+	 max-width: 36rem;
+	 height: 22rem;
+	 
 	 width: 100%;
 }
  @media screen and (max-width: 480px) {

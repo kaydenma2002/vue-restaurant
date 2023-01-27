@@ -63,96 +63,23 @@
         find dining
       </h1>
     </div>
-    <div class="row menu">
-      <div
-        class="
-          mt-5
-          underline underline-offset-3
-          text-center
-          mb-4
-          text-4xl
-          font-extrabold
-          leading-none
-          tracking-tight
-          md:text-4xl
-          lg:text-5xl
-          animate-bounce
-        "
-      >
-        Your Menu
-      </div>
-      <div
-        class="
-          xl:w-auto
-          sm:w-auto
-          lg:w-auto
-          md:w-auto
-          w-auto
-          m-auto
-          h-auto
-          mt-5
-          grid grid-cols-2
-          xl:grid-cols-3
-          lg:grid-cols-2
-          md:grid-cols-2
-          sm:grid-cols-2
-          gap-4
-          mb-10
-        "
-      >
-        <div
-          v-for="(item, index) in 12"
-          @click="ChooseImage(index)"
-          :key="index"
-          class="box-content"
-        >
-          <FoodCard
-            :name="'1'"
-            :description="'1'"
-            :price="'1'"
-            :image="imageDataUrl[index]"
-          />
-        </div>
-      </div>
-    </div>
+    
   </div>
 </template>
 <script>
-import FoodCard from "../components/FoodCard.vue";
 
-import Swal from "sweetalert2";
 export default {
-  components: { FoodCard },
+ 
   data() {
     return {
-      imageDataUrl: Array(12).fill("https://loremflickr.com/640/480/pudding?random=720"),
+      
     };
   },
   methods: {
     RegisterforRestaurant() {
       this.$router.push("/get-started");
     },
-    ChooseImage(index) {
-      (async () => {
-        const { value: file } = await Swal.fire({
-          title: "Select image",
-          input: "file",
-          inputAttributes: {
-            accept: "image/*",
-            "aria-label": "Upload your profile picture",
-          },
-        });
-
-        if (file) {
-          var canvas = document.createElement("canvas");
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            this.imageDataUrl[index] = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      })();
-    },
+    
   },
 };
 </script>

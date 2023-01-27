@@ -8,6 +8,7 @@ import ContactUs from './views/ContactUs.vue'
 import Login from './views/Login.vue'
 import getStarted from './views/getStarted.vue'
 import SignUp from './views/Signup.vue'
+import { AcademicCapIcon } from "@vue-hero-icons/outline"
 
 
 
