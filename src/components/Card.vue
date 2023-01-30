@@ -347,10 +347,7 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
 
-import Stripe from "stripe";
-import { HTTP } from "../axios/http-axios";
 export default {
   data() {
     return {
@@ -416,7 +413,7 @@ export default {
         number: this.cardNumber,
         exp_month: this.cardMonth,
         exp_year: this.cardYear,
-        cvc: this.cardCvv,
+        cvv: this.cardCvv,
         amount: 50,
       })
         .then((res) => {
