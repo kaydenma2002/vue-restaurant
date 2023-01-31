@@ -31,7 +31,7 @@
           <input
             type="email"
             name="email"
-            v-model="email"
+            id="email"
             class="
               block
               py-2.5
@@ -77,7 +77,7 @@
             <input
               type="text"
               name="floating_first_name"
-              v-model="first_name"
+              id="floating_first_name"
               class="
                 block
                 py-2.5
@@ -122,7 +122,7 @@
             <input
               type="text"
               name="floating_last_name"
-              v-model="last_name"
+              id="floating_last_name"
               class="
                 block
                 py-2.5
@@ -170,7 +170,7 @@
               type="tel"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               name="floating_phone"
-              v-model="phone"
+              id="floating_phone"
               class="
                 block
                 py-2.5
@@ -215,7 +215,7 @@
             <input
               type="text"
               name="floating_company"
-              v-model="company"
+              id="floating_company"
               class="
                 block
                 py-2.5
@@ -261,7 +261,7 @@
           <input
             type="street_address"
             name="street_address"
-            v-model="street"
+            id="street_address"
             class="
               block
               py-2.5
@@ -308,7 +308,7 @@
             <input
               type="text"
               name="city"
-              v-model="city"
+              id="city"
               class="
                 block
                 py-2.5
@@ -351,9 +351,9 @@
           </div>
           <div class="relative z-0 w-full mb-6 group">
             <input
-              type="text"
+              type="email"
               name="zip_code"
-              v-model="zip_code"
+              id="zip_code"
               class="
                 block
                 py-2.5
@@ -415,10 +415,7 @@
 <script>
 import "form-wizard-vue3/dist/form-wizard-vue3.css";
 import Wizard from "form-wizard-vue3";
-import Swal from "sweetalert2";
 
-import Stripe from "stripe";
-import { HTTP } from "../axios/http-axios";
 import Card from "../components/Card.vue";
 export default {
   components: {
@@ -456,19 +453,11 @@ export default {
       type: Object,
       default: () => {
         return {
-          first_name:"",
-          last_name:"",
-          phone:"",
-          street:"",
-          city:"",
-          zip_code:"",
-          email:"",
-          total:"",
           cardName: "",
           cardNumber: "",
           cardMonth: "",
           cardYear: "",
-          cardCVC: "",
+          cardCvv: "",
         };
       },
     },
@@ -488,7 +477,7 @@ export default {
         cardName: "v-card-name",
         cardMonth: "v-card-month",
         cardYear: "v-card-year",
-        cardCVC: "v-card-cvv",
+        cardCvv: "v-card-cvv",
       },
       minCardYear: new Date().getFullYear(),
       isCardNumberMasked: true,
@@ -516,32 +505,42 @@ export default {
       this.$emit("handle-card");
     }
   },
+  // updated() {
+  //   paypal
+  //     .Buttons({
+  //       style: {
+  //         color: "gold",
+  //         shape: "pill",
+  //         layout: "horizontal",
+  //       },
+  //       createOrder: (data, actions) => {
+  //         const createOrderPayload = {
+  //           purchase_units: [
+  //             {
+  //               amount: {
+  //                 value: "4000.0",
+  //               },
+  //             },
+  //           ],
+  //         };
+  //         return actions.order.create(createOrderPayload);
+  //       },
+  //       onApprove: (data, actions) => {
+  //         const captureOrderHandler = (details) => {
+  //           const payerName = details.payer.name.given_name;
+  //           console.log("Transaction completed");
+  //         };
+  //         return actions.order.capture().then(captureOrderHandler);
+  //       },
+  //       onError: (err) => {
+  //         console.error(
+  //           "An error prevented the buyer from checking out with PayPal"
+  //         );
+  //       },
+  //     })
+  //     .render("#paypal-button-container");
+  // },
   methods: {
-    payByCreditCard() {
-      HTTP.post("/stripe", {
-        number: this.cardNumber,
-        exp_month: this.cardMonth,
-        exp_year: this.cardYear,
-        cvv: this.cardCvv,
-        amount: 50,
-      })
-        .then((res) => {
-          console.log(res);
-          Swal.fire(
-            "Payment succesfully",
-            "Thank you for choosing our service!",
-            "success"
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          Swal.fire({
-            icon: "error",
-            title: "Payment Error !",
-            text: error,
-          });
-        });
-    },
     onChangeCurrentTab(index, oldIndex) {
       console.log(index, oldIndex);
       this.currentTabIndex = index;
@@ -609,8 +608,8 @@ export default {
       this.$emit("input-card-year", this.formData.cardYear);
     },
     changeCvv(e) {
-      this.formData.cardCVC = e.target.value;
-      this.$emit("input-card-cvv", this.formData.cardCvC);
+      this.formData.cardCvv = e.target.value;
+      this.$emit("input-card-cvv", this.formData.cardCvv);
     },
     invaildCard() {
       let number = this.formData.cardNumber;
