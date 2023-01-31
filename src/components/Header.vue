@@ -7,14 +7,22 @@
         py-8
         mx-auto
         md:flex md:justify-between md:items-center
-        bg-white  dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600
+        bg-white
+        dark:bg-gray-900
+        fixed
+        w-full
+        z-20
+        top-0
+        left-0
+        border-b border-gray-200
+        dark:border-gray-600
       "
     >
       <div class="flex items-center justify-between">
         <a href="https://flowbite.com/" class="flex items-center">
           <h1>Your site Logo</h1>
         </a>
-        
+
         <!-- Mobile menu button -->
         <div @click="showMenu = !showMenu" class="flex md:hidden">
           <button
@@ -33,7 +41,6 @@
             </svg>
           </button>
         </div>
-        
       </div>
 
       <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
@@ -41,7 +48,7 @@
         :class="showMenu ? 'flex' : 'hidden'"
         class="
           flex-col
-          mt-8
+          
           space-y-4
           md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
         "
@@ -149,78 +156,86 @@
         </li>
         <li>
           <button
-          @click.prevent="RegisterforRestaurant()"
-          class="
-            bg-indigo-600
-            px-3
-            py-3
-            rounded-lg
-            text-white
-            hover:bg-indigo-500
-            text-sm
-            shadow-lg
-            shadow-indigo-500/50
-
-          "
-        >
-          Your restaurant
-        </button>
+            @click.prevent="RegisterforRestaurant()"
+            class="
+              bg-indigo-600
+              px-3
+              py-3
+              rounded-lg
+              text-white
+              hover:bg-indigo-500
+              text-sm
+              shadow-lg shadow-indigo-500/50
+            "
+          >
+            Your restaurant
+          </button>
+        </li>
+        <li>
+          <div class="cart-button ">
+            <button class="bg-indigo-600" @click="addToCart">
+              <font-awesome-icon icon="fa-solid fa-cart-shopping" />
+               ({{ quantity }})
+            </button>
+          </div>
         </li>
       </ul>
-      <ul :class="showMenu ? 'flex' : 'hidden'"
+      <ul
+        :class="showMenu ? 'flex' : 'hidden'"
         class="
-        sm
+          sm
           flex-col
-          mt-8
+          
           space-y-4
           md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
-        ">
+        "
+      >
         <li>
           <router-link
-          v-if="!isLoggedIn"
-          to="/Login"
-          class="text-gray-800 text-sm"
-          >LOGIN</router-link
-        >
-        
+            v-if="!isLoggedIn"
+            to="/Login"
+            class="text-gray-800 text-sm"
+            >LOGIN</router-link
+          >
+
           <router-link
-          v-if="!isLoggedIn"
-          to="/SignUp"
-          class="
-            bg-indigo-600
-            px-4
-            py-2
-            rounded
-            text-white
-            hover:bg-indigo-500
-            text-sm
-            ml-2
-          "
-          >SIGNUP</router-link
-        >
+            v-if="!isLoggedIn"
+            to="/SignUp"
+            class="
+              bg-indigo-600
+              px-4
+              py-2
+              rounded
+              text-white
+              hover:bg-indigo-500
+              text-sm
+              ml-2
+            "
+            >SIGNUP</router-link
+          >
         </li>
         <li>
           <button
-          v-if="isLoggedIn"
-          class="
-            bg-indigo-600
-            px-4
-            py-2
-            rounded
-            text-white
-            hover:bg-indigo-500
-            text-sm
-          "
-        >
-          {{ user.email }}
-        </button>
-        <a
-          class="nav-item nav-link"
-          v-if="isLoggedIn"
-          @click.prevent="Logout"
-          href="#"
-          >Logout</a
-        >
+            v-if="isLoggedIn"
+            class="
+              bg-indigo-600
+              px-4
+              py-2
+              rounded
+              text-white
+              hover:bg-indigo-500
+              text-sm
+            "
+          >
+            {{ user.email }}
+          </button>
+          <a
+            class="nav-item nav-link"
+            v-if="isLoggedIn"
+            @click.prevent="Logout"
+            href="#"
+            >Logout</a
+          >
         </li>
       </ul>
     </nav>
@@ -241,6 +256,8 @@ export default {
       showMenu: false,
       scrollPosition: null,
       isLoggedIn: false,
+      quantity: 0,
+      cart:[],
       user: {
         name: "",
         email: "",
@@ -251,8 +268,9 @@ export default {
     updateScroll() {
       this.scrollPosition = window.scrollY;
     },
-    RegisterforRestaurant(){
-      this.$router.push("/get-started")
+    
+    RegisterforRestaurant() {
+      this.$router.push("/get-started");
     },
     Logout() {
       Swal.fire({
@@ -284,14 +302,19 @@ export default {
       });
     },
   },
-  
+
   created() {
     window.addEventListener("scroll", this.updateScroll);
+    this.emitter.on('cartUpdated', (value) => {
+      this.quantity +=1
+      this.cart.push(value)
+    });
+
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
     });
     this.isLoggedIn = !!localStorage.getItem("jwtToken");
-    console.log(this.isLoggedIn)
+    console.log(this.isLoggedIn);
     if (this.isLoggedIn) {
       axios
         .get("http://127.0.0.1:8000/api/user", {
@@ -300,7 +323,6 @@ export default {
           },
         })
         .then((res) => {
-          
           this.user.email = res.data.email;
         })
         .catch((error) => {
@@ -322,4 +344,24 @@ export default {
 .change_color_nav:hover {
   color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
+.cart-button {
+  display: inline-block;
+  
+  text-align: center;
+}
+
+.cart-button button {
+  
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.cart-button button i {
+  margin-right: 0.5rem;
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="payByCreditCard()">
+  
     <div class="card-form grid grid-cols-6 gap-4">
       <div class="col-span-2">
         <h4 class="text-3xl text-gray-700 mb-5">Payment Information</h4>
@@ -185,7 +185,7 @@
               <div class="card-item__cvv">
                 <div class="card-item__cvvTitle">CVV</div>
                 <div class="card-item__cvvBand">
-                  <span v-for="(n, $index) in cardCvv" :key="$index"> * </span>
+                  <span v-for="(n, $index) in cardCVV" :key="$index"> * </span>
                 </div>
                 <div class="card-item__type">
                   <img
@@ -213,6 +213,7 @@
               class="card-input__input"
               v-mask="generateCardNumberMask"
               v-model="cardNumber"
+              @input="updateCardNumber"
               v-on:focus="focusInput"
               v-on:blur="blurInput"
               data-ref="cardNumber"
@@ -241,6 +242,7 @@
                 <select
                   class="card-input__input -select"
                   id="cardMonth"
+                  @input="updateCardMonth"
                   v-model="cardMonth"
                   v-on:focus="focusInput"
                   v-on:blur="blurInput"
@@ -260,6 +262,7 @@
                   class="card-input__input -select"
                   id="cardYear"
                   v-model="cardYear"
+                  @input="updateCardYear"
                   v-on:focus="focusInput"
                   v-on:blur="blurInput"
                   data-ref="cardDate"
@@ -284,7 +287,9 @@
                   id="cardCvv"
                   v-mask="'####'"
                   maxlength="4"
-                  v-model="cardCvv"
+                  v-model="cardCVV"
+                  
+                  @input="updateCardCVV"
                   v-on:focus="flipCard(true)"
                   v-on:blur="flipCard(false)"
                   autocomplete="off"
@@ -342,21 +347,54 @@
         </div>
       </div>
     </div>
-    <button type="submit" class="card-form__button">Submit</button>
-  </form>
+    
+
 </template>
 
 <script>
+import Swal from "sweetalert2";
 
+import {HTTP} from "../axios/http-axios"
 export default {
+  props: {
+    total: Number,
+    formData: {
+      type: Object,
+      default: () => {
+        return {
+          first_name: "",
+          last_name: "",
+          phone: "",
+          street: "",
+          city: "",
+          zip_code: "",
+          email: "",
+          total: "",
+          cardName: "",
+          cardNumber: "",
+          cardMonth: "",
+          cardYear: "",
+          cardCVV: "",
+        };
+      },
+    },
+    backgroundImage: [String, Object],
+    randomBackgrounds: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
+      
+      mainCardNumber: this.cardNumber,
+      cardNumberMaxLength: 19,
       currentCardBackground: Math.floor(Math.random() * 25 + 1), // just for fun :D
       cardName: "",
       cardNumber: "",
       cardMonth: "",
       cardYear: "",
-      cardCvv: "",
+      cardCVV: "",
       minCardYear: new Date().getFullYear(),
       amexCardMask: "#### ###### #####",
       otherCardMask: "#### #### #### ####",
@@ -364,9 +402,12 @@ export default {
       isCardFlipped: false,
       focusElementStyle: null,
       isInputFocused: false,
+      
     };
   },
+  
   mounted() {
+    this.maskCardNumber();
     this.cardNumberTemp = this.otherCardMask;
     document.getElementById("cardNumber").focus();
   },
@@ -402,36 +443,23 @@ export default {
   },
   watch: {
     cardYear() {
-      if (this.cardMonth < this.minCardMonth) {
-        this.cardMonth = "";
+      if (this.formData.cardMonth < this.minCardMonth) {
+        this.formData.cardMonth = "";
       }
     },
   },
   methods: {
-    payByCreditCard() {
-      HTTP.post("/stripe", {
-        number: this.cardNumber,
-        exp_month: this.cardMonth,
-        exp_year: this.cardYear,
-        cvv: this.cardCvv,
-        amount: 50,
-      })
-        .then((res) => {
-          console.log(res);
-          Swal.fire(
-            "Payment succesfully",
-            "Thank you for choosing our service!",
-            "success"
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          Swal.fire({
-            icon: "error",
-            title: "Payment Error !",
-            text: error,
-          });
-        });
+    updateCardNumber(event){
+      this.$emit("update:cardnumber", event.target.value);
+    },
+    updateCardMonth(event){
+      this.$emit("update:cardmonth", event.target.value);
+    },
+    updateCardYear(event){
+      this.$emit("update:cardyear", event.target.value);
+    },
+    updateCardCVV(event){
+      this.$emit("update:cardcvv", event.target.value);
     },
     flipCard(status) {
       this.isCardFlipped = status;
@@ -454,6 +482,115 @@ export default {
         }
       }, 300);
       vm.isInputFocused = false;
+    },
+    generateMonthValue(n) {
+      return n < 10 ? `0${n}` : n;
+    },
+    changeName(e) {
+      this.formData.cardName = e.target.value;
+      this.$emit("input-card-name", this.formData.cardName);
+    },
+    changeNumber(e) {
+      this.formData.cardNumber = e.target.value;
+      let value = this.formData.cardNumber.replace(/\D/g, "");
+      // american express, 15 digits
+      if (/^3[47]\d{0,13}$/.test(value)) {
+        this.formData.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{6})/, "$1 $2 ");
+        this.cardNumberMaxLength = 17;
+      } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(value)) {
+        // diner's club, 14 digits
+        this.formData.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{6})/, "$1 $2 ");
+        this.cardNumberMaxLength = 16;
+      } else if (/^\d{0,16}$/.test(value)) {
+        // regular cc number, 16 digits
+        this.formData.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{4})/, "$1 $2 ")
+          .replace(/(\d{4}) (\d{4}) (\d{4})/, "$1 $2 $3 ");
+        this.cardNumberMaxLength = 19;
+      }
+      // eslint-disable-next-line eqeqeq
+      if (e.inputType == "deleteContentBackward") {
+        let lastChar = this.formData.cardNumber.substring(
+          this.formData.cardNumber.length,
+          this.formData.cardNumber.length - 1
+        );
+        // eslint-disable-next-line eqeqeq
+        if (lastChar == " ") {
+          this.formData.cardNumber = this.formData.cardNumber.substring(
+            0,
+            this.formData.cardNumber.length - 1
+          );
+        }
+      }
+      this.$emit("input-card-number", this.formData.cardNumber);
+    },
+    changeMonth() {
+      this.$emit("input-card-month", this.formData.cardMonth);
+    },
+    changeYear() {
+      this.$emit("input-card-year", this.formData.cardYear);
+    },
+    changeCvv(e) {
+      this.formData.cardCVV = e.target.value;
+      this.$emit("input-card-cvv", this.formData.cardCVV);
+    },
+    invaildCard() {
+      let number = this.formData.cardNumber;
+      let sum = 0;
+      let isOdd = true;
+      for (let i = number.length - 1; i >= 0; i--) {
+        let num = number.charAt(i);
+        if (isOdd) {
+          sum += num;
+        } else {
+          num = num * 2;
+          if (num > 9) {
+            num = num.toString().split("").join("+");
+          }
+          sum += num;
+        }
+        isOdd = !isOdd;
+      }
+      if (sum % 10 !== 0) {
+        alert("invaild card number");
+      }
+    },
+    blurCardNumber() {
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber();
+      }
+    },
+    maskCardNumber() {
+      this.mainCardNumber = this.formData.cardNumber;
+      let arr = this.formData.cardNumber.split("");
+      arr.forEach((element, index) => {
+        if (index > 4 && index < 14 && element.trim() !== "") {
+          arr[index] = "*";
+        }
+      });
+      this.formData.cardNumber = arr.join("");
+    },
+    unMaskCardNumber() {
+      this.formData.cardNumber = this.mainCardNumber;
+    },
+    focusCardNumber() {
+      this.unMaskCardNumber();
+    },
+    toggleMask() {
+      this.isCardNumberMasked = !this.isCardNumberMasked;
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber();
+      } else {
+        this.unMaskCardNumber();
+      }
+    },
+    finishPayment() {
+      this.$emit("change-parent");
     },
   },
 };

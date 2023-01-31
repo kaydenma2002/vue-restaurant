@@ -9,8 +9,14 @@ import Login from './views/Login.vue'
 import getStarted from './views/getStarted.vue'
 import SignUp from './views/Signup.vue'
 import { AcademicCapIcon } from "@vue-hero-icons/outline"
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
 
+/* add icons to the library */
+library.add(faCartShopping,faPlus)
 
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -78,6 +84,8 @@ const app = createApp({
     render: () => h(App),
   });
 app.use(router).use(VueStripeElements)
+app.component('font-awesome-icon', FontAwesomeIcon)
+
 app.config.globalProperties.emitter = emitter;
 app.mount('#app')
 
