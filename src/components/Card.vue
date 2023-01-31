@@ -347,8 +347,7 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
-import { HTTP } from "../axios/http-axios"
+
 export default {
   data() {
     return {
