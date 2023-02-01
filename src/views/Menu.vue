@@ -191,6 +191,7 @@ export default {
   created() {
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
+      
     });
     this.isLoggedIn = !!localStorageExport("jwtToken");
     console.log(this.isLoggedIn);

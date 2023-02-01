@@ -51,8 +51,7 @@
 </template>
 <script>
 import Swal from "sweetalert2";
-import { numeric } from '@vuelidate/validators';
-
+import { numeric } from "@vuelidate/validators";
 
 export default {
   props: {
@@ -73,7 +72,19 @@ export default {
       this.$emit("editContent");
     },
     addToCart(id) {
-      this.emitter.emit('cartUpdated',id)
+      const currentQuantity = parseInt(localStorage.getItem("quantity")) + 1;
+      localStorage.setItem("quantity", currentQuantity);
+
+      
+      
+      const currentCart = JSON.parse(localStorage.getItem("cart"));
+      
+      currentCart.push(id)
+      localStorage.setItem("cart",JSON.stringify(currentCart))
+      console.log(JSON.parse(localStorage.getItem("cart")))
+       
+
+      this.emitter.emit("cartUpdated", id);
     },
   },
 };

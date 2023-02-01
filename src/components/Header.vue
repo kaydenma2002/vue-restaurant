@@ -249,15 +249,17 @@
 import axios from "axios";
 import { localStorageExport } from "../localStorage/local-storage";
 import Swal from "sweetalert2";
+import { numeric } from '@vuelidate/validators';
 
 export default {
   data() {
     return {
+
       showMenu: false,
       scrollPosition: null,
       isLoggedIn: false,
-      quantity: 0,
-      cart:[],
+      quantity: String,
+      
       user: {
         name: "",
         email: "",
@@ -294,7 +296,9 @@ export default {
               },
             }
           );
-          Swal.fire("", "User logged out!", "success");
+          Swal.fire("", "User logged out!", "success").then(res => {
+            this.emitter.emit("logout", true);
+          });
           localStorage.removeItem("jwtToken");
           this.isLoggedIn = false;
           this.$router.push("/login");
@@ -304,10 +308,11 @@ export default {
   },
 
   created() {
+    this.quantity = localStorage.getItem('quantity')
     window.addEventListener("scroll", this.updateScroll);
     this.emitter.on('cartUpdated', (value) => {
-      this.quantity +=1
-      this.cart.push(value)
+      this.quantity = localStorage.getItem('quantity')
+      console.log("quantity",this.quantity)
     });
 
     this.emitter.on("login", () => {

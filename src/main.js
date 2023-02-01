@@ -18,16 +18,16 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* add icons to the library */
 library.add(faCartShopping,faPlus)
 
-
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
+import { createPinia } from 'pinia'
 
 
 
 import App from './App.vue'
 import mitt from 'mitt';
 const emitter = mitt();
-
+const pinia = createPinia();
 
 const router = createRouter({
     history: createWebHistory(),
@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp({
     render: () => h(App),
   });
-app.use(router).use(VueStripeElements)
+app.use(router).use(VueStripeElements).use(pinia)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.config.globalProperties.emitter = emitter;
