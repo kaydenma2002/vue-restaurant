@@ -22,7 +22,7 @@
       v-bind:src="image"
       alt=""
     />
-    <div class="flex flex-col justify-between p-4 leading-normal">
+    <div class="flex flex-col justify-between p-4 leading-normal w-full">
       <div @click="editContent">
         <h5
           class="
@@ -42,8 +42,11 @@
         <p class="text-lg text-gray-700 dark:text-gray-400">${{ price }}</p>
       </div>
       <div class="ml-auto">
-        <button @click="addToCart(id)">
+        <button v-if="enableAddToCart" @click="addToCart(id)">
           <font-awesome-icon icon="fa-solid fa-plus" />
+        </button>
+        <button v-if="enableRemoveFromCart" @click="RemoveFromCart(id)">
+          <font-awesome-icon icon="fa-solid fa-minus" />
         </button>
       </div>
     </div>
@@ -52,7 +55,7 @@
 <script>
 import Swal from "sweetalert2";
 import { numeric } from "@vuelidate/validators";
-
+import { HTTPS } from "../axios/http-axios"
 export default {
   props: {
     id: String,
@@ -63,6 +66,15 @@ export default {
     image: String,
     imageOnClick: Function,
     editContent: Function,
+    enableAddToCart: {
+      type: Boolean,
+      default: true
+    },
+    enableRemoveFromCart:{
+      type:Boolean,
+      default: false
+    }
+
   },
   methods: {
     imageOnClick() {
@@ -72,19 +84,14 @@ export default {
       this.$emit("editContent");
     },
     addToCart(id) {
-      const currentQuantity = parseInt(localStorage.getItem("quantity")) + 1;
-      localStorage.setItem("quantity", currentQuantity);
-
+      HTTPS.post("/create/cart",{
+        item_id: id
+      }).then(res => {
+        this.emitter.emit("cartUpdated", id);
+      }).catch(error => {
+        console.log(error)
+      })
       
-      
-      const currentCart = JSON.parse(localStorage.getItem("cart"));
-      
-      currentCart.push(id)
-      localStorage.setItem("cart",JSON.stringify(currentCart))
-      console.log(JSON.parse(localStorage.getItem("cart")))
-       
-
-      this.emitter.emit("cartUpdated", id);
     },
   },
 };

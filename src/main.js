@@ -12,11 +12,12 @@ import { AcademicCapIcon } from "@vue-hero-icons/outline"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMinus } from '@fortawesome/free-solid-svg-icons'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* add icons to the library */
-library.add(faCartShopping,faPlus)
+library.add(faCartShopping,faPlus,faMinus)
 
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
@@ -40,7 +41,7 @@ const router = createRouter({
         },
         { path: '/menu', name: 'Menu', component: Menu },
         { path: '/services', name: 'Services', component: Services },
-        { path: '/pricing', name: 'Pricing', component: Pricing },
+        { path: '/pricing', name: 'pricing', component: Pricing },
         { path: '/contactus', name: 'ContactUs', component: ContactUs },
         {
             path: '/login', name: 'Login', component: Login, meta: { guestOnly: true }

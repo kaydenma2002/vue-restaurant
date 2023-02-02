@@ -48,7 +48,6 @@
         :class="showMenu ? 'flex' : 'hidden'"
         class="
           flex-col
-          
           space-y-4
           md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
         "
@@ -114,7 +113,7 @@
         </li>
         <li>
           <router-link
-            to="/Pricing"
+            to="/pricing"
             class="
               block
               py-2
@@ -172,10 +171,10 @@
           </button>
         </li>
         <li>
-          <div class="cart-button ">
+          <div v-if="isLoggedIn" class="cart-button">
             <button class="bg-indigo-600" @click="addToCart">
               <font-awesome-icon icon="fa-solid fa-cart-shopping" />
-               ({{ quantity }})
+              ({{ quantity }})
             </button>
           </div>
         </li>
@@ -185,7 +184,6 @@
         class="
           sm
           flex-col
-          
           space-y-4
           md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
         "
@@ -249,17 +247,16 @@
 import axios from "axios";
 import { localStorageExport } from "../localStorage/local-storage";
 import Swal from "sweetalert2";
-import { numeric } from '@vuelidate/validators';
-
+import { numeric } from "@vuelidate/validators";
+import { HTTPS } from "../axios/http-axios";
 export default {
   data() {
     return {
-
       showMenu: false,
       scrollPosition: null,
       isLoggedIn: false,
       quantity: String,
-      
+
       user: {
         name: "",
         email: "",
@@ -270,7 +267,7 @@ export default {
     updateScroll() {
       this.scrollPosition = window.scrollY;
     },
-    
+
     RegisterforRestaurant() {
       this.$router.push("/get-started");
     },
@@ -296,7 +293,7 @@ export default {
               },
             }
           );
-          Swal.fire("", "User logged out!", "success").then(res => {
+          Swal.fire("", "User logged out!", "success").then((res) => {
             this.emitter.emit("logout", true);
           });
           localStorage.removeItem("jwtToken");
@@ -308,11 +305,19 @@ export default {
   },
 
   created() {
-    this.quantity = localStorage.getItem('quantity')
+    HTTPS.get("cartByUserId")
+      .then((res) => {
+        this.quantity = res.data.length;
+      })
+      .catch((error) => console.log(error));
+
     window.addEventListener("scroll", this.updateScroll);
-    this.emitter.on('cartUpdated', (value) => {
-      this.quantity = localStorage.getItem('quantity')
-      console.log("quantity",this.quantity)
+    this.emitter.on("cartUpdated", (value) => {
+       HTTPS.get("cartByUserId")
+        .then((res) => {
+          this.quantity = res.data.length;
+        })
+        .catch((error) => console.log(error));
     });
 
     this.emitter.on("login", () => {
@@ -351,12 +356,11 @@ export default {
 }
 .cart-button {
   display: inline-block;
-  
+
   text-align: center;
 }
 
 .cart-button button {
-  
   color: white;
   border: none;
   border-radius: 4px;
@@ -368,5 +372,4 @@ export default {
 .cart-button button i {
   margin-right: 0.5rem;
 }
-
 </style>

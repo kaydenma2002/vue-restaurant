@@ -165,6 +165,8 @@
               :description="item.description"
               :price="item.price"
               :image="item.image"
+              :enableAddToCart="true"
+              :enableRemoveFromCart="false"
             />
           </div>
         </div>

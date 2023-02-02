@@ -7,7 +7,7 @@
     :nextButton="{
       text: 'Next',
       icon: '',
-      hideIcon: false, // default false but selected for sample
+      hideIcon: true, // default false but selected for sample
       hideText: false, // default false but selected for sample
     }"
     :custom-tabs="[
@@ -20,10 +20,10 @@
     ]"
     :beforeChange="onTabBeforeChange"
     @change="onChangeCurrentTab"
-    @complete:wizard="wizardCompleted"
+    @complete:wizard="payByCreditCard"
   >
     <form @submit.prevent="payByCreditCard()">
-      <h5 v-if="currentTabIndex === 0">
+      <div v-if="currentTabIndex === 0">
         <div class="relative z-0 w-full mb-6 group">
           <input
             type="email"
@@ -391,18 +391,58 @@
             >
           </div>
         </div>
-      </h5>
-      <h5 v-if="currentTabIndex === 1">
-        <div class="mb-6">
-          <Card
-            @update:cardnumber="updateCardNumber"
-            @update:cardmonth="updateCardMonth"
-            @update:cardyear="updateCardYear"
-            @update:cvv="updateCardCVV"
-          />
+      </div>
+      <div v-if="currentTabIndex === 1">
+        <div class="card-form grid grid-cols-12 gap-4">
+          <div class="mb-6 col-span-3">
+            <h4 class="text-3xl text-gray-700 mb-5">Payment Information</h4>
+            <Card
+              @update:cardnumber="updateCardNumber"
+              @update:cardmonth="updateCardMonth"
+              @update:cardyear="updateCardYear"
+              @update:cvv="updateCardCVV"
+            />
+          </div>
+          <div class="col-span-9 lg:order-last">
+            <h4 class="text-3xl text-gray-700 mb-5">Order Summary</h4>
+            <div class="p-10 rounded-md shadow-md bg-white">
+              <div class="grid">
+                <div
+                  class="
+                    xl:w-auto
+                    sm:w-auto
+                    lg:w-auto
+                    md:w-auto
+                    w-auto
+                    h-auto
+                    mt-5
+                    grid
+                    xl:grid-cols-3
+                    lg:grid-cols-2
+                    md:grid-cols-1
+                    sm:grid-cols-1
+                    gap-2
+                    mb-10
+                  "
+                >
+                  <div v-for="(item, index) in Cart" :key="index">
+                    <FoodCard
+                      :id="item.item.id"
+                      :name="item.item.name"
+                      :description="item.item.description"
+                      :price="item.item.price"
+                      :image="item.item.image"
+                      :enableAddToCart="false"
+                      :enableRemoveFromCart="true"
+                    />
+                  </div>
+                </div>
+                <div class="ml-auto text-xl">Total: ${{ countTotal }}</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </h5>
-      <button type="submit" :class="[currentTabIndex == 0 ? 'hidden' : 'block', 'card-form__button']">Submit</button>
+      </div>
     </form>
   </Wizard>
 </template>
@@ -412,30 +452,39 @@ import Wizard from "form-wizard-vue3";
 import Swal from "sweetalert2";
 
 import Stripe from "stripe";
-
-import { HTTP } from "../axios/http-axios";
+import FoodCard from "../components/FoodCard.vue";
+import { HTTP, HTTPS } from "../axios/http-axios";
 import Card from "../components/Card.vue";
 export default {
   components: {
     Card,
+    FoodCard,
     Wizard,
   },
 
   data() {
     return {
-      isActive:true,
-      first_name:"",
-      last_name:"",
-      phone:"",
-      email:"",
-      company:"",
-      street:"",
-      city:"",
-      zip_code:"",
+      isActive: true,
+      first_name: "",
+      last_name: "",
+      phone: "",
+      email: "",
+      company: "",
+      street: "",
+      city: "",
+      zip_code: "",
       currentTabIndex: 0,
+      Cart: Object,
     };
   },
   mounted() {},
+  created() {
+    HTTPS.get("cartByUserId")
+      .then((res) => {
+        this.Cart = res.data;
+      })
+      .catch((error) => console.log(error));
+  },
   methods: {
     updateCardNumber(cardNumber) {
       this.cardNumber = cardNumber;
@@ -451,12 +500,12 @@ export default {
     },
 
     payByCreditCard() {
-      HTTP.post("/stripe", {
+      HTTPS.post("/stripe", {
         card_number: this.cardNumber,
         exp_month: this.cardMonth,
         exp_year: this.cardYear,
         card_cvv: this.cardCVV,
-        amount: 50,
+        amount: this.countTotal,
       })
         .then((res) => {
           if (res.data[0] !== "succeeded") {
@@ -466,17 +515,22 @@ export default {
               "Payment Success",
               "Thank you for choosing our service",
               "success"
-            ).then(HTTP.post("/create/order",{
-              first_name: this.first_name,
-              last_name: this.last_name,
-              phone: this.phone,
-              email: this.email,
-              company: this.company,
-              street: this.street,
-              city: this.city,
-              zip_code: this.zip_code,
-              total: 50
-            })).then(res => console.log(res)).catch(error => console.log(error));
+            )
+              .then(
+                HTTPS.post("/create/order", {
+                  first_name: this.first_name,
+                  last_name: this.last_name,
+                  phone: this.phone,
+                  email: this.email,
+                  company: this.company,
+                  street: this.street,
+                  city: this.city,
+                  zip_code: this.zip_code,
+                  total: this.countTotal,
+                })
+              )
+              .then((res) => console.log(res))
+              .catch((error) => console.log(error));
           }
         })
         .catch((error) => {
@@ -498,9 +552,13 @@ export default {
       }
       console.log("All Tabs");
     },
-    wizardCompleted() {
-      alert("Thanks you for purchasing ");
-      console.log("Wizard Completed");
+    wizardCompleted() {},
+  },
+  computed: {
+    countTotal() {
+      return this.Cart.reduce((sum, current) => {
+        return sum + current.item.price;
+      }, 0);
     },
   },
 };
