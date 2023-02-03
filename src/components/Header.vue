@@ -319,7 +319,13 @@ export default {
         })
         .catch((error) => console.log(error));
     });
-
+    this.emitter.on("removeCart",() => {
+      HTTPS.get("cartByUserId")
+      .then((res) => {
+          this.quantity = res.data.length;
+        })
+      .catch((error) => console.log(error));
+    })
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
     });

@@ -22,7 +22,7 @@
     @change="onChangeCurrentTab"
     @complete:wizard="payByCreditCard"
   >
-    <form @submit.prevent="payByCreditCard()">
+    <form>
       <div v-if="currentTabIndex === 0">
         <div class="relative z-0 w-full mb-6 group">
           <input
@@ -500,6 +500,7 @@ export default {
     },
 
     payByCreditCard() {
+      console.log(this.countTotal);
       HTTPS.post("/stripe", {
         card_number: this.cardNumber,
         exp_month: this.cardMonth,
@@ -509,6 +510,7 @@ export default {
       })
         .then((res) => {
           if (res.data[0] !== "succeeded") {
+            console.log(res);
             Swal.fire("Payment Error", `${res.data.response}`, "error");
           } else {
             Swal.fire(
@@ -517,19 +519,30 @@ export default {
               "success"
             )
               .then(
-                HTTPS.post("/create/order", {
-                  first_name: this.first_name,
-                  last_name: this.last_name,
-                  phone: this.phone,
-                  email: this.email,
-                  company: this.company,
-                  street: this.street,
-                  city: this.city,
-                  zip_code: this.zip_code,
-                  total: this.countTotal,
-                })
+                HTTPS.post("/remove/cart")
+                  .then(() => {
+                    HTTPS.get("cartByUserId")
+                      .then((res) => {
+                        this.Cart = res.data;
+                      })
+                      .catch((error) => console.log(error));
+                    this.emitter.emit("removeCart", true);
+                  })
+                  .then(
+                    HTTPS.post("/create/order", {
+                      first_name: this.first_name,
+                      last_name: this.last_name,
+                      phone: this.phone,
+                      email: this.email,
+                      company: this.company,
+                      street: this.street,
+                      city: this.city,
+                      zip_code: this.zip_code,
+                      total: this.countTotal,
+                    })
+                  )
+                  .catch((error) => console.log(error))
               )
-              .then((res) => console.log(res))
               .catch((error) => console.log(error));
           }
         })
