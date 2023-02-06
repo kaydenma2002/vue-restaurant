@@ -119,10 +119,16 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="(item, index) in paginatedData"
-
+                  v-for="(item, index) in restaurant"
                   :key="index"
-                  class="cursor-pointer border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  class="
+                    cursor-pointer
+                    border-b
+                    dark:border-gray-600
+                    hover:bg-gray-100
+                    dark:hover:bg-gray-700
+                  "
+                  @click="claimRestaurant(item.id)"
                 >
                   <th
                     scope="row"
@@ -141,9 +147,27 @@
                   <td class="px-4 py-3">{{ item.state }}</td>
                   <td class="px-4 py-3">{{ item.status }}</td>
                   <td class="px-4 py-3">{{ item.zip_code }}</td>
-                  <td class="px-4 py-3 ">
-                    <button type="button" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Claim Your Restaurant</button>
-
+                  <td class="px-4 py-3">
+                    <button
+                      type="button"
+                      class="
+                        text-white
+                        bg-indigo-700
+                        hover:bg-indigo-800
+                        focus:outline-none focus:ring-4 focus:ring-indigo-300
+                        font-medium
+                        rounded-full
+                        text-sm
+                        px-5
+                        py-2.5
+                        text-center
+                        dark:bg-indigo-600
+                        dark:hover:bg-indigo-700
+                        dark:focus:ring-indigo-800
+                      "
+                    >
+                      Claim Your Restaurant
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -162,108 +186,112 @@
             "
             aria-label="Table navigation"
           >
-            <ul class="inline-flex items-stretch -space-x-px">
+            <ul class="flex pagination">
+              <li class="page-item" :class="{ disabled: current_page === 1 }">
+                <button
+                  class="
+                    flex
+                    items-center
+                    justify-center
+                    h-full
+                    py-1.5
+                    px-3
+                    leading-tight
+                    text-gray-500
+                    bg-white
+                    rounded-l-lg
+                    border border-gray-300
+                    hover:bg-gray-100 hover:text-gray-700
+                    dark:bg-gray-800
+                    dark:border-gray-700
+                    dark:text-gray-400
+                    dark:hover:bg-gray-700
+                    dark:hover:text-white
+                  "
+                  :disabled="loading"
+                  @click="fetchRestaurants(current_page - 1)"
+                >
+                  <span class="sr-only">Previous</span>
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewbox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </li>
               <li>
-                <div class="flex">
-                  <button
-                    class="
-                      flex
-                      items-center
-                      justify-center
-                      h-full
-                      py-1.5
-                      px-3
-                      ml-0
-                      text-gray-500
-                      bg-white
-                      rounded-l-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                      dark:bg-gray-800
-                      dark:border-gray-700
-                      dark:text-gray-400
-                      dark:hover:bg-gray-700
-                      dark:hover:text-white
-                    "
-                    @click="prevPage"
-                    :disabled="currentPage === 1"
+                <span
+                  class="
+                    flex
+                    items-center
+                    justify-center
+                    text-sm
+                    py-2
+                    px-3
+                    leading-tight
+                    text-gray-500
+                    bg-white
+                    border border-gray-300
+                    hover:bg-gray-100 hover:text-gray-700
+                    dark:bg-gray-800
+                    dark:border-gray-700
+                    dark:text-gray-400
+                    dark:hover:bg-gray-700
+                    dark:hover:text-white
+                  "
+                  >{{ current_page }} / {{ last_page }}</span
+                >
+              </li>
+              <li
+                class="page-item"
+                :class="{ disabled: current_page === last_page }"
+              >
+                <button
+                  class="
+                    flex
+                    items-center
+                    justify-center
+                    h-full
+                    py-1.5
+                    px-3
+                    leading-tight
+                    text-gray-500
+                    bg-white
+                    rounded-r-lg
+                    border border-gray-300
+                    hover:bg-gray-100 hover:text-gray-700
+                    dark:bg-gray-800
+                    dark:border-gray-700
+                    dark:text-gray-400
+                    dark:hover:bg-gray-700
+                    dark:hover:text-white
+                  "
+                  :disabled="loading"
+                  @click="fetchRestaurants(current_page + 1)"
+                >
+                  <span class="sr-only">Next</span>
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewbox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <span class="sr-only">Previous</span>
-                    <svg
-                      class="w-5 h-5"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewbox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-
-                  <span
-                    class="
-                      flex
-                      items-center
-                      justify-center
-                      text-sm
-                      py-2
-                      px-3
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                      dark:bg-gray-800
-                      dark:border-gray-700
-                      dark:text-gray-400
-                      dark:hover:bg-gray-700
-                      dark:hover:text-white
-                    "
-                    >{{ currentPage }} / {{ totalPages }}</span
-                  >
-                  <button
-                    class="
-                      flex
-                      items-center
-                      justify-center
-                      h-full
-                      py-1.5
-                      px-3
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-r-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                      dark:bg-gray-800
-                      dark:border-gray-700
-                      dark:text-gray-400
-                      dark:hover:bg-gray-700
-                      dark:hover:text-white
-                    "
-                    @click="nextPage"
-                    :disabled="currentPage === totalPages"
-                  >
-                    <span class="sr-only">Next</span>
-                    <svg
-                      class="w-5 h-5"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewbox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
               </li>
             </ul>
           </nav>
@@ -283,6 +311,8 @@ import {
   numeric,
   minLength,
 } from "@vuelidate/validators";
+import { debounce } from "lodash";
+
 export default {
   data() {
     return {
@@ -294,8 +324,12 @@ export default {
       zip_code: "",
       restaurant: [],
       searchTerm: "",
-      itemsPerPage: 10,
-      currentPage: 1,
+      total: "",
+      per_page: "",
+      current_page: "",
+      last_page: "",
+      previousLoading: false,
+      nextLoading: false,
     };
   },
   methods: {
@@ -310,30 +344,80 @@ export default {
           zip_code: this.zip_code,
           email: this.email,
           phone: this.phone,
-        }).then(
-          Swal.fire(
-            "Thank you for submit!",
-            "You will be contacted soon!",
-            "success"
-          ).then((res) => {
-            this.$router.push("/");
-          })
+        })
+          .then(
+            Swal.fire(
+              "Thank you for submit!",
+              "You will be contacted soon!",
+              "success"
+            )
+              .then((res) => {
+                this.$router.push("/");
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+          )
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    async claimRestaurant($id) {
+      Swal.fire({
+        title: "Enter multiple values",
+        html:
+          '<input id="input1" class="swal2-input" placeholder="Enter name">' +
+          '<input id="input2" class="swal2-input" placeholder="Enter email">' +
+          '<input id="input3" class="swal2-input" placeholder="Enter phone">' +
+          '<input id="input4" class="swal2-input" placeholder="Enter zip_code">' +
+          '<input id="input5" class="swal2-input" placeholder="Enter company">',
+        focusConfirm: false,
+        preConfirm: () => {
+          return [
+            document.getElementById("input1").value,
+            document.getElementById("input2").value,
+            document.getElementById("input3").value,
+            document.getElementById("input4").value,
+            document.getElementById("input5").value,
+          ];
+        },
+      }).then((result) => {
+        if (result.value) {
+          const inputValues = result.value;
+          this.name = inputValues[0];
+          this.email = inputValues[1];
+          this.phone = inputValues[2];
+          this.zip_code = inputValues[3];
+          this.company = inputValues[4];
+          this.submitReservation();
+        }
+      });
+    },
+
+    search: debounce(async function () {
+      const res = await HTTPS.get(
+        `/restaurant/search?search=${this.searchTerm}`
+      );
+      this.restaurant = res.data.data;
+      this.current_page = res.data.current_page;
+      this.last_page = res.data.last_page;
+    }, 50),
+
+    async fetchRestaurants(page) {
+      this.loading = true;
+      try {
+        const res = await HTTPS.get(
+          `/restaurant/search?search=${this.searchTerm}&page=${page}`
         );
-      }
-    },
-    search() {
-      // You can add some debouncing logic here to improve performance
-      // when the user types in the input quickly.
-      this.currentPage = 1;
-    },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
+        this.restaurant = res.data.data;
+        this.current_page = res.data.current_page;
+        this.last_page = res.data.last_page;
+      } catch (error) {
+        // Your code to handle the error
+      } finally {
+        this.loading = false;
+        console.log(1)
       }
     },
   },
@@ -347,28 +431,17 @@ export default {
     };
   },
   created() {
-    HTTPS.get("/restaurant")
-      .then((res) => {
-        console.log(res)
-        this.restaurant = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.fetchRestaurants(1);
+
+    this.search();
   },
   computed: {
-    filteredData() {
-      return this.restaurant.filter((item) => {
-        return item.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || item.zip_code == this.searchTerm ;
-      });
-    },
-    paginatedData() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.filteredData.slice(startIndex, endIndex);
-    },
-    totalPages() {
-      return Math.ceil(this.filteredData.length / this.itemsPerPage);
+    pages() {
+      let pages = [];
+      for (let i = 1; i <= this.last_page; i++) {
+        pages.push(i);
+      }
+      return pages;
     },
   },
 };
