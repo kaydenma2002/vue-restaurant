@@ -63,13 +63,14 @@
         find dining
       </h1>
     </div>
-    
+    <div>
+      <video autoplay src="../pexels-cottonbro-6054010.mp4" @ended="handleVideoEnd" />
+      
+    </div>
   </div>
 </template>
 <script>
-
 export default {
- 
   data() {
     return {
       
@@ -79,7 +80,10 @@ export default {
     RegisterforRestaurant() {
       this.$router.push("/get-started");
     },
-    
+    handleVideoEnd() {
+      console.log("Video ended");
+    },
+   
   },
 };
 </script>

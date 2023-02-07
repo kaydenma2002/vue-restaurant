@@ -145,7 +145,63 @@
                   </th>
                   <td class="px-4 py-3">{{ item.city }}</td>
                   <td class="px-4 py-3">{{ item.state }}</td>
-                  <td class="px-4 py-3">{{ item.status }}</td>
+                  <td v-if="(item.status === 'Pending')">
+                    <div
+                      class="
+                        text-white
+                        bg-yellow-500	
+                        hover:bg-yellow-600	
+                        focus:outline-none focus:ring-4 focus:ring-indigo-300
+                        font-medium
+                        rounded-full
+                        text-sm
+                        px-5
+                        py-3
+                        text-center
+                        
+                      "
+                    >
+                      {{ item.status }}
+                    </div>
+                  </td>
+                  <td v-else-if="(item.status ==='Active')">
+                    <div
+                      class="
+                        text-white
+                        bg-green-500	
+                        hover:bg-green-600	
+                        focus:outline-none focus:ring-4 focus:ring-indigo-300
+                        font-medium
+                        rounded-full
+                        text-sm
+                        px-5
+                        py-3
+                        text-center
+                        
+                      "
+                    >
+                      {{ item.status }}
+                    </div>
+                  </td>
+                  <td v-else>
+                    <div
+                      class="
+                        text-white
+                        bg-rose-500	
+                        hover:bg-rose-600	
+                        focus:outline-none focus:ring-4 focus:ring-indigo-300
+                        font-medium
+                        rounded-full
+                        text-sm
+                        px-5
+                        py-3
+                        text-center
+                        
+                      "
+                    >
+                      {{ item.status }}
+                    </div>
+                  </td>
                   <td class="px-4 py-3">{{ item.zip_code }}</td>
                   <td class="px-4 py-3">
                     <button
@@ -338,7 +394,7 @@ export default {
       console.log(this.v$);
       if (!this.v$.$error) {
         // if ANY fail validation
-        HTTP.post("/createReservation", {
+        HTTP.post("/create/demo", {
           name: this.name,
           company: this.company,
           zip_code: this.zip_code,
@@ -417,7 +473,7 @@ export default {
         // Your code to handle the error
       } finally {
         this.loading = false;
-        console.log(1)
+        console.log(1);
       }
     },
   },

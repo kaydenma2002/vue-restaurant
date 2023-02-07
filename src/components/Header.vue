@@ -295,55 +295,46 @@ export default {
           );
           Swal.fire("", "User logged out!", "success").then((res) => {
             this.emitter.emit("logout", true);
+            localStorage.removeItem("jwtToken");
+            this.isLoggedIn = false;
+            this.$router.push("/login");
           });
-          localStorage.removeItem("jwtToken");
-          this.isLoggedIn = false;
-          this.$router.push("/login");
         }
       });
     },
   },
-
+  mounted() {
+    
+  },
   created() {
-    HTTPS.get("cartByUserId")
-      .then((res) => {
-        this.quantity = res.data.length;
-      })
-      .catch((error) => console.log(error));
-
     window.addEventListener("scroll", this.updateScroll);
     this.emitter.on("cartUpdated", (value) => {
-       HTTPS.get("cartByUserId")
+      HTTPS.get("cartByUserId")
         .then((res) => {
           this.quantity = res.data.length;
         })
         .catch((error) => console.log(error));
     });
-    this.emitter.on("removeCart",() => {
+    this.emitter.on("removeCart", () => {
       HTTPS.get("cartByUserId")
-      .then((res) => {
+        .then((res) => {
           this.quantity = res.data.length;
         })
-      .catch((error) => console.log(error));
-    })
+        .catch((error) => console.log(error));
+    });
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
     });
     this.isLoggedIn = !!localStorage.getItem("jwtToken");
-    console.log(this.isLoggedIn);
+
     if (this.isLoggedIn) {
-      axios
-        .get("http://127.0.0.1:8000/api/user", {
-          headers: {
-            Authorization: `Bearer ${localStorageExport("jwtToken")}`,
-          },
-        })
+      HTTPS.get("user")
         .then((res) => {
           this.user.email = res.data.email;
         })
         .catch((error) => {
+          localStorage.removeItem("jwtToken");
           this.$router.push("/login");
-          // localStorage.removeItem("jwtToken");
         });
     }
   },

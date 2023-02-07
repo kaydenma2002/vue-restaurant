@@ -1,20 +1,39 @@
 <template>
-    <section class="h-screen">
-  <div class="px-6 h-full text-gray-800">
-    <div
-      class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6"
-    >
+  <section class="h-screen">
+    <div class="px-6 h-full text-gray-800">
       <div
-        class="grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0"
+        class="
+          flex
+          xl:justify-center
+          lg:justify-between
+          justify-center
+          items-center
+          flex-wrap
+          h-full
+          g-6
+        "
       >
-        <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          class="w-full"
-          alt="Sample image"
-        />
-      </div>
-      <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-        <form @submit.prevent="TraditionalRegister()">
+        <div
+          class="
+            grow-0
+            shrink-1
+            md:shrink-0
+            basis-auto
+            xl:w-6/12
+            lg:w-6/12
+            md:w-9/12
+            mb-12
+            md:mb-0
+          "
+        >
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="w-full"
+            alt="Sample image"
+          />
+        </div>
+        <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+          <form @submit.prevent="TraditionalRegister()">
             <div
               class="flex flex-row items-center justify-center lg:justify-start"
             >
@@ -159,7 +178,7 @@
             <div class="mb-6">
               <input
                 type="text"
-                id="emai"
+                id="email"
                 v-model="email"
                 class="
                   form-control
@@ -184,7 +203,34 @@
                 placeholder="Email address"
               />
             </div>
-
+            <div class="mb-6">
+              <input
+                type="text"
+                id="name"
+                v-model="name"
+                class="
+                  form-control
+                  block
+                  w-full
+                  px-4
+                  py-2
+                  text-xl
+                  font-normal
+                  text-gray-700
+                  bg-white bg-clip-padding
+                  border border-solid border-gray-300
+                  rounded
+                  transition
+                  ease-in-out
+                  m-0
+                  focus:text-gray-700
+                  focus:bg-white
+                  focus:border-blue-600
+                  focus:outline-none
+                "
+                placeholder="Name"
+              />
+            </div>
             <!-- Password input -->
             <div class="mb-6">
               <input
@@ -280,7 +326,7 @@
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Already had an account ?
                 <a
-                  href="#!"
+                  href="Login"
                   class="
                     text-red-600
                     hover:text-red-700
@@ -294,19 +340,22 @@
               </p>
             </div>
           </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </template>
 <script>
 import { HTTP } from "../axios/http-axios";
 import Swal from "sweetalert2";
+import emailjs from "emailjs-com";
+
 export default {
   data() {
     return {
       email: "",
       password: "",
+      name: "",
     };
   },
   methods: {
@@ -314,26 +363,38 @@ export default {
       HTTP.post("/register", {
         email: this.email,
         password: this.password,
+        name: this.name,
+        status: 0
       })
         .then((res) => {
-          
-          console.log(res)
-          Swal.fire("Account created succesfully successfully", "Use your account to login", "success").then(
-            (res) => {
-              this.$router.push("/login");
-            }
-          );
+          emailjs
+            .send("service_lnr3us6", "template_xvqoh6d", {
+              to_name: this.name,
+              reply_to: this.email,
+              
+              message:
+                "Thank you for being a part of us. Here is your link to: ",
+            },'Iom4YE3o-4Fl5HhpZ')
+            .then(
+              Swal.fire(
+                "Email sent!",
+                "Please Open your Email to verify your account",
+                "success"
+              ).then((res) => {
+                this.$router.push("/login");
+              })
+            );
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Username existed",
+            text: error,
             // footer: '<a href="">Why do I have this issue?</a>',
           });
         });
     },
   },
-}
+};
 </script>

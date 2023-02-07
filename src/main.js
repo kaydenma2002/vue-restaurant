@@ -17,11 +17,12 @@ import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* add icons to the library */
-library.add(faCartShopping,faPlus,faMinus)
+library.add(faCartShopping, faPlus, faMinus)
 
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
 import { createPinia } from 'pinia'
+import GoogleSignInPlugin from "vue3-google-signin"
 
 
 
@@ -37,9 +38,11 @@ const router = createRouter({
             path: '/', name: 'Home', component: Home
         },
         {
-            path: '/get-started', name: 'getStarted', component: getStarted
+            path: '/get-started', name: 'getStarted', component: getStarted, meta: { authOnly: true }
         },
-        { path: '/menu', name: 'Menu', component: Menu },
+        {
+            path: '/menu', name: 'Menu', component: Menu, meta: { authOnly: true }
+        },
         { path: '/services', name: 'Services', component: Services },
         { path: '/pricing', name: 'pricing', component: Pricing },
         { path: '/contactus', name: 'ContactUs', component: ContactUs },
@@ -83,8 +86,10 @@ router.beforeEach((to, from, next) => {
 });
 const app = createApp({
     render: () => h(App),
-  });
-app.use(router).use(VueStripeElements).use(pinia)
+});
+app.use(router).use(VueStripeElements).use(pinia).use(GoogleSignInPlugin, {
+    clientId: '923567027490-5duh4vh1qc1nbsshle0cd4hl534u3hqr.apps.googleusercontent.com'
+  })
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.config.globalProperties.emitter = emitter;
