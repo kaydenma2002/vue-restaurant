@@ -22,7 +22,8 @@ library.add(faCartShopping, faPlus, faMinus)
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
 import { createPinia } from 'pinia'
-import GoogleSignInPlugin from "vue3-google-signin"
+import vue3GoogleLogin from 'vue3-google-login'
+import facebookLogin from 'facebook-login-vuejs';
 
 
 
@@ -87,9 +88,9 @@ router.beforeEach((to, from, next) => {
 const app = createApp({
     render: () => h(App),
 });
-app.use(router).use(VueStripeElements).use(pinia).use(GoogleSignInPlugin, {
-    clientId: '923567027490-5duh4vh1qc1nbsshle0cd4hl534u3hqr.apps.googleusercontent.com'
-  })
+app.use(router).use(VueStripeElements).use(pinia).use(vue3GoogleLogin, {
+    clientId: '178409542204-l33r0orgtr7st0blomdqpbv99f7iqr94.apps.googleusercontent.com',
+}).use(facebookLogin)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.config.globalProperties.emitter = emitter;
