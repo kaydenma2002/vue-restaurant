@@ -248,3 +248,13 @@
     </div>
   </footer>
 </template>
+<script>
+export default {
+  props: {
+    showFooter: {
+      type: Boolean,
+      default: true
+    }
+  }
+};
+</script>

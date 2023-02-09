@@ -5,6 +5,7 @@ import Menu from './views/Menu.vue'
 import Services from './views/Services.vue'
 import Pricing from './views/Pricing.vue'
 import ContactUs from './views/ContactUs.vue'
+import Profile from './views/Profile.vue'
 import Login from './views/Login.vue'
 import getStarted from './views/getStarted.vue'
 import SignUp from './views/Signup.vue'
@@ -43,6 +44,9 @@ const router = createRouter({
         },
         {
             path: '/menu', name: 'Menu', component: Menu, meta: { authOnly: true }
+        },
+        {
+            path: '/profile', name: 'Profile', component: Profile, meta: { authOnly: true }
         },
         { path: '/services', name: 'Services', component: Services },
         { path: '/pricing', name: 'pricing', component: Pricing },
@@ -84,6 +88,7 @@ router.beforeEach((to, from, next) => {
     } else {
         next(); // make sure to always call next()!
     }
+    
 });
 const app = createApp({
     render: () => h(App),

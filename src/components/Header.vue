@@ -61,7 +61,10 @@
               pl-3
               pr-4
               rounded
-              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              md:hover:bg-transparent
+              md:border-0
+              md:hover:text-indigo-700
+              md:p-0
               text-gray-700
               md:dark:hover:text-white md:dark:hover:bg-transparent
             "
@@ -80,7 +83,10 @@
               text-gray-700
               rounded
               hover:bg-gray-100
-              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              md:hover:bg-transparent
+              md:border-0
+              md:hover:text-indigo-700
+              md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
               dark:hover:bg-gray-700 dark:hover:text-white
@@ -101,7 +107,10 @@
               text-gray-700
               rounded
               hover:bg-gray-100
-              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              md:hover:bg-transparent
+              md:border-0
+              md:hover:text-indigo-700
+              md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
               dark:hover:bg-gray-700 dark:hover:text-white
@@ -122,7 +131,10 @@
               text-gray-700
               rounded
               hover:bg-gray-100
-              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              md:hover:bg-transparent
+              md:border-0
+              md:hover:text-indigo-700
+              md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
               dark:hover:bg-gray-700 dark:hover:text-white
@@ -143,7 +155,10 @@
               text-gray-700
               rounded
               hover:bg-gray-100
-              md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0
+              md:hover:bg-transparent
+              md:border-0
+              md:hover:text-indigo-700
+              md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
               dark:hover:bg-gray-700 dark:hover:text-white
@@ -215,18 +230,123 @@
         <li>
           <button
             v-if="isLoggedIn"
+            data-popover-target="popover-user-profile"
+            type="button"
+            @click="showProfile"
             class="
-              bg-indigo-600
-              px-4
-              py-2
-              rounded
               text-white
-              hover:bg-indigo-500
+              bg-indigo-700
+              hover:bg-indigo-800
+              focus:ring-4 focus:outline-none focus:ring-indigo-300
+              font-medium
+              rounded-lg
               text-sm
+              px-5
+              py-2.5
+              text-center
+              dark:bg-indigo-600
+              dark:hover:bg-indigo-700
+              dark:focus:ring-indigo-800
             "
           >
             {{ user.email }}
           </button>
+          <div
+            data-popover
+            id="popover-user-profile"
+            role="tooltip"
+            class="
+              absolute
+              z-10
+              invisible
+              inline-block
+              w-64
+              text-sm
+              font-light
+              text-gray-500
+              transition-opacity
+              duration-300
+              bg-white
+              border border-gray-200
+              rounded-lg
+              shadow-sm
+              opacity-0
+              dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600
+            "
+          >
+            <div class="p-3">
+              <div class="flex items-center justify-between mb-2">
+                <a href="#">
+                  <img
+                    class="w-10 h-10 rounded-full"
+                    src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
+                    alt="Jese Leos"
+                  />
+                </a>
+                <div>
+                  <button
+                    @click="showProfile"
+                    type="button"
+                    class="
+                      text-white
+                      bg-indigo-700
+                      hover:bg-indigo-800
+                      focus:ring-4 focus:ring-indigo-300
+                      font-medium
+                      rounded-lg
+                      text-xs
+                      px-3
+                      py-1.5
+                      dark:bg-indigo-600 dark:hover:bg-indigo-700
+                      focus:outline-none
+                      dark:focus:ring-indigo-800
+                    "
+                  >
+                    Edit profile
+                  </button>
+                </div>
+              </div>
+              <p
+                class="
+                  text-base
+                  font-semibold
+                  leading-none
+                  text-gray-900
+                  dark:text-white
+                "
+              >
+                <a href="#">{{ user.name }}</a>
+              </p>
+
+              <p class="mb-4 text-sm font-light">
+                Open-source contributor. Building
+                <a
+                  href="#"
+                  class="text-indigo-600 dark:text-indigo-500 hover:underline"
+                  >flowbite.com</a
+                >.
+              </p>
+              <ul class="flex text-sm font-light">
+                <li class="mr-2">
+                  <a href="#" class="hover:underline">
+                    <span class="font-semibold text-gray-900 dark:text-white"
+                      >799</span
+                    >
+                    <span>Following</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="hover:underline">
+                    <span class="font-semibold text-gray-900 dark:text-white"
+                      >3,758</span
+                    >
+                    <span>Followers</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div data-popper-arrow></div>
+          </div>
           <a
             class="nav-item nav-link"
             v-if="isLoggedIn"
@@ -267,6 +387,9 @@ export default {
     updateScroll() {
       this.scrollPosition = window.scrollY;
     },
+    showProfile() {
+      this.$router.push("/profile");
+    },
 
     RegisterforRestaurant() {
       this.$router.push("/get-started");
@@ -303,9 +426,7 @@ export default {
       });
     },
   },
-  mounted() {
-    
-  },
+  mounted() {},
   created() {
     window.addEventListener("scroll", this.updateScroll);
     this.emitter.on("cartUpdated", (value) => {
@@ -323,14 +444,36 @@ export default {
         .catch((error) => console.log(error));
     });
     this.emitter.on("login", () => {
-      this.isLoggedIn = true;
+      this.isLoggedIn = !!localStorage.getItem("jwtToken");
+      if (this.isLoggedIn) {
+        HTTPS.get("user")
+          .then((res) => {
+            this.user.email = res.data.email;
+            this.user.name = res.data.name;
+            HTTPS.get("cartByUserId")
+              .then((res) => {
+                this.quantity = res.data.length;
+              })
+              .catch((error) => console.log(error));
+          })
+          .catch((error) => {
+            localStorage.removeItem("jwtToken");
+            this.$router.push("/login");
+          });
+      }
     });
     this.isLoggedIn = !!localStorage.getItem("jwtToken");
-
     if (this.isLoggedIn) {
       HTTPS.get("user")
         .then((res) => {
           this.user.email = res.data.email;
+          this.user.name = res.data.name;
+
+          HTTPS.get("cartByUserId")
+            .then((res) => {
+              this.quantity = res.data.length;
+            })
+            .catch((error) => console.log(error));
         })
         .catch((error) => {
           localStorage.removeItem("jwtToken");

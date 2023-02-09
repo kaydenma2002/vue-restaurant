@@ -33,13 +33,21 @@
           />
         </div>
         <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-          <form @submit.stop.prevent="TraditionalLogin()">
+          <form @submit.prevent="submitFormDebounced()">
             <div
               class="flex flex-row items-center justify-center lg:justify-start"
             >
               <GoogleLogin :callback="callback" />
 
-              <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
+              <div
+                class="fb-login-button"
+                data-width=""
+                data-size="large"
+                data-button-type="continue_with"
+                data-layout="default"
+                data-auto-logout-link="false"
+                data-use-continue-as="false"
+              ></div>
 
               <button
                 type="button"
@@ -195,6 +203,7 @@
             <div class="text-center lg:text-left">
               <button
                 type="submit"
+                :disabled="submitting"
                 class="
                   inline-block
                   px-7
@@ -218,7 +227,7 @@
                   ease-in-out
                 "
               >
-                Login
+                {{ submitting ? "Login..." : "Login" }}
               </button>
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Don't have an account?
@@ -243,6 +252,8 @@
   </section>
 </template>
 <script>
+import { debounce } from 'lodash';
+
 import { HTTP } from "../axios/http-axios";
 import Swal from "sweetalert2";
 
@@ -257,40 +268,50 @@ export default {
     return {
       email: "",
       password: "",
+      submitting: false,
     };
   },
 
   methods: {
-    TraditionalLogin: function () {
-      HTTP.post("/login", {
-        email: this.email,
-        password: this.password,
-      })
-        .then((res) => {
-          localStorageImport("jwtToken", res.data.token);
-
-          Swal.fire("Logged In successfully", "Welcome back", "success").then(
-            (res) => {
-              this.emitter.emit("login", true);
-              this.$router.push("/");
-            }
-          );
+    async TraditionalLogin() {
+      this.submitting = true;
+      try {
+        HTTP.post("/login", {
+          email: this.email,
+          password: this.password,
         })
-        .catch((error) => {
-          this.submitting = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error.response.data.message,
+          .then((res) => {
+            console.log(res)
+            localStorageImport("jwtToken", res.data.token);
 
-            // footer: '<a href="">Why do I have this issue?</a>',
+            Swal.fire("Logged In successfully", "Welcome back", "success").then(
+              (res) => {
+                this.emitter.emit("login", true);
+                this.$router.push("/");
+              }
+            );
+          })
+          .catch((error) => {
+            
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.response.data.message,
+
+              // footer: '<a href="">Why do I have this issue?</a>',
+            });
           });
-        });
+      } finally {
+        this.submitting = false;
+      }
     },
     callback: function (response) {
       const userData = decodeCredential(response.credential);
       console.log("Handle the userData", userData);
     },
+    submitFormDebounced: debounce(function(){
+      this.TraditionalLogin();
+    },500),
   },
 };
 </script>
