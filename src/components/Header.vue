@@ -187,7 +187,7 @@
         </li>
         <li>
           <div v-if="isLoggedIn" class="cart-button">
-            <button class="bg-indigo-600" @click="addToCart">
+            <button class="bg-indigo-600" @click="navigateToPayment">
               <font-awesome-icon icon="fa-solid fa-cart-shopping" />
               ({{ quantity }})
             </button>
@@ -389,6 +389,9 @@ export default {
     },
     showProfile() {
       this.$router.push("/profile");
+    },
+    navigateToPayment(){
+      this.$router.push("/pricing");
     },
 
     RegisterforRestaurant() {

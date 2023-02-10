@@ -370,8 +370,8 @@ export default {
           emailjs
             .send("service_lnr3us6", "template_xvqoh6d", {
               to_name: this.name,
+              to_email: this.email,
               reply_to: this.email,
-              
               message:
                 "Thank you for being a part of us. Here is your link to: ",
             },'Iom4YE3o-4Fl5HhpZ')
