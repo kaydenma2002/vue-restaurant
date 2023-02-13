@@ -197,7 +197,7 @@
                   >Remember me</label
                 >
               </div>
-              <a href="/forgot-password" class="text-gray-800">Forgot password?</a>
+              <a href="/forgotpassword" class="text-gray-800">Forgot password?</a>
             </div>
 
             <div class="text-center lg:text-left">
@@ -275,6 +275,7 @@ export default {
   methods: {
     async TraditionalLogin() {
       this.submitting = true;
+      
       try {
         HTTP.post("/login", {
           email: this.email,

@@ -60,7 +60,7 @@ const router = createRouter({
             path: '/SignUp', name: 'Register', component: SignUp, meta: { guestOnly: true }
         },
         {
-            path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword, meta: { guestOnly: true }
+            path: '/forgotpassword', name: 'ForgotPassword', component: ForgotPassword, meta: { guestOnly: true }
         },
     ]
 })
