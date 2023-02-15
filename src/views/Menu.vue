@@ -200,7 +200,7 @@ export default {
     if (this.isLoggedIn) {
       HTTPS.get("/menu").then((res) => {
         this.item = res.data.item;
-        console.log(this.item);
+
       });
     }
   },

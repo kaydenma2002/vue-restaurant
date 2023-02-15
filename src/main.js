@@ -93,7 +93,7 @@ router.beforeEach((to, from, next) => {
     } else {
         next(); // make sure to always call next()!
     }
-    
+
 });
 const app = createApp({
     render: () => h(App),
