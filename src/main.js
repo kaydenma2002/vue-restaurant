@@ -16,17 +16,19 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
-
+import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* add icons to the library */
-library.add(faCartShopping, faPlus, faMinus)
+library.add(faCartShopping, faPlus, faMinus, faComment, faPaperPlane)
 
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
 import { createPinia } from 'pinia'
 import vue3GoogleLogin from 'vue3-google-login'
 import facebookLogin from 'facebook-login-vuejs';
+import Chat from 'vue3-beautiful-chat'
 
 
 
@@ -39,7 +41,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: '/', name: 'Home', component: Home
+            path: '/', name: 'Home', component: Home, meta: { authOnly: true }
         },
         {
             path: '/get-started', name: 'getStarted', component: getStarted, meta: { authOnly: true }
@@ -50,8 +52,8 @@ const router = createRouter({
         {
             path: '/profile', name: 'Profile', component: Profile, meta: { authOnly: true }
         },
-        { path: '/services', name: 'Services', component: Services },
-        { path: '/pricing', name: 'pricing', component: Pricing },
+        { path: '/services', name: 'Services', component: Services, meta: { authOnly: true } },
+        { path: '/pricing', name: 'pricing', component: Pricing, meta: { authOnly: true } },
         { path: '/contactus', name: 'ContactUs', component: ContactUs },
         {
             path: '/login', name: 'Login', component: Login, meta: { guestOnly: true }
@@ -100,7 +102,7 @@ const app = createApp({
 });
 app.use(router).use(VueStripeElements).use(pinia).use(vue3GoogleLogin, {
     clientId: '178409542204-l33r0orgtr7st0blomdqpbv99f7iqr94.apps.googleusercontent.com',
-}).use(facebookLogin)
+}).use(Chat)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.config.globalProperties.emitter = emitter;

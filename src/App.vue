@@ -1,32 +1,36 @@
 <script >
 import Header from "./components/Header.vue";
-
-
-
+import Chat from "./components/Chat.vue";
 import Footer from "./components/Footer.vue";
 export default {
   data() {
     return {
       showFooter: true,
-    };
+    }
   },
+  mounted() {
+    
+  },
+ 
   components: {
     Header,
-
-    
     Footer,
+    Chat
   },
-  
+
 };
 </script>
 <template>
   <div class="container-fluid" style="position: relative; min-height: 100vh">
     <Header />
     <div style="margin-top: 8rem"></div>
-    <router-view></router-view>
+        <Chat v-if="$route.meta.authOnly == true"  />
+        <router-view></router-view>
 
-    <Footer v-if="$route.name !== 'Profile'"  />
+        <Footer v-if="$route.name !== 'Profile'" />
   </div>
 </template>
+
+
 
 
