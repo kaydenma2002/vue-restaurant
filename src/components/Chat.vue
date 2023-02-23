@@ -1,7 +1,7 @@
 <template>
     <div class="max-w-2xl border rounded chat-box overflow-auto flex flex-col chat-popup z-10  max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 "
-        v-if="isOpen" ref="chatBox">
-        <div class="w-full " >
+        v-if="isOpen">
+        <div class="w-full ">
             <div class="sticky top-0 bg-white z-40">
                 <div class="relative flex items-center p-3 border-b border-gray-300">
                     <img class="object-cover w-10 h-10 rounded-full"
@@ -11,9 +11,9 @@
                     </span>
                 </div>
             </div>
-            <div class=" w-full h-96 p-6 overflow-y-auto " ref="scrollToMe">
+            <div class=" w-full h-96 p-6 overflow-y-auto ">
 
-                <ul v-for="message in messages" class="space-y-2">
+                <ul v-for="message in messages" class="space-y-2" ref="scrollToMe">
 
                     <li class="flex justify-end">
                         <div class=" max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow">
@@ -87,7 +87,7 @@ export default {
             message: "",
             echo: null,
             channel: null,
-            user: 1
+            user: ""
         };
     },
     mounted() {
@@ -100,30 +100,31 @@ export default {
         })
         HTTPS.get('/user').then(res => {
             this.user = res.data.id
+
+            this.echo = new Echo({
+                broadcaster: 'pusher',
+                key: "80e26ff66717be8fd4cf",
+                cluster: "mt1",
+                encrypted: true,
+                authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
+                auth: {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                }
+            }),
+
+                this.channel = this.echo.private('user.' + this.user);
+            this.channel.listen('Message', (data) => {
+                this.messages.push(data.chat);
+            });
         })
 
-        this.echo = new Echo({
-            broadcaster: 'pusher',
-            key: "80e26ff66717be8fd4cf",
-            cluster: "mt1",
-            encrypted: true,
-            authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
-            auth: {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-                }
-            }
-        }),
-            this.channel = this.echo.private('user.' + this.user);
-        this.channel.listen('Message', (data) => {
-            this.messages.push(data.chat);
 
-        });
     },
     methods: {
         scrollToElement() {
             const el = this.$refs.scrollToMe;
-
             if (el) {
                 // Use el.scrollIntoView() to instantly scroll to the element
                 el.scrollIntoView({ behavior: 'smooth' });
@@ -134,12 +135,9 @@ export default {
         },
         async submit() {
             HTTPS.post('/messages', { message: this.message }).then(res => {
-
+                console.log((res))
             });
             this.message = '';
-
-
-
         }
     },
 };
