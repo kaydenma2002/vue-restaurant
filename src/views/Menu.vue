@@ -221,6 +221,7 @@ export default {
           const reader = new FileReader();
           reader.onload = (e) => {
             item.image = e.target.result;
+            
           };
           reader.readAsDataURL(file);
         }

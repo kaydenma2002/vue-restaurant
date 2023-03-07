@@ -42,10 +42,10 @@
         <p class="text-lg text-gray-700 dark:text-gray-400">${{ price }}</p>
       </div>
       <div class="ml-auto">
-        <button v-if="enableAddToCart" @click="addToCart(id)">
+        <button v-if="enableAddToCart" @click.prevent="addToCart(id)">
           <font-awesome-icon icon="fa-solid fa-plus" />
         </button>
-        <button v-if="enableRemoveFromCart" @click="RemoveFromCart(id)">
+        <button v-if="enableRemoveFromCart" @click.prevent="RemoveFromCart(id)">
           <font-awesome-icon icon="fa-solid fa-minus" />
         </button>
       </div>
@@ -83,15 +83,26 @@ export default {
     editContent() {
       this.$emit("editContent");
     },
-    addToCart(id) {
+    addToCart(item_id) {
+      console.log(item_id)
       HTTPS.post("/create/cart",{
-        item_id: id
+        item_id: item_id
       }).then(res => {
+        this.emitter.emit("cartUpdated", item_id);
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    RemoveFromCart(id) {
+      
+      HTTPS.post("/removeCartById", {
+        id: id
+      }).then(res => {
+        console.log((res))
         this.emitter.emit("cartUpdated", id);
       }).catch(error => {
         console.log(error)
       })
-      
     },
   },
 };

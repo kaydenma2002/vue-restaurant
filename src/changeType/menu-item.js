@@ -20,7 +20,6 @@ export async function editContent(type) {
         type.name = formValues.name
         type.description = formValues.description
         type.price = formValues.price
-
     }
 
 }
