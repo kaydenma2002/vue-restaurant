@@ -439,7 +439,7 @@ export default {
                       item_id: this.item_id,
                       total: this.countTotal,
                     }).then((res => {
-                      this.emitter.emit("cartUpdated", item_id);
+                      this.emitter.emit("cartUpdated", this.item_id);
                     })))
                   .catch((error) => console.log(error))
               )

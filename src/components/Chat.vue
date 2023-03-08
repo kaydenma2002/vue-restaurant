@@ -104,30 +104,30 @@
             <div class="flex justify-between">
                 <button type="button" @click="submitbyChoices('order')"
                     class="
-                                                                                                                                                                                                                                                                                                bg-indigo-600
-                                                                                                                                                                                                                                                                                                px-2
-                                                                                                                                                                                                                                                                                                py-2
-                                                                                                                                                                                                                                                                                                rounded-lg
-                                                                                                                                                                                                                                                                                                text-white
-                                                                                                                                                                                                                                                                                                hover:bg-indigo-500
-                                                                                                                                                                                                                                                                                                text-sm
-                                                                                                                                                                                                                                                                                                shadow-lg shadow-indigo-500/50
+                                                                                                                                                                                                                                                                                                        bg-indigo-600
+                                                                                                                                                                                                                                                                                                        px-2
+                                                                                                                                                                                                                                                                                                        py-2
+                                                                                                                                                                                                                                                                                                        rounded-lg
+                                                                                                                                                                                                                                                                                                        text-white
+                                                                                                                                                                                                                                                                                                        hover:bg-indigo-500
+                                                                                                                                                                                                                                                                                                        text-sm
+                                                                                                                                                                                                                                                                                                        shadow-lg shadow-indigo-500/50
                         
-                                                                                                                                                                                                                                                                                            ">
+                                                                                                                                                                                                                                                                                                    ">
                     Online Order
                 </button>
                 <button type="button" @click="submitbyChoices('contact')"
                     class="
-                                                                                                                            bg-indigo-600
-                                                                                                                            px-2
-                                                                                                                            py-2
-                                                                                                                            rounded-lg
-                                                                                                                            text-white
-                                                                                                                            hover:bg-indigo-500
-                                                                                                                            text-sm
-                                                                                                                            shadow-lg shadow-indigo-500/50
+                                                                                                                                    bg-indigo-600
+                                                                                                                                    px-2
+                                                                                                                                    py-2
+                                                                                                                                    rounded-lg
+                                                                                                                                    text-white
+                                                                                                                                    hover:bg-indigo-500
+                                                                                                                                    text-sm
+                                                                                                                                    shadow-lg shadow-indigo-500/50
 
-                                                                                                                            ">
+                                                                                                                                    ">
                     Contact Us
                 </button>
                 <button type="button" @click="submitbyChoices('reservation')"
@@ -175,7 +175,7 @@
 
 
     </div>
-    <div class="chat-icon " @click="togglePopup">
+    <div class="chat-icon z-50" @click="togglePopup">
         <button>
             <font-awesome-icon class="fa-2xl" icon="fa-solid fa-comment " />
         </button>
@@ -254,9 +254,7 @@ export default {
 
                 this.channel = this.echo.private('user.' + this.user);
             this.channel.listen('Message', (data) => {
-
                 this.reply.push(data.chat.reply)
-
             });
         })
 
