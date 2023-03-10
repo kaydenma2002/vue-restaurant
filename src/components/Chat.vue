@@ -251,7 +251,6 @@ export default {
                     }
                 }
             }),
-
                 this.channel = this.echo.private('user.' + this.user);
             this.channel.listen('Message', (data) => {
                 this.reply.push(data.chat.reply)
@@ -320,6 +319,8 @@ export default {
                         }).then((res) => {
                             if(res.data.success != false) {
                                 this.verifyPhone = true
+                                this.v$.$reset();
+                                this.verifyPhone = !this.verifyPhone;
                                 Swal.fire('Your reservation has been confirmed', '', 'success').then(
                                     this.phone = null,
                                     this.verify_code = null,
