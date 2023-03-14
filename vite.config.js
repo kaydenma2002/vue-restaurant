@@ -1,6 +1,12 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+const { createServer } = require('vite')
+const { readFileSync } = require('fs')
 
+const sslCertificate = {
+  key: readFileSync('./domain.pem'),
+  cert: readFileSync('./certificate.pem')
+}
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -14,5 +20,8 @@ export default defineConfig({
         }
       }
     })
-  ]
+  ],server: {
+    https: sslCertificate,
+    port: 3000,
+  },
 })

@@ -9,7 +9,7 @@ import Profile from './views/Profile.vue'
 import Login from './views/Login.vue'
 import getStarted from './views/getStarted.vue'
 import SignUp from './views/Signup.vue'
-import ForgotPassword from './views/ForgotPassword.vue'
+import ForgotPassword from './views/forgotPassword.vue'
 
 import { AcademicCapIcon } from "@vue-hero-icons/outline"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
