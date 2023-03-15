@@ -102,8 +102,8 @@
 	}
 }
  .card-item {
-	max-width: 430px;
-	height: 270px;
+	max-width: 40rem;
+	height: 20rem;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;

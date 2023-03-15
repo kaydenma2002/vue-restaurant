@@ -1,5 +1,5 @@
 <template>
-  <div class="card-list">
+  <div class="card-list xl:block lg:hidden md:hidden sm:hidden">
     <div class="card-item" v-bind:class="{ '-active': isCardFlipped }">
       <div class="card-item__side -front">
         <div class="card-item__focus" v-bind:class="{ '-active': focusElementStyle }" v-bind:style="focusElementStyle"

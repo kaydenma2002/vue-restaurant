@@ -244,7 +244,7 @@ export default {
                 key: "80e26ff66717be8fd4cf",
                 cluster: "mt1",
                 encrypted: true,
-                authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
+                authEndpoint: 'https://127.0.0.1/broadcasting/auth',
                 auth: {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')

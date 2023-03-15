@@ -409,7 +409,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios.post(
-            "http://127.0.0.1:8000/api/logout",
+            "https://127.0.0.1/api/logout",
             {
               key: "value",
             },
