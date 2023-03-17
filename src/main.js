@@ -17,11 +17,12 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faRobot } from '@fortawesome/free-solid-svg-icons'
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* add icons to the library */
-library.add(faCartShopping, faPlus, faMinus, faComment, faPaperPlane)
+library.add(faCartShopping, faPlus, faMinus, faComment,faRobot, faPaperPlane)
 
 import { createRouter, createWebHistory } from 'vue-router'
 import VueStripeElements from 'vue-stripe-elements-plus'
