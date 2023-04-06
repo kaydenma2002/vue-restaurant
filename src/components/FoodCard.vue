@@ -8,6 +8,7 @@
       shadow-md
       md:flex-row md:max-w-xl
       hover:bg-gray-100
+      h-full h-auto
     "
   >
     <img
@@ -45,6 +46,7 @@
         <button v-if="enableAddToCart" @click.prevent="addToCart(id)">
           <font-awesome-icon icon="fa-solid fa-plus" />
         </button>
+
         <button v-if="enableRemoveFromCart" @click.prevent="RemoveFromCart(id)">
           <font-awesome-icon icon="fa-solid fa-minus" />
         </button>
@@ -84,11 +86,12 @@ export default {
       this.$emit("editContent");
     },
     addToCart(item_id) {
-      console.log(item_id)
+      
       HTTPS.post("/create/cart",{
         item_id: item_id
       }).then(res => {
-        this.emitter.emit("cartUpdated", item_id);
+        console.log(res)
+        this.emitter.emit("cartUpdated");
       }).catch(error => {
         console.log(error)
       })
@@ -99,7 +102,7 @@ export default {
         id: id
       }).then(res => {
         console.log((res))
-        this.emitter.emit("cartUpdated", id);
+        this.emitter.emit("cartUpdated");
       }).catch(error => {
         console.log(error)
       })

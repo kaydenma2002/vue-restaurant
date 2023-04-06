@@ -5,7 +5,7 @@
   >
     <div class="grid grid-cols-5 overflow-y-auto h-full" ref="chatContainer">
       <div class="overflow-y-auto col-span-2">
-        <ul class="" v-for="user in users" :key="user.id">
+        <ul class="overflow-y-auto" v-for="user in users" :key="user.id">
           <li
             class="hover:bg-gray-100 hover:cursor-pointer py-3 sm:py-4"
             @click.prevent="loadMessage(user.id)"

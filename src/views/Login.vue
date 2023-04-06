@@ -2,29 +2,10 @@
   <section class="h-screen">
     <div class="px-6 h-full text-gray-800">
       <div
-        class="
-          flex
-          xl:justify-center
-          lg:justify-between
-          justify-center
-          items-center
-          flex-wrap
-          h-full
-          g-6
-        "
+        class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6"
       >
         <div
-          class="
-            grow-0
-            shrink-1
-            md:shrink-0
-            basis-auto
-            xl:w-6/12
-            lg:w-6/12
-            md:w-9/12
-            mb-12
-            md:mb-0
-          "
+          class="grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0"
         >
           <img
             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
@@ -112,58 +93,26 @@
                 type="text"
                 id="email"
                 v-model="email"
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-4
-                  py-2
-                  text-xl
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700
-                  focus:bg-white
-                  focus:border-blue-600
-                  focus:outline-none
-                "
+                class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 placeholder="Email address"
               />
+              <span v-if="v$.email.$error">
+                {{ v$.email.$errors[0].$message }}
+              </span>
             </div>
 
             <!-- Password input -->
             <div class="mb-6">
               <input
                 type="password"
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-4
-                  py-2
-                  text-xl
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700
-                  focus:bg-white
-                  focus:border-blue-600
-                  focus:outline-none
-                "
+                class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="password"
                 placeholder="Password"
                 v-model="password"
               />
+              <span v-if="v$.password.$error">
+                {{ v$.password.$errors[0].$message }}
+              </span>
             </div>
 
             <!-- <div class="flex justify-between items-center mb-6">
@@ -204,28 +153,7 @@
               <button
                 type="submit"
                 :disabled="submitting"
-                class="
-                  inline-block
-                  px-7
-                  py-3
-                  bg-blue-600
-                  text-white
-                  font-medium
-                  text-sm
-                  leading-snug
-                  uppercase
-                  rounded
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700
-                  focus:shadow-lg
-                  focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition
-                  duration-150
-                  ease-in-out
-                "
+                class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
               >
                 {{ submitting ? "Login..." : "Login" }}
               </button>
@@ -233,14 +161,7 @@
                 Don't have an account?
                 <a
                   href="/SignUp"
-                  class="
-                    text-red-600
-                    hover:text-red-700
-                    focus:text-red-700
-                    transition
-                    duration-200
-                    ease-in-out
-                  "
+                  class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                   >Register</a
                 >
               </p>
@@ -252,8 +173,10 @@
   </section>
 </template>
 <script>
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
+import useValidate from "@vuelidate/core";
 
+import { required, email, minLength, maxLength } from "@vuelidate/validators";
 import { HTTP } from "../axios/http-axios";
 import Swal from "sweetalert2";
 
@@ -266,53 +189,63 @@ import { decodeCredential } from "vue3-google-login";
 export default {
   data() {
     return {
+      v$: useValidate(),
       email: "",
       password: "",
       submitting: false,
     };
   },
+  validations() {
+    return {
+      email: { required, minLengthValue: minLength(8), email },
+      password: { required, minLengthValue: minLength(8) },
+    };
+  },
 
   methods: {
     async TraditionalLogin() {
-      this.submitting = true;
-      
-      try {
-        HTTP.post("/login", {
-          email: this.email,
-          password: this.password,
-        })
-          .then((res) => {
-            console.log(res)
-            localStorageImport("jwtToken", res.data.token);
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        this.submitting = true;
+        try {
+          HTTP.post("/login", {
+            email: this.email,
+            password: this.password,
+          })
+            .then((res) => {
+              console.log(res);
+              localStorageImport("jwtToken", res.data.token);
 
-            Swal.fire("Logged In successfully", "Welcome back", "success").then(
-              (res) => {
+              Swal.fire(
+                "Logged In successfully",
+                "Welcome back",
+                "success"
+              ).then((res) => {
                 this.emitter.emit("login", true);
                 this.$router.push("/");
-              }
-            );
-          })
-          .catch((error) => {
-            
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: error.response.data.message,
+              });
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.response.data.message,
 
-              // footer: '<a href="">Why do I have this issue?</a>',
+                // footer: '<a href="">Why do I have this issue?</a>',
+              });
             });
-          });
-      } finally {
-        this.submitting = false;
+        } finally {
+          this.submitting = false;
+        }
       }
     },
     callback: function (response) {
       const userData = decodeCredential(response.credential);
       console.log("Handle the userData", userData);
     },
-    submitFormDebounced: debounce(function(){
+    submitFormDebounced: debounce(function () {
       this.TraditionalLogin();
-    },500),
+    }, 500),
   },
 };
 </script>

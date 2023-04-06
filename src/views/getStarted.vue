@@ -15,72 +15,53 @@
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
       <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         <!-- Start coding here -->
-        <div class="
-            bg-white
-            dark:bg-gray-800
-            relative
-            shadow-md
-            sm:rounded-lg
-            overflow-hidden
-          ">
-          <div class="
-              flex flex-col
-              md:flex-row
-              items-center
-              justify-between
-              space-y-3
-              md:space-y-0 md:space-x-4
-              p-4
-            ">
+        <div
+          class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
+        >
+          <div
+            class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
+          >
             <div class="w-full md:w-1/2">
               <form class="flex items-center">
                 <label for="simple-search" class="sr-only">Search</label>
                 <div class="relative w-full">
-                  <div class="
-                      absolute
-                      inset-y-0
-                      left-0
-                      flex
-                      items-center
-                      pl-3
-                      pointer-events-none
-                    ">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                      viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd"
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="currentColor"
+                      viewbox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd" />
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </div>
-                  <input type="text" v-model="searchTerm" @input="search" id="simple-search" class="
-                      bg-gray-50
-                      border border-gray-300
-                      text-gray-900 text-sm
-                      rounded-lg
-                      focus:ring-primary-500 focus:border-primary-500
-                      block
-                      w-full
-                      pl-10
-                      p-2
-                      dark:bg-gray-700
-                      dark:border-gray-600
-                      dark:placeholder-gray-400
-                      dark:text-white
-                      dark:focus:ring-primary-500
-                      dark:focus:border-primary-500
-                    " placeholder="Search" required="" />
+                  <input
+                    type="text"
+                    v-model="searchTerm"
+                    @input="search"
+                    id="simple-search"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Search"
+                    required=""
+                  />
                 </div>
               </form>
             </div>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead class="
-                                          text-xs text-gray-700
-                                          uppercase
-                                          bg-gray-50
-                                          dark:bg-gray-700 dark:text-gray-400
-                                        ">
+            <table
+              class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            >
+              <thead
+                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
                 <tr>
                   <th scope="col" class="px-4 py-3">Name</th>
                   <th scope="col" class="px-4 py-3">City</th>
@@ -93,186 +74,109 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in restaurant" :key="index" class="
-                                            cursor-pointer
-                                            border-b
-                                            dark:border-gray-600
-                                            hover:bg-gray-100
-                                            dark:hover:bg-gray-700
-                                          " @click="claimRestaurant(item.id)">
-                  <th scope="row" class="
-                                              px-4
-                                              py-3
-                                              font-medium
-                                              text-gray-900
-                                              whitespace-nowrap
-                                              dark:text-white
-                                            ">
+                <tr
+                  v-for="(item, index) in restaurant"
+                  :key="index"
+                  class="cursor-pointer border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  @click="claimRestaurant(item.restaurant_id)"
+                >
+                  <th
+                    scope="row"
+                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
                     {{ item.name }};
                   </th>
                   <td class="px-4 py-3">{{ item.city }}</td>
                   <td class="px-4 py-3">{{ item.state }}</td>
-                  <td v-if="(item.status === 'Pending')">
-                    <div class="
-                                                text-white
-                                                bg-yellow-500	
-                                                hover:bg-yellow-600	
-                                                focus:outline-none focus:ring-4 focus:ring-indigo-300
-                                                font-medium
-                                                rounded-full
-                                                text-sm
-                                                px-5
-                                                py-3
-                                                text-center
-                                                
-                                              ">
+                  <td v-if="item.status === 'Pending'">
+                    <div
+                      class="text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                    >
                       {{ item.status }}
                     </div>
                   </td>
-                  <td v-else-if="(item.status === 'Active')">
-                    <div class="
-                                                text-white
-                                                bg-green-500	
-                                                hover:bg-green-600	
-                                                focus:outline-none focus:ring-4 focus:ring-indigo-300
-                                                font-medium
-                                                rounded-full
-                                                text-sm
-                                                px-5
-                                                py-3
-                                                text-center
-                                                
-                                              ">
+                  <td v-else-if="item.status === 'Active'">
+                    <div
+                      class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                    >
                       {{ item.status }}
                     </div>
                   </td>
                   <td v-else>
-                    <div class="
-                                                text-white
-                                                bg-rose-500	
-                                                hover:bg-rose-600	
-                                                focus:outline-none focus:ring-4 focus:ring-indigo-300
-                                                font-medium
-                                                rounded-full
-                                                text-sm
-                                                px-5
-                                                py-3
-                                                text-center
-                                                
-                                              ">
+                    <div
+                      class="text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                    >
                       {{ item.status }}
                     </div>
                   </td>
                   <td class="px-4 py-3">{{ item.zip_code }}</td>
                   <td class="px-4 py-3">
-                    <button type="button" class="
-                                                text-white
-                                                bg-indigo-700
-                                                hover:bg-indigo-800
-                                                focus:outline-none focus:ring-4 focus:ring-indigo-300
-                                                font-medium
-                                                rounded-full
-                                                text-sm
-                                                px-5
-                                                py-2.5
-                                                text-center
-                                                dark:bg-indigo-600
-                                                dark:hover:bg-indigo-700
-                                                dark:focus:ring-indigo-800
-                                              ">
+                    <button
+                      type="button"
+                      class="text-white bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+                    >
                       Claim Your Restaurant
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            </div>
-            <nav class="
-                                      flex flex-col
-                                      md:flex-row
-                                      justify-between
-                                      items-start
-                                      md:items-center
-                                      space-y-3
-                                      md:space-y-0
-                                      p-4
-                                    " aria-label="Table navigation">
-              <ul class="flex pagination">
-                <li class="page-item" :class="{ disabled: current_page === 1 }">
-                  <button class="
-                                            flex
-                                            items-center
-                                            justify-center
-                                            h-full
-                                            py-1.5
-                                            px-3
-                                            leading-tight
-                                            text-gray-500
-                                            bg-white
-                                            rounded-l-lg
-                                            border border-gray-300
-                                            hover:bg-gray-100 hover:text-gray-700
-                                            dark:bg-gray-800
-                                            dark:border-gray-700
-                                            dark:text-gray-400
-                                            dark:hover:bg-gray-700
-                                            dark:hover:text-white
-                                          " :disabled="loading" @click="fetchRestaurants(current_page - 1)">
-                    <span class="sr-only">Previous</span>
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </button>
-                </li>
-                <li>
-                  <span class="
-                                            flex
-                                            items-center
-                                            justify-center
-                                            text-sm
-                                            py-2
-                                            px-3
-                                            leading-tight
-                                            text-gray-500
-                                            bg-white
-                                            border border-gray-300
-                                            hover:bg-gray-100 hover:text-gray-700
-                                            dark:bg-gray-800
-                                            dark:border-gray-700
-                                            dark:text-gray-400
-                                            dark:hover:bg-gray-700
-                                            dark:hover:text-white
-                                          ">{{ current_page }} / {{ last_page }}</span>
-                </li>
-                <li class="page-item" :class="{ disabled: current_page === last_page }">
-                  <button class="
-                                            flex
-                                            items-center
-                                            justify-center
-                                            h-full
-                                            py-1.5
-                                            px-3
-                                            leading-tight
-                                            text-gray-500
-                                            bg-white
-                                            rounded-r-lg
-                                            border border-gray-300
-                                            hover:bg-gray-100 hover:text-gray-700
-                                            dark:bg-gray-800
-                                            dark:border-gray-700
-                                            dark:text-gray-400
-                                            dark:hover:bg-gray-700
-                                            dark:hover:text-white
-                                          " :disabled="loading" @click="fetchRestaurants(current_page + 1)">
-                    <span class="sr-only">Next</span>
-                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd"
+          </div>
+          <nav
+            class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+            aria-label="Table navigation"
+          >
+            <ul class="flex pagination">
+              <li class="page-item" :class="{ disabled: current_page === 1 }">
+                <button
+                  class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  :disabled="loading"
+                  @click="fetchRestaurants(current_page - 1)"
+                >
+                  <span class="sr-only">Previous</span>
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewbox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <span
+                  class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >{{ current_page }} / {{ last_page }}</span
+                >
+              </li>
+              <li
+                class="page-item"
+                :class="{ disabled: current_page === last_page }"
+              >
+                <button
+                  class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  :disabled="loading"
+                  @click="fetchRestaurants(current_page + 1)"
+                >
+                  <span class="sr-only">Next</span>
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewbox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
                       d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd" />
+                      clip-rule="evenodd"
+                    />
                   </svg>
                 </button>
               </li>
@@ -316,12 +220,13 @@ export default {
     };
   },
   methods: {
-    submitReservation() {
+    submitReservation(id) {
       this.v$.$validate(); // checks all
       console.log(this.v$);
       if (!this.v$.$error) {
         // if ANY fail validation
-        HTTP.post("/create/demo", {
+        HTTPS.post("/create/demo", {
+          restaurant_id: id,
           name: this.name,
           company: this.company,
           zip_code: this.zip_code,
@@ -346,7 +251,7 @@ export default {
           });
       }
     },
-    async claimRestaurant($id) {
+    async claimRestaurant(id) {
       Swal.fire({
         title: "Enter multiple values",
         html:
@@ -373,7 +278,7 @@ export default {
           this.phone = inputValues[2];
           this.zip_code = inputValues[3];
           this.company = inputValues[4];
-          this.submitReservation();
+          this.submitReservation(id);
         }
       });
     },

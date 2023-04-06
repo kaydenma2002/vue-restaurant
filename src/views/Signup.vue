@@ -2,29 +2,10 @@
   <section class="h-screen">
     <div class="px-6 h-full text-gray-800">
       <div
-        class="
-          flex
-          xl:justify-center
-          lg:justify-between
-          justify-center
-          items-center
-          flex-wrap
-          h-full
-          g-6
-        "
+        class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6"
       >
         <div
-          class="
-            grow-0
-            shrink-1
-            md:shrink-0
-            basis-auto
-            xl:w-6/12
-            lg:w-6/12
-            md:w-9/12
-            mb-12
-            md:mb-0
-          "
+          class="grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0"
         >
           <img
             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
@@ -39,28 +20,7 @@
             >
               <p class="text-lg mb-0 mr-4">Sign in with</p>
               <button
-                class="
-                  inline-block
-                  p-3
-                  bg-blue-600
-                  text-white
-                  font-medium
-                  text-xs
-                  leading-tight
-                  uppercase
-                  rounded-full
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700
-                  focus:shadow-lg
-                  focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition
-                  duration-150
-                  ease-in-out
-                  mx-1
-                "
+                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Facebook -->
                 <svg
@@ -80,28 +40,7 @@
                 type="button"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                class="
-                  inline-block
-                  p-3
-                  bg-blue-600
-                  text-white
-                  font-medium
-                  text-xs
-                  leading-tight
-                  uppercase
-                  rounded-full
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700
-                  focus:shadow-lg
-                  focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition
-                  duration-150
-                  ease-in-out
-                  mx-1
-                "
+                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Twitter -->
                 <svg
@@ -121,28 +60,7 @@
                 type="button"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                class="
-                  inline-block
-                  p-3
-                  bg-blue-600
-                  text-white
-                  font-medium
-                  text-xs
-                  leading-tight
-                  uppercase
-                  rounded-full
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700
-                  focus:shadow-lg
-                  focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition
-                  duration-150
-                  ease-in-out
-                  mx-1
-                "
+                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Linkedin -->
                 <svg
@@ -160,101 +78,91 @@
             </div>
 
             <div
-              class="
-                flex
-                items-center
-                my-4
-                before:flex-1
-                before:border-t
-                before:border-gray-300
-                before:mt-0.5
-                after:flex-1 after:border-t after:border-gray-300 after:mt-0.5
-              "
+              class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5"
             >
               <p class="text-center font-semibold mx-4 mb-0">Or</p>
             </div>
 
             <!-- Email input -->
-            <div class="mb-6">
-              <input
-                type="text"
-                id="email"
-                v-model="email"
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-4
-                  py-2
-                  text-xl
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700
-                  focus:bg-white
-                  focus:border-blue-600
-                  focus:outline-none
-                "
-                placeholder="Email address"
-              />
-            </div>
-            <div class="mb-6">
-              <input
-                type="text"
-                id="name"
-                v-model="name"
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-4
-                  py-2
-                  text-xl
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700
-                  focus:bg-white
-                  focus:border-blue-600
-                  focus:outline-none
-                "
-                placeholder="Name"
-              />
+            <div class="grid grid-cols-3 gap-1">
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="email"
+                  v-model="email"
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Email address"
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="name"
+                  v-model="name"
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Name"
+                />
+              </div>
+              <div class="mb-6 relative">
+                <form @submit.prevent="verifyPhoneNumber">
+                  <input
+                    type="number"
+                    v-model="phone"
+                    :disabled="verifyPhone"
+                    class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    placeholder="Mobile number"
+                  />
+                  <button
+                    v-if="!verifyPhone"
+                    class="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Verify
+                  </button>
+                </form>
+                <input
+                  v-if="verifyPhone"
+                  type="number"
+                  v-model="verify_code"
+                  id="helper-text"
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Enter your verify code send to the number above"
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="street"
+                  v-model="street"
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Street"
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="city"
+                  v-model="city"
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="City"
+                />
+              </div>
+
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="zip_code"
+                  v-model="zip_code"
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  placeholder="Zip code"
+                />
+              </div>
             </div>
             <!-- Password input -->
             <div class="mb-6">
               <input
                 type="password"
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-4
-                  py-2
-                  text-xl
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700
-                  focus:bg-white
-                  focus:border-blue-600
-                  focus:outline-none
-                "
+                class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 id="password"
                 placeholder="Password"
                 v-model="password"
@@ -265,25 +173,7 @@
               <div class="form-group form-check">
                 <input
                   type="checkbox"
-                  class="
-                    form-check-input
-                    appearance-none
-                    h-4
-                    w-4
-                    border border-gray-300
-                    rounded-sm
-                    bg-white
-                    checked:bg-blue-600 checked:border-blue-600
-                    focus:outline-none
-                    transition
-                    duration-200
-                    mt-1
-                    align-top
-                    bg-no-repeat bg-center bg-contain
-                    float-left
-                    mr-2
-                    cursor-pointer
-                  "
+                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                   id="exampleCheck2"
                 />
                 <label
@@ -292,34 +182,15 @@
                   >Remember me</label
                 >
               </div>
-              <a href="/ForgotPassword" class="text-gray-800">Forgot password?</a>
+              <a href="/ForgotPassword" class="text-gray-800"
+                >Forgot password?</a
+              >
             </div>
 
             <div class="text-center lg:text-left">
               <button
                 type="submit"
-                class="
-                  inline-block
-                  px-7
-                  py-3
-                  bg-blue-600
-                  text-white
-                  font-medium
-                  text-sm
-                  leading-snug
-                  uppercase
-                  rounded
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700
-                  focus:shadow-lg
-                  focus:outline-none
-                  focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition
-                  duration-150
-                  ease-in-out
-                "
+                class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
               >
                 Sign up
               </button>
@@ -327,14 +198,7 @@
                 Already had an account ?
                 <a
                   href="Login"
-                  class="
-                    text-red-600
-                    hover:text-red-700
-                    focus:text-red-700
-                    transition
-                    duration-200
-                    ease-in-out
-                  "
+                  class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                   >Login</a
                 >
               </p>
@@ -347,34 +211,77 @@
 </template>
 <script>
 import { HTTP } from "../axios/http-axios";
+import useValidate from "@vuelidate/core";
+import { required, maxLength, minLength, email } from "@vuelidate/validators";
+
 import Swal from "sweetalert2";
 import emailjs from "emailjs-com";
 
 export default {
   data() {
     return {
+      v$: useValidate(),
       email: "",
       password: "",
       name: "",
+      street: "",
+      city: "",
+      zip_code: "",
+      phone: null,
+      verifyPhone: false,
+    };
+  },
+  validations() {
+    return {
+      email: { required, minLengthValue: minLength(8), email },
+      name: { required },
+      password: { required, minLengthValue: minLength(8) },
+      street: { required },
+      city: { required },
+      zip_code: { required },
+      phone: { required },
     };
   },
   methods: {
+    verifyPhoneNumber: function () {
+      this.v$.phone.$touch();
+      if (!this.v$.phone.$invalid) {
+        this.verifyPhone = true;
+        HTTP.post("/verify-mobile", {
+          phone: this.phone,
+          verify_code: this.verify_code,
+        }).then((res) => {
+          console.log(res);
+        });
+      } else {
+        this.phone_error = true;
+      }
+    },
     TraditionalRegister: function () {
       HTTP.post("/register", {
         email: this.email,
         password: this.password,
+        phone: this.phone,
         name: this.name,
-        status: 0
+        street: this.street,
+        city: this.city,
+        zip_code: this.zip_code,
+        status: 0,
       })
         .then((res) => {
           emailjs
-            .send("service_lnr3us6", "template_xvqoh6d", {
-              to_name: this.name,
-              to_email: this.email,
-              reply_to: this.email,
-              message:
-                "Thank you for being a part of us. Here is your link to: ",
-            },'Iom4YE3o-4Fl5HhpZ')
+            .send(
+              "service_lnr3us6",
+              "template_xvqoh6d",
+              {
+                to_name: this.name,
+                to_email: this.email,
+                reply_to: this.email,
+                message:
+                  "Thank you for being a part of us. Here is your link to: ",
+              },
+              "Iom4YE3o-4Fl5HhpZ"
+            )
             .then(
               Swal.fire(
                 "Email sent!",

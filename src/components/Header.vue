@@ -456,7 +456,7 @@ export default {
   mounted() {},
   created() {
     window.addEventListener("scroll", this.updateScroll);
-    this.emitter.on("cartUpdated", (value) => {
+    this.emitter.on("cartUpdated", () => {
       HTTPS.get("cartByUserId")
         .then((res) => {
           this.quantity = res.data.length;

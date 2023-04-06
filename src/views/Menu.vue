@@ -1,172 +1,30 @@
 <template>
   <div class="container mx-auto">
-    <div class="row menu">
+    <div v-for="(category, index) in categories" :key="index" class="row menu">
       <div
-        class="
-          mt-5
-          underline underline-offset-3
-          text-center
-          mb-4
-          text-4xl
-          font-extrabold
-          leading-none
-          tracking-tight
-          md:text-4xl
-          lg:text-5xl
-          animate-bounce
-        "
+        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl animate-bounce"
+        v-if="items.some(item => item.category === category)"
       >
-        Main Dishes
+        {{ category }}
       </div>
       <div
-        class="
-          xl:w-auto
-          sm:w-auto
-          lg:w-auto
-          md:w-auto
-          w-auto
-          m-auto
-          h-auto
-          mt-5
-          grid grid-cols-2
-          xl:grid-cols-3
-          lg:grid-cols-2
-          md:grid-cols-2
-          sm:grid-cols-2
-          gap-4
-          mb-10
-        "
+        class="xl:w-auto sm:w-auto lg:w-auto md:w-auto w-auto m-auto h-auto mt-5 grid grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 mb-10"
       >
         <div
-          v-for="(item, index) in MainDish"
+          v-for="(item, index) in filteredItems(category)"
           :key="index"
           class="box-content ..."
+          
         >
-          <div class="overlay">
-            <FoodCard
-              ref="MainDish"
-              @editContent="editContent(item)"
-              @imageOnClick="ChooseImage(item)"
-              :id="item.id"
-              :name="item.name"
-              :description="item.description"
-              :price="item.price"
-              :image="item.image"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row menu">
-      <div
-        class="
-          mt-5
-          underline underline-offset-3
-          text-center
-          mb-4
-          text-4xl
-          font-extrabold
-          leading-none
-          tracking-tight
-          md:text-4xl
-          lg:text-5xl
-          animate-bounce
-        "
-      >
-        Side Order
-      </div>
-      <div
-        class="
-          xl:w-auto
-          sm:w-auto
-          lg:w-auto
-          md:w-auto
-          w-auto
-          m-auto
-          h-auto
-          mt-5
-          grid grid-cols-2
-          xl:grid-cols-3
-          lg:grid-cols-2
-          md:grid-cols-2
-          sm:grid-cols-2
-          gap-4
-          mb-10
-        "
-      >
-        <div
-          v-for="(item, index) in SideOrder"
-          :key="index"
-          ref="sideOrder"
-          class="box-content ..."
-        >
-          <div class="overlay">
+          <div class="overlay h-full h-auto" >
             <FoodCard
               @editContent="editContent(item)"
               @imageOnClick="ChooseImage(item)"
               :id="item.id"
-              :name="item.name"
+              :name="item.title"
               :description="item.description"
               :price="item.price"
               :image="item.image"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row menu">
-      <div
-        class="
-          mt-5
-          underline underline-offset-3
-          text-center
-          mb-4
-          text-4xl
-          font-extrabold
-          leading-none
-          tracking-tight
-          md:text-4xl
-          lg:text-5xl
-          animate-bounce
-        "
-      >
-        Drinks
-      </div>
-      <div
-        class="
-          xl:w-auto
-          sm:w-auto
-          lg:w-auto
-          md:w-auto
-          w-auto
-          m-auto
-          h-auto
-          mt-5
-          grid grid-cols-2
-          xl:grid-cols-3
-          lg:grid-cols-2
-          md:grid-cols-2
-          sm:grid-cols-2
-          gap-4
-          mb-10
-        "
-      >
-        <div
-          v-for="(item, index) in Drink"
-          :key="index"
-          class="box-content ..."
-        >
-          <div class="overlay">
-            <FoodCard
-              @editContent="editContent(item)"
-              @imageOnClick="ChooseImage(item)"
-              :id="item.id"
-              :name="item.name"
-              :description="item.description"
-              :price="item.price"
-              :image="item.image"
-              :enableAddToCart="true"
-              :enableRemoveFromCart="false"
             />
           </div>
         </div>
@@ -187,20 +45,23 @@ export default {
   components: { FoodCard },
   data() {
     return {
-      item: String,
+      items: String,
+      categories: [],
     };
   },
   created() {
     this.emitter.on("login", () => {
       this.isLoggedIn = true;
-      
     });
     this.isLoggedIn = !!localStorageExport("jwtToken");
     console.log(this.isLoggedIn);
     if (this.isLoggedIn) {
       HTTPS.get("/menu").then((res) => {
-        this.item = res.data.item;
-
+        this.items = res.data;
+        for (var i = 0; i < this.items.length; i++) {
+          this.categories.push(this.items[i].category);
+        }
+        this.categories = [...new Set(this.categories)];
       });
     }
   },
@@ -221,25 +82,17 @@ export default {
           const reader = new FileReader();
           reader.onload = (e) => {
             item.image = e.target.result;
-            
           };
           reader.readAsDataURL(file);
         }
       })();
     },
     editContent,
-    
   },
   computed: {
-    MainDish: function () {
-      return Object.values(this.item).filter((i) => i.food_type == 0);
-    },
-    SideOrder: function () {
-      return Object.values(this.item).filter((i) => i.food_type == 1);
-    },
-    Drink: function () {
-      return Object.values(this.item).filter((i) => i.food_type == 2);
-    },
+    filteredItems() {
+    return (category) => this.items.filter(item => item.category == category);
+  }
   },
 };
 </script>
