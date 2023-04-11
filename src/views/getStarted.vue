@@ -63,6 +63,7 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <tr>
+                  <th scope="col" class="px-4 py-3">id</th>
                   <th scope="col" class="px-4 py-3">Name</th>
                   <th scope="col" class="px-4 py-3">City</th>
                   <th scope="col" class="px-4 py-3">State</th>
@@ -80,11 +81,17 @@
                   class="cursor-pointer border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                   @click="claimRestaurant(item.restaurant_id)"
                 >
+                <th
+                    scope="row"
+                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {{ item.id }}
+                  </th>
                   <th
                     scope="row"
                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {{ item.name }};
+                    {{ item.name }}
                   </th>
                   <td class="px-4 py-3">{{ item.city }}</td>
                   <td class="px-4 py-3">{{ item.state }}</td>

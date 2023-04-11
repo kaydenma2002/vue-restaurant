@@ -93,7 +93,11 @@
                   class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Email address"
                 />
+                <div v-for="error of v$.email.$errors" :key="error">
+                <p>{{ error.$message }}</p>
               </div>
+              </div>
+              
               <div class="mb-6">
                 <input
                   type="text"
@@ -102,23 +106,33 @@
                   class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Name"
                 />
+                <div v-for="error of v$.name.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
               </div>
               <div class="mb-6 relative">
                 <form @submit.prevent="verifyPhoneNumber">
-                  <input
-                    type="number"
-                    v-model="phone"
-                    :disabled="verifyPhone"
-                    class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder="Mobile number"
-                  />
-                  <button
-                    v-if="!verifyPhone"
-                    class="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Verify
-                  </button>
+                  <div class="flex">
+                    <input
+                      type="number"
+                      v-model="phone"
+                      :disabled="verifyPhone"
+                      class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      placeholder="Mobile number"
+                    />
+
+                    <button
+                      v-if="!verifyPhone"
+                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Verify
+                    </button>
+                  </div>
+                  <div v-for="error of v$.phone.$errors" :key="error">
+                    <p>{{ error.$message }}</p>
+                  </div>
                 </form>
+
                 <input
                   v-if="verifyPhone"
                   type="number"
@@ -128,6 +142,9 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter your verify code send to the number above"
                 />
+                <div v-for="error of v$.verify_code.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
               </div>
               <div class="mb-6">
                 <input
@@ -138,6 +155,9 @@
                   placeholder="Street"
                 />
               </div>
+              <div v-for="error of v$.street.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
               <div class="mb-6">
                 <input
                   type="text"
@@ -146,6 +166,9 @@
                   class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="City"
                 />
+                <div v-for="error of v$.city.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
               </div>
 
               <div class="mb-6">
@@ -156,6 +179,9 @@
                   class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Zip code"
                 />
+                <div v-for="error of v$.zip_code.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
               </div>
             </div>
             <!-- Password input -->
@@ -167,6 +193,9 @@
                 placeholder="Password"
                 v-model="password"
               />
+              <div v-for="error of v$.zip_code.$errors" :key="error">
+                <p>{{ error.$message }}</p>
+              </div>
             </div>
 
             <div class="flex justify-between items-center mb-6">
@@ -189,7 +218,9 @@
 
             <div class="text-center lg:text-left">
               <button
+                :disabled="!verifyPhone"
                 type="submit"
+                :class="{ 'cursor-not-allowed': !verifyPhone }"
                 class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
               >
                 Sign up
@@ -228,6 +259,7 @@ export default {
       city: "",
       zip_code: "",
       phone: null,
+      verify_code: "",
       verifyPhone: false,
     };
   },
@@ -240,6 +272,7 @@ export default {
       city: { required },
       zip_code: { required },
       phone: { required },
+      verify_code: { required}
     };
   },
   methods: {
@@ -247,7 +280,7 @@ export default {
       this.v$.phone.$touch();
       if (!this.v$.phone.$invalid) {
         this.verifyPhone = true;
-        HTTP.post("/verify-mobile", {
+        HTTP.post("/verify-mobile-register", {
           phone: this.phone,
           verify_code: this.verify_code,
         }).then((res) => {
@@ -258,49 +291,62 @@ export default {
       }
     },
     TraditionalRegister: function () {
-      HTTP.post("/register", {
-        email: this.email,
-        password: this.password,
-        phone: this.phone,
-        name: this.name,
-        street: this.street,
-        city: this.city,
-        zip_code: this.zip_code,
-        status: 0,
-      })
-        .then((res) => {
-          emailjs
-            .send(
-              "service_lnr3us6",
-              "template_xvqoh6d",
-              {
-                to_name: this.name,
-                to_email: this.email,
-                reply_to: this.email,
-                message:
-                  "Thank you for being a part of us. Here is your link to: ",
-              },
-              "Iom4YE3o-4Fl5HhpZ"
-            )
-            .then(
-              Swal.fire(
-                "Email sent!",
-                "Please Open your Email to verify your account",
-                "success"
-              ).then((res) => {
-                this.$router.push("/login");
-              })
-            );
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        HTTP.post("/register", {
+          email: this.email,
+          password: this.password,
+          phone: this.phone,
+          name: this.name,
+          street: this.street,
+          city: this.city,
+          zip_code: this.zip_code,
+          verify_code: this.verify_code,
+          status: 0,
         })
-        .catch((error) => {
-          console.log(error);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error,
-            // footer: '<a href="">Why do I have this issue?</a>',
+          .then((res) => {
+            if(res.data.success != false){
+              emailjs
+              .send(
+                "service_lnr3us6",
+                "template_xvqoh6d",
+                {
+                  to_name: this.name,
+                  to_email: this.email,
+                  reply_to: this.email,
+                  message:
+                    "Thank you for being a part of us. Here is your link to: ",
+                },
+                "Iom4YE3o-4Fl5HhpZ"
+              )
+              .then(
+                Swal.fire(
+                  "Email sent!",
+                  "Please Open your Email to verify your account",
+                  "success"
+                ).then((res) => {
+                  this.$router.push("/login");
+                })
+              );
+            }else{
+              Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: res.data.message,
+              // footer: '<a href="">Why do I have this issue?</a>',
+            });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.response.data.message,
+              // footer: '<a href="">Why do I have this issue?</a>',
+            });
           });
-        });
+      }
     },
   },
 };

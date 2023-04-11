@@ -43,6 +43,7 @@
               </div>
               <button
                 type="submit"
+                :disabled="submitting"
                 class="focus:outline-none text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-900"
               >
                 Pay
@@ -72,6 +73,7 @@ export default {
 
   data() {
     return {
+      submitting: false,
       isActive: true,
       first_name: "",
       last_name: "",
@@ -124,70 +126,73 @@ export default {
       this.cardCVV = cardCVV;
     },
 
-    payByCreditCard() {
-      HTTPS.get("cartByUserId")
-        .then((res) => {
-          this.Order = res.data;
-          console.log(this.Order,this.Order.length)
-        })
-        .then(() => {
-          HTTPS.post("/stripe", {
+    async payByCreditCard() {
+      if (!this.submitting) {
+        this.submitting = true;
+        try {
+          const res1 = await HTTPS.get("cartByUserId");
+          this.Order = res1.data;
+          console.log(this.Order, this.Order.length);
+          const res2 = await HTTPS.post("/stripe", {
             card_number: this.cardNumber,
             exp_month: this.cardMonth,
             exp_year: this.cardYear,
             card_cvv: this.cardCVV,
             amount: Math.round(this.countTotal * 100),
-          })
-            .then((res) => {
-              if (res.data[0] !== "succeeded") {
-                console.log(res);
-                Swal.fire("Payment Error", `${res.data.response}`, "error");
-              } else {
-                Swal.fire(
-                  "Payment Success",
-                  "Thank you for choosing our service",
-                  "success"
-                )
-                  .then(
-                    HTTPS.post("/remove/cart")
-                      .then(() => {
-                        this.emitter.emit("removeCart", true);
-                      })
-                      .then(() => {
-                        HTTPS.post("/create/order", {
-                          total: Math.round(this.countTotal * 100),
-                        }).then((res) => {
-                          console.log(res)
-                          
-                          for (var i = 0; i < this.Order.length; i++) {
-                            HTTPS.post("create/order-item",{
-                              item_id : this.Order[i].item_id,
-                              quantity: this.Order[i].quantity,
-                              price: this.Order[i].item.price,
-                              order_id: res.data.id
-                            });
-                          }
-                        }).then((res) => {
-                          this.emitter.emit("cartUpdated");
-                        })
-                        
-                      })
-                      .catch((error) => console.log(error))
-                  )
-                  .catch((error) => console.log(error));
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              Swal.fire({
-                icon: "error",
-                title: "Payment Error !",
-                text: error,
-              });
+          });
+          if (res2.data[0] !== "succeeded") {
+            console.log(res2);
+            Swal.fire("Payment Error", `${res2.data.response}`, "error");
+          } else {
+            Swal.fire(
+              "Payment Success",
+              "Thank you for choosing our service",
+              "success"
+            ).then(() => {
+              HTTPS.post("/remove/cart")
+                .then(() => {
+                  this.emitter.emit("removeCart", true);
+                })
+                .then(() => {
+                  HTTPS.post("/create/order", {
+                    total: Math.round(this.countTotal * 100),
+                  })
+                    .then((res3) => {
+                      console.log(res3);
+                      const promises = [];
+                      for (let i = 0; i < this.Order.length; i++) {
+                        promises.push(
+                          HTTPS.post("create/order-item", {
+                            item_id: this.Order[i].item_id,
+                            quantity: this.Order[i].quantity,
+                            price: this.Order[i].item.price,
+                            order_id: res3.data.id,
+                          })
+                        );
+                      }
+                      Promise.all(promises).then(() => {
+                        this.emitter.emit("cartUpdated");
+                        this.$router.push("/");
+                      });
+                    })
+                    .catch((error) => console.log(error));
+                })
+                .catch((error) => console.log(error));
             });
-        })
-        .catch((error) => console.log(error));
+          }
+        } catch (error) {
+          console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "Payment Error !",
+            text: error,
+          });
+        } finally {
+          this.submitting = false;
+        }
+      }
     },
+
     onChangeCurrentTab(index, oldIndex) {
       console.log(index, oldIndex);
       this.currentTabIndex = index;

@@ -325,7 +325,7 @@ export default {
       this.v$.phone.$touch();
       if (!this.v$.phone.$invalid) {
         this.verifyPhone = true;
-        HTTP.post("/verify-mobile", {
+        HTTP.post("/verify-mobile-reservation", {
           phone: this.phone,
           verify_code: this.verify_code,
         }).then((res) => {
