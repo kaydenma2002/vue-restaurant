@@ -43,6 +43,7 @@
         <p class="text-lg text-gray-700 dark:text-gray-400">${{ price }}</p>
       </div>
       <div class="ml-auto">
+        
         <button v-if="enableAddToCart" @click.prevent="addToCart(id)">
           <font-awesome-icon icon="fa-solid fa-plus" />
         </button>

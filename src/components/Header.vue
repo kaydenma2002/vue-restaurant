@@ -44,7 +44,7 @@
       </div>
 
       <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-      <ul
+      <ul v-if="isLoggedIn"
         :class="showMenu ? 'flex' : 'hidden'"
         class="
           flex-col
@@ -63,7 +63,7 @@
               rounded
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               text-gray-700
               md:dark:hover:text-white md:dark:hover:bg-transparent
@@ -85,7 +85,7 @@
               hover:bg-gray-100
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
@@ -109,7 +109,7 @@
               hover:bg-gray-100
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
@@ -133,7 +133,7 @@
               hover:bg-gray-100
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
@@ -157,7 +157,7 @@
               hover:bg-gray-100
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
@@ -181,7 +181,7 @@
               hover:bg-gray-100
               md:hover:bg-transparent
               md:border-0
-              md:hover:text-indigo-700
+              md:hover:text-black
               md:p-0
               dark:text-gray-400
               md:dark:hover:text-white
@@ -196,14 +196,14 @@
           <button
             @click.prevent="RegisterforRestaurant()"
             class="
-              bg-indigo-600
+              bg-black
               px-3
               py-3
               rounded-lg
               text-white
-              hover:bg-indigo-500
+              hover:bg-black
               text-sm
-              shadow-lg shadow-indigo-500/50
+              shadow-lg shadow-black/50
             "
           >
             Your restaurant
@@ -211,7 +211,7 @@
         </li>
         <li>
           <div v-if="isLoggedIn" class="cart-button">
-            <button class="bg-indigo-600" @click="navigateToPayment">
+            <button class="bg-black" @click="navigateToPayment">
               <font-awesome-icon icon="fa-solid fa-cart-shopping" />
               ({{ quantity }})
             </button>
@@ -239,12 +239,12 @@
             v-if="!isLoggedIn"
             to="/SignUp"
             class="
-              bg-indigo-600
+              bg-black
               px-4
               py-2
               rounded
               text-white
-              hover:bg-indigo-500
+              hover:bg-black
               text-sm
               ml-2
             "
@@ -259,18 +259,18 @@
             @click="showProfile"
             class="
               text-white
-              bg-indigo-700
-              hover:bg-indigo-800
-              focus:ring-4 focus:outline-none focus:ring-indigo-300
+              bg-black
+              hover:bg-black
+              focus:ring-4 focus:outline-none focus:ring-black
               font-medium
               rounded-lg
               text-sm
               px-5
               py-2.5
               text-center
-              dark:bg-indigo-600
-              dark:hover:bg-indigo-700
-              dark:focus:ring-indigo-800
+              dark:bg-black
+              dark:hover:bg-black
+              dark:focus:ring-black
             "
           >
             {{ user.email }}
@@ -313,17 +313,17 @@
                     type="button"
                     class="
                       text-white
-                      bg-indigo-700
-                      hover:bg-indigo-800
-                      focus:ring-4 focus:ring-indigo-300
+                      bg-black
+                      hover:bg-black
+                      focus:ring-4 focus:ring-black
                       font-medium
                       rounded-lg
                       text-xs
                       px-3
                       py-1.5
-                      dark:bg-indigo-600 dark:hover:bg-indigo-700
+                      dark:bg-black dark:hover:bg-black
                       focus:outline-none
-                      dark:focus:ring-indigo-800
+                      dark:focus:ring-black
                     "
                   >
                     Edit profile
@@ -346,7 +346,7 @@
                 Open-source contributor. Building
                 <a
                   href="#"
-                  class="text-indigo-600 dark:text-indigo-500 hover:underline"
+                  class="text-black dark: hover:underline"
                   >flowbite.com</a
                 >.
               </p>

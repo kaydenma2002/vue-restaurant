@@ -8,7 +8,7 @@
         <br />
         <p style="font-weight: 600" class="text-7xl">Restaurant</p>
         <br />
-        <p style="font-weight: 600" class="text-7xl text-indigo-500">Online.</p>
+        <p style="font-weight: 600" class="text-7xl ">Online.</p>
         <div class="mt-10 mb-10 text-2xl text-slate-400 pr-11">
           Thousands of restaurant owners use the SKIPLI platform to take back
           control, create stunning websites, drive direct sales, save money on
@@ -19,14 +19,14 @@
           <button
             @click.prevent="RegisterforRestaurant()"
             class="
-              bg-indigo-600
+              bg-black
               px-4
               py-4
               rounded-lg
               text-white
-              hover:bg-indigo-500
+              hover:bg-black
               text-sm
-              shadow-lg shadow-indigo-500/50
+              shadow-lg shadow-black/50
               mb-10
             "
           >
@@ -55,7 +55,7 @@
           md:text-4xl
           lg:text-4xl
           dark:text-white
-          text-indigo-500
+          
         "
       >
         Since opening in 2004, We have been one of New York's leading

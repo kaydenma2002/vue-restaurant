@@ -15,7 +15,7 @@
             </h1>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Remember your password?
-              <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/Login">
+              <a class="text-black decoration-2 hover:underline font-medium" href="/Login">
                 Login here
               </a>
             </p>
@@ -34,7 +34,7 @@
                       border-2 border-gray-200
                       rounded-md
                       text-sm
-                      focus:border-blue-500 focus:ring-blue-500
+                      focus:border-black focus:ring-black
                       shadow-sm
                     " aria-describedby="email-error" />
                   <div v-if="v$.email.$error">
@@ -53,12 +53,12 @@
                   rounded-md
                   border border-transparent
                   font-semibold
-                  bg-blue-500
+                  bg-black
                   text-white
-                  hover:bg-blue-600
+                  hover:bg-black
                   focus:outline-none
                   focus:ring-2 
-                  focus:ring-blue-500
+                  focus:ring-black
                   focus:ring-offset-2
                   transition-all
                   text-sm
@@ -85,7 +85,7 @@
                       border border-gray-300
                       text-gray-900 text-sm
                       rounded-lg
-                      focus:ring-blue-500 focus:border-blue-500
+                      focus:ring-black focus:border-black
                       block
                       w-full
                       p-2.5
@@ -93,8 +93,8 @@
                       dark:border-gray-600
                       dark:placeholder-gray-400
                       dark:text-white
-                      dark:focus:ring-blue-500
-                      dark:focus:border-blue-500
+                      dark:focus:ring-black
+                      dark:focus:border-black
                     " aria-describedby="verify_code-error" />
                   <div v-if="v$.verify_code_input.$error">
                     {{ v$.verify_code_input.$errors[0].$message }}
@@ -114,7 +114,7 @@
                       border border-gray-300
                       text-gray-900 text-sm
                       rounded-lg
-                      focus:ring-blue-500 focus:border-blue-500
+                      focus:ring-black focus:border-black
                       block
                       w-full
                       p-2.5
@@ -122,8 +122,8 @@
                       dark:border-gray-600
                       dark:placeholder-gray-400
                       dark:text-white
-                      dark:focus:ring-blue-500
-                      dark:focus:border-blue-500
+                      dark:focus:ring-black
+                      dark:focus:border-black
                     " />
                   <div v-if="v$.new_password.$error">
                     {{ v$.new_password.$errors[0].$message }}
@@ -143,7 +143,7 @@
                       border border-gray-300
                       text-gray-900 text-sm
                       rounded-lg
-                      focus:ring-blue-500 focus:border-blue-500
+                      focus:ring-black focus:border-black
                       block
                       w-full
                       p-2.5
@@ -151,8 +151,8 @@
                       dark:border-gray-600
                       dark:placeholder-gray-400
                       dark:text-white
-                      dark:focus:ring-blue-500
-                      dark:focus:border-blue-500
+                      dark:focus:ring-black
+                      dark:focus:border-black
                     " />
                   <div v-if="v$.confirm_password.$error">
                     {{ v$.confirm_password.$errors[0].$message }}
@@ -169,12 +169,12 @@
                   rounded-md
                   border border-transparent
                   font-semibold
-                  bg-blue-500
+                  bg-black
                   text-white
-                  hover:bg-blue-600
+                  hover:bg-black
                   focus:outline-none
                   focus:ring-2
-                  focus:ring-blue-500
+                  focus:ring-black
                   focus:ring-offset-2
                   transition-all
                   text-sm
@@ -203,7 +203,7 @@
             gap-x-2
             text-sm text-gray-600
             decoration-2
-            hover:underline hover:text-blue-600
+            hover:underline hover:text-black
             dark:text-gray-500 dark:hover:text-gray-200
           " href="#" target="_blank">
           <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -220,7 +220,7 @@
             gap-x-2
             text-sm text-gray-600
             decoration-2
-            hover:underline hover:text-blue-600
+            hover:underline hover:text-black
             dark:text-gray-500 dark:hover:text-gray-200
           " href="#">
           Contact us!

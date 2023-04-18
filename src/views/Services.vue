@@ -30,7 +30,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -192,10 +192,10 @@
           type="button"
           class="
             text-white
-            bg-blue-600
-            hover:bg-blue-700
-            focus:ring-4 focus:outline-none focus:ring-blue-200
-            dark:focus:ring-blue-900
+            bg-black
+            hover:bg-black
+            focus:ring-4 focus:outline-none focus:ring-black
+            dark:focus:ring-black
             font-medium
             rounded-lg
             text-sm
@@ -239,7 +239,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +266,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +293,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -401,10 +401,10 @@
           type="button"
           class="
             text-white
-            bg-blue-600
-            hover:bg-blue-700
-            focus:ring-4 focus:outline-none focus:ring-blue-200
-            dark:focus:ring-blue-900
+            bg-black
+            hover:bg-black
+            focus:ring-4 focus:outline-none focus:ring-black
+            dark:focus:ring-black
             font-medium
             rounded-lg
             text-sm
@@ -448,7 +448,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -475,7 +475,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +502,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -610,10 +610,10 @@
           type="button"
           class="
             text-white
-            bg-blue-600
-            hover:bg-blue-700
-            focus:ring-4 focus:outline-none focus:ring-blue-200
-            dark:focus:ring-blue-900
+            bg-black
+            hover:bg-black
+            focus:ring-4 focus:outline-none focus:ring-black
+            dark:focus:ring-black
             font-medium
             rounded-lg
             text-sm
@@ -657,7 +657,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -684,7 +684,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -711,7 +711,7 @@
             <!-- Icon -->
             <svg
               aria-hidden="true"
-              class="flex-shrink-0 w-5 h-5 text-blue-600 dark:text-blue-500"
+              class="flex-shrink-0 w-5 h-5 text-black dark:text-black"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -819,10 +819,10 @@
           type="button"
           class="
             text-white
-            bg-blue-600
-            hover:bg-blue-700
-            focus:ring-4 focus:outline-none focus:ring-blue-200
-            dark:focus:ring-blue-900
+            bg-black
+            hover:bg-black
+            focus:ring-4 focus:outline-none focus:ring-black
+            dark:focus:ring-black
             font-medium
             rounded-lg
             text-sm

@@ -97,21 +97,21 @@
                   <td class="px-4 py-3">{{ item.state }}</td>
                   <td v-if="item.status === 'Pending'">
                     <div
-                      class="text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                      class="text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-3 text-center"
                     >
                       {{ item.status }}
                     </div>
                   </td>
                   <td v-else-if="item.status === 'Active'">
                     <div
-                      class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                      class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-3 text-center"
                     >
                       {{ item.status }}
                     </div>
                   </td>
                   <td v-else>
                     <div
-                      class="text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-3 text-center"
+                      class="text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-3 text-center"
                     >
                       {{ item.status }}
                     </div>
@@ -120,7 +120,7 @@
                   <td class="px-4 py-3">
                     <button
                       type="button"
-                      class="text-white bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-indigo-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+                      class="text-white bg-black hover:bg-black focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-black dark:hover:bg-black dark:focus:ring-black"
                     >
                       Claim Your Restaurant
                     </button>

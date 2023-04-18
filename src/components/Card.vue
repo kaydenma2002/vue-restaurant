@@ -136,38 +136,80 @@
   <div class="card-form__inner">
     <div class="card-input">
       <label for="cardNumber" class="card-input__label">Card Number</label>
-      <input type="text" id="cardNumber" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber"
+      <input type="text" id="cardNumber" class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm" v-mask="generateCardNumberMask" v-model="cardNumber"
         @input="updateCardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber"
         autocomplete="off" />
     </div>
     <div class="card-input">
       <label for="cardName" class="card-input__label">Card Holders</label>
-      <input type="text" id="cardName" class="card-input__input" v-model="cardName" v-on:focus="focusInput"
+      <input type="text" id="cardName" class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm" v-model="cardName" v-on:focus="focusInput"
         v-on:blur="blurInput" data-ref="cardName" autocomplete="off" />
     </div>
     <div class="card-form__row">
-      <div class="card-form__col">
-        <div class="card-form__group">
+      <div class="card-form__col ">
+        <div class="card-form__group grid grid-cols-2 ">
           <label for="cardMonth" class="card-input__label">Expiration Date</label>
-          <select class="card-input__input -select" id="cardMonth" @input="updateCardMonth" v-model="cardMonth"
+          <div class="flex w-full">
+            <select class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm -select" id="cardMonth" @input="updateCardMonth" v-model="cardMonth"
             v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
             <option value="" disabled selected>Month</option>
             <option v-bind:value="n < 10 ? '0' + n : n" v-for="n in 12" v-bind:disabled="n < minCardMonth" v-bind:key="n">
               {{ n < 10 ? "0" + n : n }} </option>
           </select>
-          <select class="card-input__input -select" id="cardYear" v-model="cardYear" @input="updateCardYear"
+          <select class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm -select" id="cardYear" v-model="cardYear" @input="updateCardYear"
             v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
             <option value="" disabled selected>Year</option>
             <option v-bind:value="$index + minCardYear" v-for="(n, $index) in 12" v-bind:key="n">
               {{ $index + minCardYear }}
             </option>
           </select>
+          </div>
         </div>
       </div>
       <div class="card-form__col -cvv">
         <div class="card-input">
           <label for="cardCvv" class="card-input__label">CVV</label>
-          <input type="text" class="card-input__input" id="cardCvv" v-mask="'####'" maxlength="4" v-model="cardCVV"
+          <input type="text" class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm" id="cardCvv" v-mask="'####'" maxlength="4" v-model="cardCVV"
             @input="updateCardCVV" v-on:focus="flipCard(true)" v-on:blur="flipCard(false)" autocomplete="off" />
         </div>
       </div>

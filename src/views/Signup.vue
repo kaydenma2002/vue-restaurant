@@ -20,7 +20,7 @@
             >
               <p class="text-lg mb-0 mr-4">Sign in with</p>
               <button
-                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
+                class="inline-block p-3 bg-black text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-black hover:shadow-lg focus:bg-black focus:shadow-lg focus:outline-none focus:ring-0 active:bg-black active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Facebook -->
                 <svg
@@ -40,7 +40,7 @@
                 type="button"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
+                class="inline-block p-3 bg-black text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-black hover:shadow-lg focus:bg-black focus:shadow-lg focus:outline-none focus:ring-0 active:bg-black active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Twitter -->
                 <svg
@@ -60,7 +60,7 @@
                 type="button"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
-                class="inline-block p-3 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mx-1"
+                class="inline-block p-3 bg-black text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-black hover:shadow-lg focus:bg-black focus:shadow-lg focus:outline-none focus:ring-0 active:bg-black active:shadow-lg transition duration-150 ease-in-out mx-1"
               >
                 <!-- Linkedin -->
                 <svg
@@ -90,7 +90,15 @@
                   type="text"
                   id="email"
                   v-model="email"
-                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                   placeholder="Email address"
                 />
                 <div v-for="error of v$.email.$errors" :key="error">
@@ -103,7 +111,15 @@
                   type="text"
                   id="name"
                   v-model="name"
-                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                   placeholder="Name"
                 />
                 <div v-for="error of v$.name.$errors" :key="error">
@@ -117,13 +133,21 @@
                       type="number"
                       v-model="phone"
                       :disabled="verifyPhone"
-                      class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                       placeholder="Mobile number"
                     />
 
                     <button
                       v-if="!verifyPhone"
-                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      class="text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-black dark:focus:ring-black"
                     >
                       Verify
                     </button>
@@ -139,7 +163,7 @@
                   v-model="verify_code"
                   id="helper-text"
                   aria-describedby="helper-text-explanation"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
                   placeholder="Enter your verify code send to the number above"
                 />
                 <div v-for="error of v$.verify_code.$errors" :key="error">
@@ -151,7 +175,15 @@
                   type="text"
                   id="street"
                   v-model="street"
-                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                   placeholder="Street"
                 />
               </div>
@@ -163,7 +195,15 @@
                   type="text"
                   id="city"
                   v-model="city"
-                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                   placeholder="City"
                 />
                 <div v-for="error of v$.city.$errors" :key="error">
@@ -176,7 +216,15 @@
                   type="text"
                   id="zip_code"
                   v-model="zip_code"
-                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                   placeholder="Zip code"
                 />
                 <div v-for="error of v$.zip_code.$errors" :key="error">
@@ -188,7 +236,15 @@
             <div class="mb-6">
               <input
                 type="password"
-                class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                class="py-3
+                      px-4
+                      block
+                      w-full
+                      border-2 border-gray-200
+                      rounded-md
+                      text-sm
+                      focus:border-black focus:ring-black
+                      shadow-sm"
                 id="password"
                 placeholder="Password"
                 v-model="password"
@@ -202,7 +258,7 @@
               <div class="form-group form-check">
                 <input
                   type="checkbox"
-                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-black checked:border-black focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                   id="exampleCheck2"
                 />
                 <label
@@ -221,7 +277,7 @@
                 :disabled="!verifyPhone"
                 type="submit"
                 :class="{ 'cursor-not-allowed': !verifyPhone }"
-                class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                class="inline-block px-7 py-3 bg-black text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-black hover:shadow-lg focus:bg-black focus:shadow-lg focus:outline-none focus:ring-0 active:bg-black active:shadow-lg transition duration-150 ease-in-out"
               >
                 Sign up
               </button>

@@ -3,11 +3,12 @@
     class="h-2/3 md:w-1/2 lg:w-1/2 border rounded chat-box flex flex-col justify-between chat-popup z-10 bg-white border border-gray rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
     v-if="isOpen"
   >
-    <div class="grid grid-cols-5 h-full " >
-      <div class="overflow-y-auto  col-span-2">
-        <ul class="" >
+    <div class="grid grid-cols-5 h-full">
+      <div class="overflow-y-auto col-span-2">
+        <ul class="">
           <li
-          v-for="user in users" :key="user.id"
+            v-for="user in users"
+            :key="user.id"
             class="hover:bg-gray-100 hover:cursor-pointer py-3 sm:py-4"
             @click.prevent="loadMessage(user.id)"
           >
@@ -38,7 +39,7 @@
           {{ currentRecipient }}
           <hr />
         </div>
-        <div class=" flex-1">
+        <div class="flex-1">
           <ul v-for="(item, index) in sent" :key="index" class="space-y-2">
             <li
               v-if="sender == item.sender_id || sender == item.sender"
@@ -82,9 +83,7 @@
               type="text"
               placeholder="Message"
               class="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
-              
               v-model="message"
-              
             />
 
             <div v-if="loading" role="status">
@@ -150,7 +149,7 @@
 </template>
 
 <script>
-
+import { gzip } from "pako";
 import FoodCardForChat from "../components/FoodCardForChat.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import useValidate from "@vuelidate/core";
@@ -190,8 +189,6 @@ export default {
       opusEncoder: null,
       opusDecoder: null,
       voiceData: null,
-      recognition: null,
-      transcription: "",
     };
   },
 
@@ -209,15 +206,6 @@ export default {
     HTTPS.get("/users").then((res) => {
       this.users = res.data;
     });
-    if (!("webkitSpeechRecognition" in window)) {
-      alert("Speech recognition is not supported in this browser.");
-      return;
-    }
-    this.recognition = new window.webkitSpeechRecognition();
-    this.recognition.continuous = true;
-    this.recognition.interimResults = true;
-    this.recognition.lang = "en-US";
-    this.recognition.onresult = this.handleResult;
   },
   methods: {
     togglePopup() {
@@ -359,38 +347,38 @@ export default {
         this.scrollToBottom();
       });
     },
-    setNewValue(data){
-      this.message = data
-    },
-     startRecording() {
-        this.recording = true
-        this.transcription = "";
-        this.recognition.start();
-        
+    async startRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.chunks = [];
+        this.mediaRecorder.addEventListener("dataavailable", (event) => {
+          this.chunks.push(event.data);
+        });
+        this.mediaRecorder.start();
+        this.recording = true;
+      } catch (error) {
+        console.error(error);
+      }
     },
     stopRecording() {
-      this.recognition.stop();
-      this.recording = false
-      
-      
-         
-    },
-     handleResult(event) {
-      let interimTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          this.transcription += event.results[i][0].transcript;
-          this.setNewValue(this.transcription)
-          
-        } else {
-          interimTranscript += event.results[i][0].transcript;
-          this.setNewValue(interimTranscript)
-        }
-      }
-       
-       
-       
+      if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+        this.mediaRecorder.addEventListener("stop", () => {
+          const blob = new Blob(this.chunks, { type: this.chunks[0].type });
 
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            const base64data = reader.result.split(",")[1];
+            this.sendMessage(base64data);
+          };
+        });
+
+        this.mediaRecorder.stop();
+        this.recording = false;
+      }
     },
     async sendMessage(voiceData) {
       try {
@@ -416,8 +404,6 @@ export default {
       }
     },
   },
-  
-  
 };
 </script>
 

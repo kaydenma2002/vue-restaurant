@@ -38,7 +38,7 @@
             <select
               id="table"
               v-model="table"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
             >
               <option selected>Number of table</option>
               <option value="1">1</option>
@@ -55,13 +55,13 @@
                   type="number"
                   v-model="phone"
                   :disabled="verifyPhone"
-                  class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-black focus:border-black dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
                   placeholder="Enter your mobile number"
                 />
                 <button
                   v-if="!verifyPhone"
                   type="submit"
-                  class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  class="text-white absolute right-2.5 bottom-2.5 bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-black dark:focus:ring-black"
                 >
                   Verify
                 </button>
@@ -76,7 +76,7 @@
               v-model="verify_code"
               id="helper-text"
               aria-describedby="helper-text-explanation"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
               placeholder="Enter your verify code send to the number above"
             />
             <div v-for="error of v$.verify_code.$errors" :key="error">
@@ -89,14 +89,14 @@
               We’ll never share your details. Read our
               <a
                 href="#"
-                class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                class="font-medium text-black hover:underline dark:text-black"
                 >Privacy Policy</a
               >.
             </p>
             <div v-if="verifyPhone" class="w-full text-right">
               <button
                 type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                class="text-white bg-black hover:bg-black focus:ring-4 focus:ring-black font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-black dark:hover:bg-black focus:outline-none dark:focus:ring-black"
               >
                 Submit
               </button>
@@ -116,12 +116,12 @@
                 type="text"
                 v-model="restaurant"
                 :disabled="search_restaurant"
-                class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-black focus:border-black dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-black dark:focus:border-black"
                 placeholder="Enter restaurant"
               />
               <button
                 type="submit"
-                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white absolute right-2.5 bottom-2.5 bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-black dark:focus:ring-black"
               >
                 Search
               </button>
@@ -158,21 +158,21 @@
         <button
           type="button"
           @click="submitbyChoices('order')"
-          class="bg-indigo-600 px-2 py-2 rounded-lg text-white hover:bg-indigo-500 text-sm shadow-lg shadow-indigo-500/50"
+          class="bg-black px-2 py-2 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50"
         >
           Online Order
         </button>
         <button
           type="button"
           @click="submitbyChoices('contact')"
-          class="bg-indigo-600 px-2 py-2 rounded-lg text-white hover:bg-indigo-500 text-sm shadow-lg shadow-indigo-500/50"
+          class="bg-black px-2 py-2 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50"
         >
           Contact Us
         </button>
         <button
           type="button"
           @click="submitbyChoices('reservation')"
-          class="bg-indigo-600 px-2 py-2 rounded-lg text-white hover:bg-indigo-500 text-sm shadow-lg shadow-indigo-500/50"
+          class="bg-black px-2 py-2 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50"
         >
           Make a Reservation
         </button>
@@ -197,7 +197,7 @@
         <div v-if="loading" role="status">
           <svg
             aria-hidden="true"
-            class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-black"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

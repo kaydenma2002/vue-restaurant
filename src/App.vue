@@ -20,7 +20,7 @@ export default {
 };
 </script>
 <template>
-  <div class="container-fluid" style="position: relative; min-height: 100vh">
+  <div class="container-fluid bg-white" style="position: relative; min-height: 100vh">
     <Header />
     <div style="margin-top: 8rem"></div>
     <Chat v-if="$route.meta.authOnly == true" />
