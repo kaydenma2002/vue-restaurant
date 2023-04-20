@@ -236,12 +236,17 @@ export default {
         if (this.channel1 && this.channel2) {
           this.channel1.unsubscribe();
           this.channel2.unsubscribe();
+          const isProduction = process.env.NODE_ENV === "production";
+
+          const authEndpoint = isProduction
+            ? "http://142.11.239.33:8000/broadcasting/auth"
+            : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",
             key: "68572aaa73079990a7d7",
             cluster: "mt1",
             encrypted: true,
-            authEndpoint: "https://127.0.0.1/broadcasting/auth",
+            authEndpoint: authEndpoint,
             auth: {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwtToken"),
@@ -281,12 +286,15 @@ export default {
             }
           });
         } else {
+          const authEndpoint = isProduction
+            ? "http://142.11.239.33:8000/broadcasting/auth"
+            : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",
             key: "68572aaa73079990a7d7",
             cluster: "mt1",
             encrypted: true,
-            authEndpoint: "https://127.0.0.1/broadcasting/auth",
+            authEndpoint: authEndpoint,
             auth: {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwtToken"),
@@ -361,6 +369,7 @@ export default {
     },
     setNewValue(data){
       this.message = data
+      console.log(data)
     },
      startRecording() {
         this.recording = true

@@ -432,23 +432,15 @@ export default {
         confirmButtonText: "Yes, Log out my account",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.post(
-            "https://127.0.0.1/api/logout",
-            {
-              key: "value",
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorageExport("jwtToken")}`,
-              },
-            }
-          );
-          Swal.fire("", "User logged out!", "success").then((res) => {
+          HTTPS.post("logout").then(() =>{
+            Swal.fire("", "User logged out!", "success").then((res) => {
             this.emitter.emit("logout", true);
             localStorage.removeItem("jwtToken");
             this.isLoggedIn = false;
             this.$router.push("/login");
           });
+          })
+          
         }
       });
     },

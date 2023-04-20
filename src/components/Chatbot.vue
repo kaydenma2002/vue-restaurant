@@ -295,12 +295,17 @@ export default {
   mounted() {
     HTTPS.get("/user").then((res) => {
       this.user = res.data.id;
+      const isProduction = process.env.NODE_ENV === "production";
+
+      const authEndpoint = isProduction
+        ? "http://142.11.239.33:8000/broadcasting/auth"
+        : "https://127.0.0.1/broadcasting/auth";
       (this.echo = new Echo({
         broadcaster: "pusher",
         key: "68572aaa73079990a7d7",
         cluster: "mt1",
         encrypted: true,
-        authEndpoint: "https://127.0.0.1/broadcasting/auth",
+        authEndpoint: authEndpoint,
         auth: {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwtToken"),
