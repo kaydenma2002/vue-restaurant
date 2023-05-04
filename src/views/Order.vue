@@ -51,17 +51,15 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <tr>
-                    <th class="text-left">Order id</th>
-                  <th class="text-left">first name</th>
-                  <th class="text-left">last name</th>
+                  <th class="text-left">Order id</th>
+                  <th class="text-left">Name</th>
                   <th class="text-center">phone</th>
                   <th class="text-left">Street</th>
                   <th class="text-left">City</th>
                   <th class="text-left">Zip Code</th>
                   <th class="text-left">Email</th>
+                  <th class="text-left">Company</th>
                   <th class="text-left">Total</th>
-                  
-                  <th class="text-left">Item</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -77,66 +75,22 @@
                   >
                     {{ order.id }}
                   </th>
-                  <td>{{ order.first_name }}</td>
-                  <td>{{ order.last_name }}</td>
-                  <td>{{ order.phone }}</td>
-                  <td>{{ order.street }}</td>
-                  <td>{{ order.city }}</td>
-                  <td>{{ order.zip_code }}</td>
-                  <td>{{ order.email }}</td>
-                  <td>{{ order.company }}</td>
+                  <td>{{ order.user.name }}</td>
+                  <td>{{ order.user.phone }}</td>
+                  <td>{{ order.user.street }}</td>
+                  <td>{{ order.user.city }}</td>
+                  <td>{{ order.user.zip_code }}</td>
+                  <td>{{ order.user.email }}</td>
+                  <td>{{ order.user.company }}</td>
                   <td>{{ order.total }}</td>
 
-                  <td class="px-4 py-3 flex items-center justify-end">
-                    <button
-                      id="apple-imac-27-dropdown-button"
-                      data-dropdown-toggle="apple-imac-27-dropdown"
-                      class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                      type="button"
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        aria-hidden="true"
-                        fill="currentColor"
-                        viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      id="apple-imac-27-dropdown"
-                      class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                    >
-                      <ul
-                        class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="apple-imac-27-dropdown-button"
-                      >
-                        <li>
-                          <a
-                            href="#"
-                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                            >Show</a
-                          >
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                            >Edit</a
-                          >
-                        </li>
-                      </ul>
-                      <div class="py-1">
-                        <a
-                          href="#"
-                          class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                          >Delete</a
-                        >
-                      </div>
-                    </div>
+                  <td class="px-4 py-3 flex items-center">
+                    <font-awesome-icon
+                      @click.prevent="viewOrderDetailbyId(order.id)"
+                      style="width: 100%; text-align: center"
+                      class="fa-xl cursor-pointer"
+                      icon="fa-solid fa-eye"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -181,7 +135,9 @@
   </div>
 </template>
 <script>
+import Swal from "sweetalert2";
 import { HTTPS } from "../axios/http-axios";
+import {localStorageImport,localStorageExport} from "../localStorage/local-storage";
 export default {
   data() {
     return {
@@ -191,6 +147,7 @@ export default {
       search: "",
     };
   },
+
   mounted() {
     this.fetchOrderById();
   },
@@ -201,12 +158,16 @@ export default {
         console.log(this.orders);
       });
     },
+    viewOrderDetailbyId(id) {
+      localStorageImport("order_id",id)
+      this.$router.push({ name: "OrderDetails" })
+    },
   },
   computed: {
     filteredData() {
       if (this.search) {
         return this.orders.filter((item) => {
-          return item.last_name
+          return item.user.name
             .toLowerCase()
             .includes(this.search.toLowerCase());
         });

@@ -1,9 +1,14 @@
 <template>
   <div class="container mx-auto">
+    <div
+      class="mt-5   text-center mb-8 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
+    >
+    Our Menu
+  </div>
     <div v-for="(category, index) in categories" :key="index" class="row menu">
       <div
-        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl animate-bounce"
-        v-if="items.some(item => item.category === category)"
+        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
+        v-if="items.some((item) => item.category === category)"
       >
         {{ category }}
       </div>
@@ -14,9 +19,8 @@
           v-for="(item, index) in filteredItems(category)"
           :key="index"
           class="box-content ..."
-          
         >
-          <div class="overlay h-full h-auto" >
+          <div class="overlay h-full h-auto">
             <FoodCard
               @editContent="editContent(item)"
               @imageOnClick="ChooseImage(item)"
@@ -57,6 +61,7 @@ export default {
     console.log(this.isLoggedIn);
     if (this.isLoggedIn) {
       HTTPS.get("/menu").then((res) => {
+        console.log(res);
         this.items = res.data;
         for (var i = 0; i < this.items.length; i++) {
           this.categories.push(this.items[i].category);
@@ -91,8 +96,9 @@ export default {
   },
   computed: {
     filteredItems() {
-    return (category) => this.items.filter(item => item.category == category);
-  }
+      return (category) =>
+        this.items.filter((item) => item.category == category);
+    },
   },
 };
 </script>

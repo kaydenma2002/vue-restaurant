@@ -20,13 +20,13 @@ export default {
 };
 </script>
 <template>
-  <div class="container-fluid bg-white" style="position: relative; min-height: 100vh">
+  <div class="container-fluid bg-white" style="position: relative">
     <Header />
     <div style="margin-top: 8rem"></div>
     <Chat v-if="$route.meta.authOnly == true" />
     <Chatbot v-if="$route.meta.authOnly == true" />
     <router-view></router-view>
 
-    <Footer v-if="$route.name !== 'Profile'" />
+    <Footer v-if="$route.name !== 'ContactUs'" />
   </div>
 </template>

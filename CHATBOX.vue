@@ -227,7 +227,7 @@ export default {
           const isProduction = process.env.NODE_ENV === "production";
 
           const authEndpoint = isProduction
-            ? "http://142.11.239.33:8000/broadcasting/auth"
+            ? "https://ehl.ai:8000/broadcasting/auth"
             : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",
@@ -277,7 +277,7 @@ export default {
           const isProduction = process.env.NODE_ENV === "production";
 
           const authEndpoint = isProduction
-            ? "http://142.11.239.33:8000/broadcasting/auth"
+            ? "https://ehl.ai:8000/broadcasting/auth"
             : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",

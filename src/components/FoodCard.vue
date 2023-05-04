@@ -20,7 +20,7 @@
         md:h-auto md:w-48 md:rounded-none md:rounded-l-lg
       "
       @click="imageOnClick"
-      v-bind:src="image"
+      v-bind:src="`/src/img/menu/${image}`"
       alt=""
     />
     <div class="flex flex-col justify-between p-4 leading-normal w-full">

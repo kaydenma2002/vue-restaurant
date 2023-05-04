@@ -146,6 +146,7 @@
                     />
 
                     <button
+                      type="submit"
                       v-if="!verifyPhone"
                       class="text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-black dark:focus:ring-black"
                     >
@@ -338,9 +339,10 @@ export default {
         this.verifyPhone = true;
         HTTP.post("/verify-mobile-register", {
           phone: this.phone,
-          verify_code: this.verify_code,
         }).then((res) => {
           console.log(res);
+        }).catch(error => {
+          console.log(error)
         });
       } else {
         this.phone_error = true;

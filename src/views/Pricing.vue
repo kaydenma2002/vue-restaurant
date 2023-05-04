@@ -36,7 +36,7 @@
               </div>
               <div class="ml-auto text-xl">
                 Subtotal: ${{ subTotal }} <br />SaleTax: ${{
-                  (subTotal * 6) / 100
+                  subTotal * 6 / 100
                 }}
                 <br />MealTax: ${{ (subTotal * 4) / 100 }} <br />Fee: ${{
                   (subTotal * 3) / 100 + 0.3
@@ -92,13 +92,16 @@ export default {
       Order: [],
     };
   },
-  mounted() {},
+  mounted() {
+    
+  },
   created() {
+    
     this.emitter.on("cartUpdated", () => {
       HTTPS.get("cartByUserId")
         .then((res) => {
           this.Cart = res.data;
-
+          
           for (var i = 0; i < res.data.length; i++) {
             this.item_id.push(this.Cart[i].item_id);
           }

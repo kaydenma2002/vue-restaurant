@@ -3,139 +3,103 @@
     class=""
     style="position: absolute; bottom: 0; width: 100%; height: 0rem"
   >
-    <div class="row contact-us">
+    
+
+    <div class="container mx-auto">
+      <div class="row contact-us">
       <div
-        class="
-          mt-5
-          underline underline-offset-3
-          text-center
-          mb-4
-          text-4xl
-          font-extrabold
-          leading-none
-          tracking-tight
-          md:text-4xl
-          lg:text-5xl
-          animate-bounce
-        "
+        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
       >
         Contact Us
       </div>
-      <img
-        class="h-auto w-screen"
-        src="https://images.squarespace-cdn.com/content/v1/5a626e77d7bdce030797264e/1529366828831-CHTDV7RQ8X9JH2OR895I/Papis.Food.ChickenBarbacoa.April2015.TJG_6742.HR.1500px.jpg?format=2500w"
-        alt=""
-      />
+      <GoogleMap
+        api-key="AIzaSyCcdbqrh2nn1HEAyijg2tLeoJ22Hmic2PQ"
+        style="width: 100%; height: 500px"
+        :center="center"
+        :zoom="15"
+      >
+        <Marker :options="{ position: center }" />
+      </GoogleMap>
     </div>
-
-    <div class="container mx-auto">
       <div class="grid grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
         <div>
           <h2
-            class="
-              mb-6
-              text-sm
-              font-semibold
-              text-gray-500
-              uppercase
-              dark:text-gray-400
-            "
+            class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
           >
             Company
           </h2>
           <ul class="text-gray-500 dark:text-gray-400">
             <li class="mb-4">
-              <a href="#" class="hover:underline">About</a>
+              <div>About</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Careers</a>
+              <div>Careers</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Brand Center</a>
+              <div>Brand Center</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Blog</a>
+              <div>Blog</div>
             </li>
           </ul>
         </div>
         <div>
           <h2
-            class="
-              mb-6
-              text-sm
-              font-semibold
-              text-gray-500
-              uppercase
-              dark:text-gray-400
-            "
+            class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
           >
             Help center
           </h2>
           <ul class="text-gray-500 dark:text-gray-400">
             <li class="mb-4">
-              <a href="#" class="hover:underline">Discord Server</a>
+              <div>Discord Server</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Twitter</a>
+              <div>Twitter</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Facebook</a>
+              <div>Facebook</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Contact Us</a>
+              <div>Contact Us</div>
             </li>
           </ul>
         </div>
         <div>
           <h2
-            class="
-              mb-6
-              text-sm
-              font-semibold
-              text-gray-500
-              uppercase
-              dark:text-gray-400
-            "
+            class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
           >
             Legal
           </h2>
           <ul class="text-gray-500 dark:text-gray-400">
             <li class="mb-4">
-              <a href="#" class="hover:underline">Privacy Policy</a>
+              <div>Privacy Policy</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Licensing</a>
+              <div>Licensing</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+              <div>Terms &amp; Conditions</div>
             </li>
           </ul>
         </div>
         <div>
           <h2
-            class="
-              mb-6
-              text-sm
-              font-semibold
-              text-gray-500
-              uppercase
-              dark:text-gray-400
-            "
+            class="mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
           >
             Download
           </h2>
           <ul class="text-gray-500 dark:text-gray-400">
             <li class="mb-4">
-              <a href="#" class="hover:underline">iOS</a>
+              <div>iOS</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Android</a>
+              <div>Android</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">Windows</a>
+              <div>Windows</div>
             </li>
             <li class="mb-4">
-              <a href="#" class="hover:underline">MacOS</a>
+              <div>MacOS</div>
             </li>
           </ul>
         </div>
@@ -143,21 +107,14 @@
     </div>
 
     <div
-      class="
-        px-4
-        py-6
-        bg-gray-100
-        dark:bg-gray-700
-        md:flex md:items-center md:justify-between
-      "
+      class="px-4 py-6 bg-gray-100 dark:bg-gray-700 md:flex md:items-center md:justify-between"
     >
       <span class="text-sm text-gray-500 dark:text-gray-300 sm:text-center"
-        >© 2023 <a href="https://flowbite.com/">Flowbite™</a>. All Rights
-        Reserved.
+        >EHLAI@2023
       </span>
       <div class="flex mt-4 space-x-6 sm:justify-center md:mt-0">
-        <a
-          href="#"
+        <div
+          
           class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
@@ -173,9 +130,9 @@
             />
           </svg>
           <span class="sr-only">Facebook page</span>
-        </a>
-        <a
-          href="#"
+        </div>
+        <div
+          
           class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
@@ -191,9 +148,9 @@
             />
           </svg>
           <span class="sr-only">Instagram page</span>
-        </a>
-        <a
-          href="#"
+        </div>
+        <div
+          
           class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
@@ -207,9 +164,9 @@
             />
           </svg>
           <span class="sr-only">Twitter page</span>
-        </a>
-        <a
-          href="#"
+        </div>
+        <div
+          
           class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
@@ -225,9 +182,9 @@
             />
           </svg>
           <span class="sr-only">GitHub account</span>
-        </a>
-        <a
-          href="#"
+        </div>
+        <div
+          
           class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <svg
@@ -243,18 +200,31 @@
             />
           </svg>
           <span class="sr-only">Dribbble account</span>
-        </a>
+        </div>
       </div>
     </div>
   </footer>
 </template>
 <script>
+import { defineComponent } from "vue";
+import { GoogleMap, Marker } from "vue3-google-map";
 export default {
+  components: { GoogleMap, Marker },
   props: {
     showFooter: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+  },
+  data(){
+    return{
+      center:null
     }
+  },
+  created(){
+
+  },mounted(){
+    this.center = { lat: 38.8708786, lng: -77.15831799999999 };
   }
 };
 </script>

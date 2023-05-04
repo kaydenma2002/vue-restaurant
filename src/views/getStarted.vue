@@ -78,10 +78,11 @@
                 <tr
                   v-for="(item, index) in restaurant"
                   :key="index"
-                  class="cursor-pointer border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  @click="claimRestaurant(item.restaurant_id)"
+                  
+                  class="cursor-pointer bg-gray-200 border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  @click="item.status == 'Pending' ? claimRestaurant(item.restaurant_id): null"
                 >
-                <th
+                  <th
                     scope="row"
                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
@@ -97,14 +98,14 @@
                   <td class="px-4 py-3">{{ item.state }}</td>
                   <td v-if="item.status === 'Pending'">
                     <div
-                      class="text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-3 text-center"
+                      class="text-white bg-black hover:bg-black focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-2.5 dark:bg-black dark:hover:bg-black dark:focus:ring-black px-5 py-3 text-center"
                     >
                       {{ item.status }}
                     </div>
                   </td>
                   <td v-else-if="item.status === 'Active'">
                     <div
-                      class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-3 text-center"
+                      class="t text-black bg-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white font-medium rounded-full text-sm dark:bg-white dark:hover:bg-white dark:focus:ring-black px-5 py-3 text-center"
                     >
                       {{ item.status }}
                     </div>
@@ -117,12 +118,20 @@
                     </div>
                   </td>
                   <td class="px-4 py-3">{{ item.zip_code }}</td>
-                  <td class="px-4 py-3">
+                  <td v-if="item.status === 'Pending'" class="px-4 py-3">
                     <button
                       type="button"
-                      class="text-white bg-black hover:bg-black focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-black dark:hover:bg-black dark:focus:ring-black"
+                      class="text-white bg-black hover:bg-black focus:outline-none focus:ring-4 focus:ring-black font-medium rounded-full text-sm px-5 py-2.5 dark:bg-black dark:hover:bg-black dark:focus:ring-black"
                     >
                       Claim Your Restaurant
+                    </button>
+                  </td>
+                  <td class="px-4 py-3" v-if="item.status === 'Active'">
+                    <button
+                      type="disabled"
+                      class="text-black bg-white hover:bg-white focus:outline-none focus:ring-4 focus:ring-white font-medium rounded-full text-sm px-5 py-2.5 dark:bg-white dark:hover:bg-white dark:focus:ring-black"
+                    >
+                      Claimed
                     </button>
                   </td>
                 </tr>
@@ -232,7 +241,7 @@ export default {
       console.log(this.v$);
       if (!this.v$.$error) {
         // if ANY fail validation
-        HTTPS.post("/create/demo", {
+        HTTP.post("/create/demo", {
           restaurant_id: id,
           name: this.name,
           company: this.company,
@@ -256,11 +265,13 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+      } else {
+        console.log(this.v$.$error);
       }
     },
     async claimRestaurant(id) {
       Swal.fire({
-        title: "Enter multiple values",
+        title: "PLease enter client details",
         html:
           '<input id="input1" class="swal2-input" placeholder="Enter name">' +
           '<input id="input2" class="swal2-input" placeholder="Enter email">' +
@@ -291,7 +302,7 @@ export default {
     },
 
     search: debounce(async function () {
-      const res = await HTTPS.get(
+      const res = await HTTP.get(
         `/restaurant/search?search=${this.searchTerm}`
       );
       this.restaurant = res.data.data;

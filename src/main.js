@@ -12,7 +12,7 @@ import getStarted from "./views/getStarted.vue";
 import SignUp from "./views/Signup.vue";
 import ForgotPassword from "./views/forgotPassword.vue";
 import Order from "./views/Order.vue"
-
+import OrderDetails from "./views/OrderDetails.vue";
 import { AcademicCapIcon } from "@vue-hero-icons/outline";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -22,11 +22,12 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 /* add icons to the library */
-library.add(faCartShopping, faPlus, faMinus, faComment, faRobot, faPaperPlane, faMicrophone);
+library.add(faCartShopping, faPlus, faMinus, faComment, faRobot, faPaperPlane, faMicrophone,faEye);
 
 import { createRouter, createWebHistory } from "vue-router";
 import VueStripeElements from "vue-stripe-elements-plus";
@@ -37,6 +38,7 @@ import Chat from "vue3-beautiful-chat";
 
 import App from "./App.vue";
 import mitt from "mitt";
+import { HTTPS } from "./axios/http-axios"
 const emitter = mitt();
 const pinia = createPinia();
 
@@ -46,14 +48,13 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: Home,
-      meta: { authOnly: true },
+      component: Home
     },
+
     {
       path: "/get-started",
       name: "getStarted",
-      component: getStarted,
-      meta: { authOnly: true },
+      component: getStarted
     },
     {
       path: "/order",
@@ -61,6 +62,14 @@ const router = createRouter({
       component: Order,
       meta: { authOnly: true },
     },
+    {
+      path: "/order-item",
+      name: "OrderDetails",
+      component: OrderDetails,
+      
+      meta: { authOnly: true },
+    },
+
     {
       path: "/menu",
       name: "Menu",
@@ -84,6 +93,15 @@ const router = createRouter({
       name: "pricing",
       component: Pricing,
       meta: { authOnly: true },
+      beforeEnter: (to, from, next) => {
+        HTTPS.get("cartByUserId").then(res =>{
+          if(res.data.length !== 0){
+            next();
+          }else {
+            next('/'); // redirect to /
+          }
+        })
+      }
     },
     { path: "/contactus", name: "ContactUs", component: ContactUs },
     {
@@ -114,25 +132,30 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isLoggedIn()) {
+      window.scrollTo(0, 0);
       next({
-        path: "/login",
+        path: "/",
         query: { redirect: to.fullPath },
       });
     } else {
+      window.scrollTo(0, 0);
       next();
     }
   } else if (to.matched.some((record) => record.meta.guestOnly)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (isLoggedIn()) {
+      window.scrollTo(0, 0);
       next({
         path: "/",
         query: { redirect: to.fullPath },
       });
     } else {
+      window.scrollTo(0, 0);
       next();
     }
   } else {
+    
     next(); // make sure to always call next()!
   }
 });
@@ -148,6 +171,7 @@ app
       "178409542204-l33r0orgtr7st0blomdqpbv99f7iqr94.apps.googleusercontent.com",
   })
   .use(Chat);
+  app.config.globalProperties.eventEmitter = false
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.config.globalProperties.emitter = emitter;

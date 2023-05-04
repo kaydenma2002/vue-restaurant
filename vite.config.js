@@ -11,7 +11,7 @@ const sslCertificate = {
 export default ({ command }) => {
   let host = '127.0.0.1'
   if (command === 'build') {
-    host = '142.11.239.33'
+    host = 'ehl.ai'
   }
 
   return defineConfig({

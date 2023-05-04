@@ -1,25 +1,10 @@
 <template>
   <div class="bg-gray-100">
     <nav
-      class="
-        container-fluid
-        px-6
-        py-8
-        mx-auto
-        md:flex md:justify-between md:items-center
-        bg-white
-        dark:bg-gray-900
-        fixed
-        w-full
-        z-20
-        top-0
-        left-0
-        border-b border-gray-200
-        dark:border-gray-600
-      "
+      class="container-fluid px-6 py-8 mx-auto md:flex md:justify-between md:items-center bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600"
     >
       <div class="flex items-center justify-between">
-        <a href="https://flowbite.com/" class="flex items-center">
+        <a href="/" class="flex items-center">
           <h1>Your site Logo</h1>
         </a>
 
@@ -27,11 +12,7 @@
         <div @click="showMenu = !showMenu" class="flex md:hidden">
           <button
             type="button"
-            class="
-              text-gray-800
-              hover:text-gray-400
-              focus:outline-none focus:text-gray-400
-            "
+            class="text-gray-800 hover:text-gray-400 focus:outline-none focus:text-gray-400"
           >
             <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
               <path
@@ -44,30 +25,15 @@
       </div>
 
       <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-      <ul v-if="isLoggedIn"
+      <ul
+        v-if="isLoggedIn"
         :class="showMenu ? 'flex' : 'hidden'"
-        class="
-          flex-col
-          space-y-4
-          md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
-        "
+        class="flex-col space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
       >
         <li>
           <router-link
             to="/"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              rounded
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              text-gray-700
-              md:dark:hover:text-white md:dark:hover:bg-transparent
-            "
+            class="block py-2 pl-3 pr-4 rounded md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 text-gray-700 md:dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Home</router-link
           >
@@ -75,23 +41,7 @@
         <li>
           <router-link
             to="/menu"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              text-gray-700
-              rounded
-              hover:bg-gray-100
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              dark:text-gray-400
-              md:dark:hover:text-white
-              dark:hover:bg-gray-700 dark:hover:text-white
-              md:dark:hover:bg-transparent
-            "
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Menu</router-link
           >
@@ -99,23 +49,7 @@
         <li>
           <router-link
             to="/Order"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              text-gray-700
-              rounded
-              hover:bg-gray-100
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              dark:text-gray-400
-              md:dark:hover:text-white
-              dark:hover:bg-gray-700 dark:hover:text-white
-              md:dark:hover:bg-transparent
-            "
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Orders</router-link
           >
@@ -123,71 +57,16 @@
         <li>
           <router-link
             to="/Services"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              text-gray-700
-              rounded
-              hover:bg-gray-100
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              dark:text-gray-400
-              md:dark:hover:text-white
-              dark:hover:bg-gray-700 dark:hover:text-white
-              md:dark:hover:bg-transparent
-            "
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Services</router-link
           >
         </li>
-        <li>
-          <router-link
-            to="/pricing"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              text-gray-700
-              rounded
-              hover:bg-gray-100
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              dark:text-gray-400
-              md:dark:hover:text-white
-              dark:hover:bg-gray-700 dark:hover:text-white
-              md:dark:hover:bg-transparent
-            "
-            aria-current="page"
-            >Make Payment</router-link
-          >
-        </li>
+
         <li>
           <router-link
             to="/ContactUs"
-            class="
-              block
-              py-2
-              pl-3
-              pr-4
-              text-gray-700
-              rounded
-              hover:bg-gray-100
-              md:hover:bg-transparent
-              md:border-0
-              md:hover:text-black
-              md:p-0
-              dark:text-gray-400
-              md:dark:hover:text-white
-              dark:hover:bg-gray-700 dark:hover:text-white
-              md:dark:hover:bg-transparent
-            "
+            class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Contact Us</router-link
           >
@@ -195,16 +74,7 @@
         <li>
           <button
             @click.prevent="RegisterforRestaurant()"
-            class="
-              bg-black
-              px-3
-              py-3
-              rounded-lg
-              text-white
-              hover:bg-black
-              text-sm
-              shadow-lg shadow-black/50
-            "
+            class="bg-black px-3 py-3 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50"
           >
             Your restaurant
           </button>
@@ -220,12 +90,7 @@
       </ul>
       <ul
         :class="showMenu ? 'flex' : 'hidden'"
-        class="
-          sm
-          flex-col
-          space-y-4
-          md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0
-        "
+        class="sm flex-col space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
       >
         <li>
           <router-link
@@ -238,16 +103,7 @@
           <router-link
             v-if="!isLoggedIn"
             to="/SignUp"
-            class="
-              bg-black
-              px-4
-              py-2
-              rounded
-              text-white
-              hover:bg-black
-              text-sm
-              ml-2
-            "
+            class="bg-black px-4 py-2 rounded text-white hover:bg-black text-sm ml-2"
             >SIGNUP</router-link
           >
         </li>
@@ -257,21 +113,7 @@
             data-popover-target="popover-user-profile"
             type="button"
             @click="showProfile"
-            class="
-              text-white
-              bg-black
-              hover:bg-black
-              focus:ring-4 focus:outline-none focus:ring-black
-              font-medium
-              rounded-lg
-              text-sm
-              px-5
-              py-2.5
-              text-center
-              dark:bg-black
-              dark:hover:bg-black
-              dark:focus:ring-black
-            "
+            class="text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-black dark:hover:bg-black dark:focus:ring-black"
           >
             {{ user.email }}
           </button>
@@ -279,24 +121,7 @@
             data-popover
             id="popover-user-profile"
             role="tooltip"
-            class="
-              absolute
-              z-10
-              invisible
-              inline-block
-              w-64
-              text-sm
-              font-light
-              text-gray-500
-              transition-opacity
-              duration-300
-              bg-white
-              border border-gray-200
-              rounded-lg
-              shadow-sm
-              opacity-0
-              dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600
-            "
+            class="absolute z-10 invisible inline-block w-64 text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600"
           >
             <div class="p-3">
               <div class="flex items-center justify-between mb-2">
@@ -311,42 +136,21 @@
                   <button
                     @click="showProfile"
                     type="button"
-                    class="
-                      text-white
-                      bg-black
-                      hover:bg-black
-                      focus:ring-4 focus:ring-black
-                      font-medium
-                      rounded-lg
-                      text-xs
-                      px-3
-                      py-1.5
-                      dark:bg-black dark:hover:bg-black
-                      focus:outline-none
-                      dark:focus:ring-black
-                    "
+                    class="text-white bg-black hover:bg-black focus:ring-4 focus:ring-black font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-black dark:hover:bg-black focus:outline-none dark:focus:ring-black"
                   >
                     Edit profile
                   </button>
                 </div>
               </div>
               <p
-                class="
-                  text-base
-                  font-semibold
-                  leading-none
-                  text-gray-900
-                  dark:text-white
-                "
+                class="text-base font-semibold leading-none text-gray-900 dark:text-white"
               >
                 <a href="#">{{ user.name }}</a>
               </p>
 
               <p class="mb-4 text-sm font-light">
                 Open-source contributor. Building
-                <a
-                  href="#"
-                  class="text-black dark: hover:underline"
+                <a href="#" class="text-black dark: hover:underline"
                   >flowbite.com</a
                 >.
               </p>
@@ -384,9 +188,6 @@
   </div>
 </template>
 
-  
-
-
 <script>
 import axios from "axios";
 import { localStorageExport } from "../localStorage/local-storage";
@@ -414,8 +215,20 @@ export default {
     showProfile() {
       this.$router.push("/profile");
     },
-    navigateToPayment(){
-      this.$router.push("/pricing");
+    navigateToPayment() {
+      if (this.quantity != 0) {
+        this.$router.push("/pricing");
+      } else {
+        Swal.fire({
+  title: '<strong>You have not ordered yet !</strong>',
+  icon: 'error',
+  
+  
+  focusConfirm: false,
+  confirmButtonText:
+    '<a href="/menu">Click here to order.</a> '
+})
+      }
     },
 
     RegisterforRestaurant() {
@@ -432,15 +245,14 @@ export default {
         confirmButtonText: "Yes, Log out my account",
       }).then((result) => {
         if (result.isConfirmed) {
-          HTTPS.post("logout").then(() =>{
+          HTTPS.post("logout").then(() => {
             Swal.fire("", "User logged out!", "success").then((res) => {
-            this.emitter.emit("logout", true);
-            localStorage.removeItem("jwtToken");
-            this.isLoggedIn = false;
-            this.$router.push("/login");
+              this.emitter.emit("logout", true);
+              localStorage.removeItem("jwtToken");
+              this.isLoggedIn = false;
+              this.$router.push("/");
+            });
           });
-          })
-          
         }
       });
     },

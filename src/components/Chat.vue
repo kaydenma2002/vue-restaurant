@@ -34,7 +34,7 @@
         class="flex flex-col overflow-y-auto relative w-full col-span-3 border-solid border-l-2 border-gray"
         ref="chatContainer"
       >
-        <div class="py-4 sticky bg-slate-50 top-0">
+        <div class="py-4 sticky bg-slate-50 top-0 z-10">
           {{ currentRecipient }}
           <hr />
         </div>
@@ -239,7 +239,7 @@ export default {
           const isProduction = process.env.NODE_ENV === "production";
 
           const authEndpoint = isProduction
-            ? "http://142.11.239.33:8000/broadcasting/auth"
+            ? "https://ehl.ai:8000/broadcasting/auth"
             : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",
@@ -286,8 +286,9 @@ export default {
             }
           });
         } else {
+          const isProduction = process.env.NODE_ENV === "production";
           const authEndpoint = isProduction
-            ? "http://142.11.239.33:8000/broadcasting/auth"
+            ? "https://ehl.ai:8000/broadcasting/auth"
             : "https://127.0.0.1/broadcasting/auth";
           this.echo = new Echo({
             broadcaster: "pusher",
@@ -434,7 +435,7 @@ export default {
 .chat-popup {
   position: fixed;
   bottom: 15%;
-  right: 20px;
+  left: 20px;
 
   /* Add any other styling you need for the chat popup */
 }
@@ -451,7 +452,7 @@ export default {
   position: fixed;
 
   bottom: 10%;
-  right: 20px;
+  left: 20px;
   /* Add any other styling you need for the chat icon */
 }
 </style>
