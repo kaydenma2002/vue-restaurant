@@ -5,9 +5,8 @@
       <div class="">
         <p style="font-weight: 600" class="text-7xl">Re-claim Your</p>
         <br />
-        <p style="font-weight: 600" class="text-7xl">Online</p>
-        <br />
-        <p style="font-weight: 600" class="text-7xl">Order.</p>
+        <p style="font-weight: 600" class="text-7xl">Online Order.</p>
+        
         <div class="mt-10 mb-10 text-2xl text-slate-400 pr-11">
           EHL.AI&#39;s online ordering platform empowers thousands of restaurant
           owners to regain control of their online ordering process. EHL.AI
@@ -37,7 +36,7 @@
           </div>
           <!-- Item 2 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com_tam_2.PNG" alt="..." />
+            <img src="/src/img/home/com_tam_2.jpg" alt="..." />
           </div>
           <!-- Item 3 -->
           <div class="carousel-item">
@@ -45,14 +44,14 @@
           </div>
           <!-- Item 4 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_2.PNG" alt="..." />
+            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_2.jpg" alt="..." />
           </div>
           <!-- Item 5 -->
           <div class="carousel-item">
             <img src="/src/img/home/Cơm-Tấm_1.jfif" alt="..." />
           </div>
           <div class="carousel-item">
-            <img src="/src/img/home/Cơm-Tấm_2.PNG" alt="..." />
+            <img src="/src/img/home/Cơm-Tấm_2.jpg" alt="..." />
           </div>
         </div>
       </div>

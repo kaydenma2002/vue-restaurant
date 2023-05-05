@@ -8,7 +8,7 @@
     <div class="container mx-auto">
       <div class="row contact-us">
       <div
-        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
+        class="mt-5  text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
       >
         Contact Us
       </div>

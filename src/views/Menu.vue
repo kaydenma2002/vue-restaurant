@@ -7,7 +7,7 @@
   </div>
     <div v-for="(category, index) in categories" :key="index" class="row menu">
       <div
-        class="mt-5 underline underline-offset-3 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
+        class="mt-5  text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
         v-if="items.some((item) => item.category === category)"
       >
         {{ category }}
