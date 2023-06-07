@@ -16,20 +16,26 @@
           <div class="p-10 rounded-md shadow-md bg-white">
             <div class="grid">
               <div
-                class="xl:w-auto sm:w-auto lg:w-auto md:w-auto w-auto h-auto mt-5 grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-2 mb-10"
+                class="xl:w-auto sm:w-auto lg:w-auto md:w-auto w-auto h-auto mt-5 grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1 gap-2 mb-10"
               >
                 <div v-for="(item, index) in Cart" :key="index">
                   <FoodCard
-                    :item_id="item.item_id"
                     :id="item.id"
                     :name="item.item.title"
                     :description="item.item.description"
                     :price="item.item.price"
                     :image="item.item.image"
+                    :quantity="item.quantity"
                     :enableAddToCart="false"
                     :enableRemoveFromCart="true"
                   />
+                  
                 </div>
+                <div v-if="quantityTotal <= 0 ">
+                  <h4 class="text-3xl text-gray-700 mb-5">Your cart is empty please click here to order.</h4>
+                </div>
+                
+                
               </div>
               <div class="ml-auto w-full">
                 <textarea v-model="note" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500" placeholder="Note"></textarea>
@@ -38,8 +44,8 @@
                 Subtotal: ${{ subTotal }} <br />SaleTax: ${{
                   subTotal * 6 / 100
                 }}
-                <br />MealTax: ${{ (subTotal * 4) / 100 }} <br />Fee: ${{
-                  (subTotal * 3) / 100 + 0.3
+                <br />MealTax: ${{ ((subTotal * 4) / 100).toFixed(2) }} <br />Fee: ${{
+                  ((subTotal * 3) / 100 + 0.3).toFixed(2)
                 }}
                 <br />Total: ${{ countTotal }}
               </div>
@@ -77,14 +83,6 @@ export default {
     return {
       submitting: false,
       isActive: true,
-      first_name: "",
-      last_name: "",
-      phone: "",
-      email: "",
-      company: "",
-      street: "",
-      city: "",
-      zip_code: "",
       item_id: [],
       note: "",
       currentTabIndex: 0,
@@ -98,20 +96,20 @@ export default {
   created() {
     
     this.emitter.on("cartUpdated", () => {
-      HTTPS.get("cartByUserId")
+      HTTPS.get("cartByUserId",{params: { web_id: this.$route.params.web_id}})
         .then((res) => {
           this.Cart = res.data;
-          
+          console.log(res)
           for (var i = 0; i < res.data.length; i++) {
             this.item_id.push(this.Cart[i].item_id);
           }
         })
         .catch((error) => console.log(error));
     });
-    HTTPS.get("cartByUserId")
+    HTTPS.get("cartByUserId",{params: { web_id: this.$route.params.web_id}})
       .then((res) => {
         this.Cart = res.data;
-
+        console.log(res)
         for (var i = 0; i < res.data.length; i++) {
           this.item_id.push(this.Cart[i].item_id);
         }
@@ -136,7 +134,7 @@ export default {
       if (!this.submitting) {
         this.submitting = true;
         try {
-          const res1 = await HTTPS.get("cartByUserId");
+          const res1 = await HTTPS.get("cartByUserId",{params: { web_id: this.$route.params.web_id}});
           this.Order = res1.data;
           console.log(this.Order, this.Order.length);
           const res2 = await HTTPS.post("/stripe", {
@@ -156,13 +154,15 @@ export default {
               "success"
             ).then(() => {
               HTTPS.post("/remove/cart")
-                .then(() => {
+                .then((res) => {
+                  console.log(res)
                   this.emitter.emit("removeCart", true);
                 })
                 .then(() => {
                   HTTPS.post("/create/order", {
                     total: Math.round(this.countTotal * 100),
-                    note: this.note
+                    note: this.note,
+                    restaurant_id: this.$route.params.web_id
                   })
                     .then((res3) => {
                       console.log(res3);
@@ -179,7 +179,8 @@ export default {
                       }
                       Promise.all(promises).then(() => {
                         this.emitter.emit("cartUpdated");
-                        this.$router.push("/");
+                        this.emitter.emit("isRestaurant",true)
+                        this.$router.push(`/${this.$route.params.web_id}`);
                       });
                     })
                     .catch((error) => console.log(error));
@@ -200,22 +201,17 @@ export default {
       }
     },
 
-    onChangeCurrentTab(index, oldIndex) {
-      console.log(index, oldIndex);
-      this.currentTabIndex = index;
-    },
-    onTabBeforeChange() {
-      if (this.currentTabIndex === 0) {
-        console.log("First Tab");
-      }
-      console.log("All Tabs");
-    },
-    wizardCompleted() {},
+    
   },
   computed: {
+    quantityTotal(){
+      return this.Cart.reduce((sum, current) => {
+        return sum + current.quantity;
+      }, 0);
+    },
     subTotal() {
       return this.Cart.reduce((sum, current) => {
-        return sum + parseFloat(current.item.price);
+        return sum + parseFloat(current.item.price * current.quantity);
       }, 0);
     },
     countTotal() {

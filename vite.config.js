@@ -19,9 +19,8 @@ export default ({ command }) => {
       vue({
         template: {
           compilerOptions: {
-            isCustomElement: tagName => {
-              return tagName === 'vue-advanced-chat' || tagName === 'emoji-picker'
-            }
+            isCustomElement: (tag) => ['BingMapsPushpin','BingMapsMap'].includes(tag),
+
           }
         }
       })

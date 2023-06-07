@@ -3,24 +3,15 @@
     class=""
     style="position: absolute; bottom: 0; width: 100%; height: 0rem"
   >
-    
-
     <div class="container mx-auto">
       <div class="row contact-us">
-      <div
-        class="mt-5  text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
-      >
-        Contact Us
+        <div
+          class="mt-5 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
+        >
+          Contact Us
+        </div>
+        <div class="cursor-pointer" id="map" style="width: 100%; height: 400px"></div>
       </div>
-      <GoogleMap
-        api-key="AIzaSyCcdbqrh2nn1HEAyijg2tLeoJ22Hmic2PQ"
-        style="width: 100%; height: 500px"
-        :center="center"
-        :zoom="15"
-      >
-        <Marker :options="{ position: center }" />
-      </GoogleMap>
-    </div>
       <div class="grid grid-cols-2 gap-8 px-6 py-8 md:grid-cols-4">
         <div>
           <h2
@@ -113,10 +104,7 @@
         >EHLAI@2023
       </span>
       <div class="flex mt-4 space-x-6 sm:justify-center md:mt-0">
-        <div
-          
-          class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
-        >
+        <div class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
           <svg
             class="w-5 h-5"
             fill="currentColor"
@@ -131,10 +119,7 @@
           </svg>
           <span class="sr-only">Facebook page</span>
         </div>
-        <div
-          
-          class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
-        >
+        <div class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
           <svg
             class="w-5 h-5"
             fill="currentColor"
@@ -149,10 +134,7 @@
           </svg>
           <span class="sr-only">Instagram page</span>
         </div>
-        <div
-          
-          class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
-        >
+        <div class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
           <svg
             class="w-5 h-5"
             fill="currentColor"
@@ -165,10 +147,7 @@
           </svg>
           <span class="sr-only">Twitter page</span>
         </div>
-        <div
-          
-          class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
-        >
+        <div class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
           <svg
             class="w-5 h-5"
             fill="currentColor"
@@ -183,10 +162,7 @@
           </svg>
           <span class="sr-only">GitHub account</span>
         </div>
-        <div
-          
-          class="text-gray-400 hover:text-gray-900 dark:hover:text-white"
-        >
+        <div class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
           <svg
             class="w-5 h-5"
             fill="currentColor"
@@ -207,24 +183,186 @@
 </template>
 <script>
 import { defineComponent } from "vue";
+import {
+  localStorageImport,
+  localStorageExport,
+} from "../localStorage/local-storage";
 import { GoogleMap, Marker } from "vue3-google-map";
+import { HTTP, HTTPS } from "../axios/http-axios";
 export default {
   components: { GoogleMap, Marker },
   props: {
     showFooter: {
       type: Boolean,
       default: true,
+      isRestaurant: null,
     },
   },
-  data(){
-    return{
-      center:null
-    }
+  data() {
+    return {
+      center: null,
+      address: "",
+      latitude: null,
+      longitude: null,
+    };
   },
-  created(){
+  created() {
+    const url = window.location.pathname;
+    const match = url.match(/^\/([^/]+)/);
+    const pathParam = match ? match[1] : null;
 
-  },mounted(){
-    this.center = { lat: 38.8708786, lng: -77.15831799999999 };
-  }
+    if (pathParam) {
+      console.log(pathParam);
+      HTTP.post("restaurant/find", { web_id: pathParam })
+        .then((res) => {
+          if (res.data.length != 0) {
+            this.address = res.data.address;
+            try {
+              HTTP.get("https://geocode.maps.co/search", {
+                params: {
+                  q: this.address,
+                },
+              }).then((res) => {
+                console.log(res);
+                this.latitude = res.data.lat;
+                this.longitude = res.data.lon;
+                this.$nextTick(() => {
+                  this.center = { lat: this.latitude, lng: this.longitude };
+                });
+              });
+            } catch (error) {
+              console.error(error);
+            }
+          } else {
+            const map = new window.Microsoft.Maps.Map(
+              document.getElementById("map"),
+              {
+                credentials:
+                  "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
+                center: new window.Microsoft.Maps.Location(
+                  38.8708297,
+                  -77.15816881230292
+                ),
+                zoom: 17,
+              }
+            );
+
+            // Customize the map options and add markers, etc.
+            // Example:
+            const center = new window.Microsoft.Maps.Location(
+              38.8708297,
+              -77.15816881230292
+            );
+            const pin = new window.Microsoft.Maps.Pushpin(center);
+            map.entities.push(pin);
+            console.log(pin)
+          }
+        })
+        .catch((error) => {});
+    } else {
+      this.$nextTick(() =>{
+        const map = new window.Microsoft.Maps.Map(
+        document.getElementById("map"),
+        {
+          credentials:
+            "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
+          center: new window.Microsoft.Maps.Location(38.8708297, -77.15816881230292),
+          zoom: 17,
+        }
+      );
+
+      // Customize the map options and add markers, etc.
+      // Example:
+      const center = new window.Microsoft.Maps.Location(38.8708297, -77.15816881230292);
+      const pin = new window.Microsoft.Maps.Pushpin(center);
+      map.entities.push(pin);
+      })
+        
+    }
+
+    this.emitter.on("isRestaurant", () => {
+      localStorageImport("isRestaurant", true);
+      this.isRestaurant = localStorageExport("isRestaurant");
+      const url = window.location.pathname;
+      const match = url.match(/^\/([^/]+)/);
+      const pathParam = match ? match[1] : null;
+
+      if (pathParam) {
+        console.log(pathParam);
+        HTTP.post("restaurant/find", { web_id: pathParam })
+          .then((res) => {
+            if (res.data.length != 0) {
+              this.address = res.data.address;
+              try {
+                HTTP.get("https://geocode.maps.co/search", {
+                  params: {
+                    q: this.address,
+                  },
+                }).then((res) => {
+                  this.latitude = res.data[0].lat;
+                  this.longitude = res.data[0].lon;
+                  this.$nextTick(() => {
+                    const map = new window.Microsoft.Maps.Map(
+                      document.getElementById("map"),
+                      {
+                        credentials:
+                          "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
+                        center: new window.Microsoft.Maps.Location(
+                          this.latitude,
+                          this.longitude
+                        ),
+                        zoom: 17,
+                      }
+                    );
+
+                    // Customize the map options and add markers, etc.
+                    // Example:
+                    const center = new window.Microsoft.Maps.Location(
+                      this.latitude,
+                      this.longitude
+                    );
+                    const pin = new window.Microsoft.Maps.Pushpin(center);
+                    map.entities.push(pin);
+                    this.center = { lat: this.latitude, lng: this.longitude };
+                  });
+                });
+              } catch (error) {
+                console.error(error);
+              }
+            } else {
+              const map = new window.Microsoft.Maps.Map(
+                document.getElementById("map"),
+                {
+                  credentials:
+                    "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
+                  center: new window.Microsoft.Maps.Location(
+                    38.870446,
+                    -77.15816881230292
+                  ),
+                  zoom: 17,
+                }
+              );
+
+              // Customize the map options and add markers, etc.
+              // Example:
+              const center = new window.Microsoft.Maps.Location(
+                38.8708297,
+                -77.15816881230292
+              );
+              const pin = new window.Microsoft.Maps.Pushpin(center);
+              map.entities.push(pin);
+            }
+          })
+          .catch((error) => {});
+      } else {
+        console.log(1)
+      }
+    });
+  },
+  mounted() {},
 };
 </script>
+
+
+
+

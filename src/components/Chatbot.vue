@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="w-full p-6 overflow-y-auto" ref="chatContainer">
-      <ul v-for="(item, index) in sent" class="space-y-2" ref="scrollToMe">
+      <ul v-for="(item, index)  in sent" :key="index" class="space-y-2" ref="scrollToMe">
         <li class="flex justify-end">
           <div
             class="max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow"
@@ -107,7 +107,7 @@
           v-else-if="sent[index].includes('contact')"
           class="flex justify-start"
         >
-          Please contact us at 571.505.1131
+          Please contact us at data@emersonhlee.com
         </li>
         <li v-else-if="sent[index].includes('order')">
           <form @submit.prevent="submitRestaurant">

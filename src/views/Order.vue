@@ -52,13 +52,10 @@
               >
                 <tr>
                   <th class="text-left">Order id</th>
-                  <th class="text-left">Name</th>
+                  <th class="text-left">Restaurant</th>
                   <th class="text-center">phone</th>
-                  <th class="text-left">Street</th>
-                  <th class="text-left">City</th>
-                  <th class="text-left">Zip Code</th>
-                  <th class="text-left">Email</th>
-                  <th class="text-left">Company</th>
+                  <th class="text-left">Address</th>
+
                   <th class="text-left">Total</th>
                   <th class="text-center">Actions</th>
                 </tr>
@@ -75,13 +72,11 @@
                   >
                     {{ order.id }}
                   </th>
-                  <td>{{ order.user.name }}</td>
-                  <td>{{ order.user.phone }}</td>
-                  <td>{{ order.user.street }}</td>
-                  <td>{{ order.user.city }}</td>
-                  <td>{{ order.user.zip_code }}</td>
-                  <td>{{ order.user.email }}</td>
-                  <td>{{ order.user.company }}</td>
+
+                  <td>{{ order.restaurant.phone }}</td>
+                  <td>{{ order.restaurant.phone }}</td>
+                  <td>{{ order.restaurant.address }}</td>
+
                   <td>{{ order.total }}</td>
 
                   <td class="px-4 py-3 flex items-center">
@@ -136,8 +131,12 @@
 </template>
 <script>
 import Swal from "sweetalert2";
-import { HTTPS } from "../axios/http-axios";
-import {localStorageImport,localStorageExport} from "../localStorage/local-storage";
+import { HTTP, HTTPS } from "../axios/http-axios";
+import {
+  localStorageImport,
+  localStorageExport,
+  localStorageRemove,
+} from "../localStorage/local-storage";
 export default {
   data() {
     return {
@@ -147,20 +146,56 @@ export default {
       search: "",
     };
   },
+  created() {
+    const url = window.location.pathname;
+    const match = url.match(/^\/([^/]+)/);
+    const pathParam = match ? match[1] : null;
 
-  mounted() {
-    this.fetchOrderById();
-  },
-  methods: {
-    fetchOrderById() {
-      HTTPS.get("order").then((res) => {
-        this.orders = res.data;
-        console.log(this.orders);
+    if (pathParam) {
+      HTTP.post("restaurant/find", { web_id: pathParam })
+        .then((res) => {
+          console.log(res);
+          if (res.data.length !== 0) {
+            localStorageImport("isRestaurant", true);
+            console.log(pathParam);
+            this.fetchOrders(pathParam);
+          } else {
+            this.fetchOrders(null);
+            this.$nextTick(() => {
+              localStorageRemove("isRestaurant");
+            });
+          }
+        })
+        .catch((error) => {
+          this.$nextTick(() => {
+            localStorageRemove("isRestaurant");
+          });
+        });
+    } else {
+      this.$nextTick(() => {
+        localStorageRemove("isRestaurant");
       });
+    }
+  },
+  mounted() {},
+  methods: {
+    fetchOrders(web_id) {
+      try {
+        HTTPS.get("order", { params: { web_id: web_id } }).then((res) => {
+          this.orders = res.data;
+          console.log(res);
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     viewOrderDetailbyId(id) {
-      localStorageImport("order_id",id)
-      this.$router.push({ name: "OrderDetails" })
+      localStorageImport("order_id", id);
+      if (localStorageExport("isRestaurant")) {
+        this.$router.push(`/${this.$route.params.web_id}/order-item`);
+      } else {
+        this.$router.push(`/order-item`);
+      }
     },
   },
   computed: {

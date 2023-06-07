@@ -1,15 +1,15 @@
 <template>
-    <div style="min-height:100vh">
+    <div >
   <div class="text-center text-lg">Order Detail</div>
   <div class="grid grid-cols-6 gap-4 container mx-auto">
     <div
       v-for="(item, index) in order_items"
-      :key="item.id"
+      :key="index"
       class="max-w-sm w-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
       <img
         class="rounded-t-lg"
-        v-bind:src="`/src/img/menu/${item.item.image}`"
+        v-bind:src="`/src/img/menu/${item.image}`"
         alt=""
       />
 
@@ -23,13 +23,15 @@
         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
           {{ item.item.title }} ({{ item.item.category }})
         </p>
+        <br>
+        
         <p class="mb-3 text-xl text-gray-700 dark:text-gray-400">
           ${{ item.item.price }}
         </p>
       </div>
     </div>
   </div>
-
+  
   <div class="ml-auto text-xl text-right">
     <div style="margin-right: 2rem">Total: ${{ total }}</div>
   </div>
@@ -47,12 +49,14 @@ export default {
     }).then((res) => {
       console.log(res);
       this.order_items = res.data;
+      
     });
     HTTPS.get("orderById", {
-      params: { id: localStorageExport("order_id") },
+      params: { id: localStorageExport("order_id"),web_id: this.$route.params.web_id },
     }).then((res) => {
       this.total = res.data.total;
-      this.data = res.data.created_at;
+      console.log(res)
+      this.created_at = res.data.created_at;
       this.note = res.data.note;
     });
   },

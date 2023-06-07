@@ -3,10 +3,14 @@
   <div class="container mx-auto">
     <div class="grid grid-cols-2 gap 4">
       <div class="">
-        <p style="font-weight: 600" class="text-7xl">Re-claim Your</p>
-        <br />
-        <p style="font-weight: 600" class="text-7xl">Online Order.</p>
-        
+        <div v-if="!isRestaurant">
+          <p style="font-weight: 600" class="text-7xl">Re-claim Your</p>
+          <br />
+          <p style="font-weight: 600" class="text-7xl">Online Order.</p>
+        </div>
+        <div v-if="isRestaurant">
+          <p style="font-weight: 600" class="text-7xl">{{ restaurant_name }}</p>
+        </div>
         <div class="mt-10 mb-10 text-2xl text-slate-400 pr-11">
           EHL.AI&#39;s online ordering platform empowers thousands of restaurant
           owners to regain control of their online ordering process. EHL.AI
@@ -15,8 +19,9 @@
         </div>
         <div>
           <button
+            v-if="!isRestaurant"
             @click.prevent="RegisterforRestaurant()"
-            class="bg-black px-4 py-4 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50 mb-10"
+            class="bg-black px-4 py-4 rounded-lg text-white hover:bg-black text-lg shadow-lg shadow-black/50 mb-10"
           >
             Re-claim your business
           </button>
@@ -59,10 +64,53 @@
   </div>
 </template>
 <script>
+import { HTTP } from "../axios/http-axios";
+import {
+  localStorageExport,
+  localStorageImport,
+  localStorageRemove,
+} from "../localStorage/local-storage";
 export default {
   data() {
-    return {};
+    return {
+      isRestaurant: localStorageExport("isRestaurant"),
+      restaurant_name: null,
+    };
   },
+  created() {
+    const url = window.location.pathname;
+    const match = url.match(/^\/([^/]+)/);
+    const pathParam = match ? match[1] : null;
+
+    if (pathParam) {
+      console.log(pathParam);
+      HTTP.post("restaurant/find", { web_id: pathParam })
+        .then((res) => {
+          console.log(res);
+          this.restaurant_name = res.data.name;
+          if (res.data.length != 0) {  
+              this.emitter.emit("isRestaurant", true);
+          } else {
+            this.$nextTick(() => {
+            localStorageRemove("isRestaurant");
+            this.$router.push("/");
+          });
+          }
+        })
+        .catch((error) => {
+          this.$nextTick(() => {
+            localStorageRemove("isRestaurant");
+            this.$router.push("/");
+          });
+        });
+    } else {
+      this.$nextTick(() => {
+        localStorageRemove("isRestaurant");
+        this.$router.push("/");
+      });
+    }
+  },
+
   mounted() {
     const items = document.querySelectorAll(".carousel-item");
     let currentItem = 0;

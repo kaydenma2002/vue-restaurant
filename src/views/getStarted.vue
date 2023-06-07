@@ -9,7 +9,7 @@
       <div>Book a free demo today</div>
       <div>
         or call us at
-        <p class="underline">571.505.1131</p>
+        <p class="underline">data@emersonhlee.com</p>
       </div>
     </div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">

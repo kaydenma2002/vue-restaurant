@@ -32,7 +32,7 @@
       >
         <li>
           <router-link
-            to="/"
+            :to="isRestaurant ? `/${$route.params.web_id}` : '/'"
             class="block py-2 pl-3 pr-4 rounded md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 text-gray-700 md:dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Home</router-link
@@ -40,7 +40,7 @@
         </li>
         <li>
           <router-link
-            to="/menu"
+            :to="isRestaurant ? `/${$route.params.web_id}/menu` : 'menu'"
             class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Menu</router-link
@@ -48,7 +48,7 @@
         </li>
         <li>
           <router-link
-            to="/Order"
+            :to="isRestaurant ? `/${$route.params.web_id}/Order` : 'Order'"
             class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Orders</router-link
@@ -56,7 +56,9 @@
         </li>
         <li>
           <router-link
-            to="/Services"
+            :to="
+              isRestaurant ? `/${$route.params.web_id}/Services` : 'Services'
+            "
             class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Services</router-link
@@ -65,7 +67,9 @@
 
         <li>
           <router-link
-            to="/ContactUs"
+            :to="
+              isRestaurant ? `/${$route.params.web_id}/ContactUs` : 'ContactUs'
+            "
             class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             aria-current="page"
             >Contact Us</router-link
@@ -73,6 +77,7 @@
         </li>
         <li>
           <button
+            v-if="isLoggedIn && !isRestaurant"
             @click.prevent="RegisterforRestaurant()"
             class="bg-black px-3 py-3 rounded-lg text-white hover:bg-black text-sm shadow-lg shadow-black/50"
           >
@@ -80,12 +85,40 @@
           </button>
         </li>
         <li>
-          <div v-if="isLoggedIn" class="cart-button">
-            <button class="bg-black" @click="navigateToPayment">
+          <div v-if="isLoggedIn && isRestaurant" class="cart-button">
+            <button class="bg-black" @click="show = !show">
               <font-awesome-icon icon="fa-solid fa-cart-shopping" />
+
               ({{ quantity }})
             </button>
           </div>
+          <Transition duration="550" name="nested" class="tooltip">
+            <div
+              v-if="show"
+              class="outer max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            >
+              <div class="inner">
+                <a href="#">
+                  <h5
+                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                  >
+                    My cart({{ quantity }})
+                  </h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+                <button
+                  @click.prevent="navigateToPayment()"
+                  type="button"
+                  class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                >
+                  Continue to Payment
+                </button>
+              </div>
+            </div>
+          </Transition>
         </li>
       </ul>
       <ul
@@ -190,14 +223,21 @@
 
 <script>
 import axios from "axios";
-import { localStorageExport } from "../localStorage/local-storage";
+import {
+  localStorageImport,
+  localStorageExport,
+  localStorageRemove,
+} from "../localStorage/local-storage";
 import Swal from "sweetalert2";
 import { numeric } from "@vuelidate/validators";
-import { HTTPS } from "../axios/http-axios";
+import { HTTP, HTTPS } from "../axios/http-axios";
+import { useRouter } from "vue-router";
+
 export default {
   data() {
     return {
       showMenu: false,
+      show: false,
       scrollPosition: null,
       isLoggedIn: false,
       quantity: String,
@@ -206,6 +246,7 @@ export default {
         name: "",
         email: "",
       },
+      isRestaurant: null,
     };
   },
   methods: {
@@ -217,17 +258,15 @@ export default {
     },
     navigateToPayment() {
       if (this.quantity != 0) {
-        this.$router.push("/pricing");
+        this.$router.push(`/${this.$route.params.web_id}/pricing`);
       } else {
         Swal.fire({
-  title: '<strong>You have not ordered yet !</strong>',
-  icon: 'error',
-  
-  
-  focusConfirm: false,
-  confirmButtonText:
-    '<a href="/menu">Click here to order.</a> '
-})
+          title: "<strong>You have not ordered yet !</strong>",
+          icon: "error",
+
+          focusConfirm: false,
+          confirmButtonText: `<a href="/${this.$route.params.web_id}/menu">Click here to order.</a> `,
+        });
       }
     },
 
@@ -257,20 +296,110 @@ export default {
       });
     },
   },
+
   mounted() {},
+
   created() {
-    window.addEventListener("scroll", this.updateScroll);
-    this.emitter.on("cartUpdated", () => {
-      HTTPS.get("cartByUserId")
+    const url = window.location.pathname;
+    const match = url.match(/^\/([^/]+)/);
+    const pathParam = match ? match[1] : null;
+    console.log(1);
+    if (pathParam) {
+      console.log(pathParam);
+      HTTP.post("restaurant/find", { web_id: pathParam })
         .then((res) => {
-          this.quantity = res.data.length;
+          console.log(res);
+          if (res.data.length != 0) {
+            this.emitter.emit("isRestaurant", true);
+            localStorageImport("isRestaurant", true);
+            this.$nextTick(() => {
+              this.isRestaurant = localStorageExport("isRestaurant");
+              HTTPS.get("cartByUserId", { params: { web_id: pathParam } })
+                .then((res) => {
+                  this.quantity = res.data.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + currentValue.quantity,
+                    0
+                  );
+                })
+                .catch((error) => console.log(error));
+            });
+          } else {
+            console.log(1);
+            localStorageRemove("isRestaurant");
+            this.$nextTick(() => {
+              this.isRestaurant = localStorageImport("isRestaurant");
+            });
+
+            this.$router.options.routes.forEach((route) => {
+              console.log(route);
+              if (this.$route.meta.guestOnly) {
+                if (route.path.substring(1) === pathParam) {
+                  this.$router.replace(pathParam);
+                }
+              } else {
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          this.$nextTick(() => {
+            localStorageRemove("isRestaurant");
+          });
+        });
+    } else {
+      this.$nextTick(() => {
+        localStorageRemove("isRestaurant");
+      });
+    }
+    window.addEventListener("scroll", this.updateScroll);
+    this.emitter.on("isRestaurant", () => {
+      HTTPS.get("cartByUserId", {
+        params: { web_id: this.$route.params.web_id },
+      })
+        .then((res) => {
+          if (
+            res.data.message != "empty cart" &&
+            res.data.message != "restaurant not exist"
+          ) {
+            localStorageImport("isRestaurant", true);
+            this.isRestaurant = localStorageExport("isRestaurant");
+            this.quantity = res.data.reduce(
+              (accumulator, currentValue) =>
+                accumulator + currentValue.quantity,
+              0
+            );
+          } else if (res.data.message == "empty cart") {
+            localStorageImport("isRestaurant", true);
+            this.isRestaurant = localStorageExport("isRestaurant");
+            this.quantity = 0;
+          } else {
+            localStorageRemove("isRestaurant");
+            this.isRestaurant = localStorageExport("isRestaurant");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+    this.emitter.on("cartUpdated", () => {
+      HTTPS.get("cartByUserId", { params: { web_id: pathParam } })
+        .then((res) => {
+          console.log(res);
+          this.quantity = res.data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.quantity,
+            0
+          );
         })
         .catch((error) => console.log(error));
     });
     this.emitter.on("removeCart", () => {
-      HTTPS.get("cartByUserId")
+      HTTPS.get("cartByUserId", { params: { web_id: pathParam } })
         .then((res) => {
-          this.quantity = res.data.length;
+          this.quantity = res.data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.quantity,
+            0
+          );
         })
         .catch((error) => console.log(error));
     });
@@ -281,14 +410,9 @@ export default {
           .then((res) => {
             this.user.email = res.data.email;
             this.user.name = res.data.name;
-            HTTPS.get("cartByUserId")
-              .then((res) => {
-                this.quantity = res.data.length;
-              })
-              .catch((error) => console.log(error));
           })
           .catch((error) => {
-            localStorage.removeItem("jwtToken");
+            localStorageRemove("jwtToken");
             this.$router.push("/login");
           });
       }
@@ -299,15 +423,9 @@ export default {
         .then((res) => {
           this.user.email = res.data.email;
           this.user.name = res.data.name;
-
-          HTTPS.get("cartByUserId")
-            .then((res) => {
-              this.quantity = res.data.length;
-            })
-            .catch((error) => console.log(error));
         })
         .catch((error) => {
-          localStorage.removeItem("jwtToken");
+          localStorageRemove("jwtToken");
           this.$router.push("/login");
         });
     }
@@ -318,6 +436,50 @@ export default {
 <style scoped>
 .change_color {
   background-color: black;
+}
+.nested-enter-active,
+.nested-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+/* delay leave of parent element */
+.nested-leave-active {
+  transition-delay: 0.25s;
+}
+
+.nested-enter-from,
+.nested-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+/* we can also transition nested elements using nested selectors */
+.nested-enter-active .inner,
+.nested-leave-active .inner {
+  transition: all 0.3s ease-in-out;
+}
+/* delay enter of nested element */
+.nested-enter-active .inner {
+  transition-delay: 0.25s;
+}
+
+.nested-enter-from .inner,
+.nested-leave-to .inner {
+  transform: translateX(30px);
+  /*
+  	Hack around a Chrome 96 bug in handling nested opacity transitions.
+    This is not needed in other browsers or Chrome 99+ where the bug
+    has been fixed.
+  */
+  opacity: 0.001;
+}
+.tooltip {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-radius: 4px;
+  display: inline-block;
 }
 .change_color_nav {
   color: white;

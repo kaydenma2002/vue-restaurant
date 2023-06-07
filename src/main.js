@@ -11,13 +11,15 @@ import Login from "./views/Login.vue";
 import getStarted from "./views/getStarted.vue";
 import SignUp from "./views/Signup.vue";
 import ForgotPassword from "./views/forgotPassword.vue";
-import Order from "./views/Order.vue"
+import Order from "./views/Order.vue";
 import OrderDetails from "./views/OrderDetails.vue";
 import { AcademicCapIcon } from "@vue-hero-icons/outline";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -25,9 +27,20 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-
+import "typeface-montserrat";
+import { BingMapsMap, BingMapsPushpin } from 'vue-bing-maps';
 /* add icons to the library */
-library.add(faCartShopping, faPlus, faMinus, faComment, faRobot, faPaperPlane, faMicrophone,faEye);
+library.add(
+  faCartShopping,
+  faPlus,
+  faMinus,
+  faTrash,
+  faComment,
+  faRobot,
+  faPaperPlane,
+  faMicrophone,
+  faEye
+);
 
 import { createRouter, createWebHistory } from "vue-router";
 import VueStripeElements from "vue-stripe-elements-plus";
@@ -38,7 +51,7 @@ import Chat from "vue3-beautiful-chat";
 
 import App from "./App.vue";
 import mitt from "mitt";
-import { HTTPS } from "./axios/http-axios"
+import { HTTPS } from "./axios/http-axios";
 const emitter = mitt();
 const pinia = createPinia();
 
@@ -46,25 +59,96 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/:catchAll(.*)",
+      redirect: "/",
+    },
+    {
       path: "/",
       name: "Home",
-      component: Home
+      component: Home,
+    },
+
+    //web_id
+    {
+      path: "/:web_id",
+      name: "Restaurant",
+      component: Home,
+    },
+    
+    {
+      path: "/:web_id/order",
+
+      component: Order,
+      meta: { authOnly: true },
+    },
+    {
+      path: "/:web_id/order-item",
+
+      component: OrderDetails,
+
+      meta: { authOnly: true },
     },
 
     {
+      path: "/:web_id/menu",
+
+      component: Menu,
+      meta: { authOnly: true },
+    },
+    {
+      path: "/:web_id/profile",
+
+      component: Profile,
+      meta: { authOnly: true },
+    },
+    {
+      path: "/:web_id/services",
+
+      component: Services,
+      meta: { authOnly: true },
+    },
+    {
+      path: "/:web_id/pricing",
+
+      component: Pricing,
+      meta: { authOnly: true },
+      
+    },
+    { path: "/:web_id/ContactUs", component: ContactUs },
+    {
+      path: "/:web_id/login",
+
+      component: Login,
+      meta: { guestOnly: true },
+    },
+    {
+      path: "/:web_id/SignUp",
+
+      component: SignUp,
+      meta: { guestOnly: true },
+    },
+    {
+      path: "/:web_id/forgotpassword",
+
+      component: ForgotPassword,
+      meta: { guestOnly: true },
+    },
+    //end web_id
+
+    {
       path: "/get-started",
-      name: "getStarted",
-      component: getStarted
+
+      component: getStarted,
     },
     {
       path: "/order",
-      name: "Order",
+
       component: Order,
       meta: { authOnly: true },
     },
     {
       path: "/order-item",
-      name: "OrderDetails",
+
       component: OrderDetails,
       
       meta: { authOnly: true },
@@ -72,53 +156,45 @@ const router = createRouter({
 
     {
       path: "/menu",
-      name: "Menu",
+
       component: Menu,
-      meta: { authOnly: true },
+      
     },
     {
       path: "/profile",
-      name: "Profile",
+
       component: Profile,
       meta: { authOnly: true },
     },
     {
       path: "/services",
-      name: "Services",
+
       component: Services,
       meta: { authOnly: true },
     },
     {
       path: "/pricing",
-      name: "pricing",
+
       component: Pricing,
       meta: { authOnly: true },
-      beforeEnter: (to, from, next) => {
-        HTTPS.get("cartByUserId").then(res =>{
-          if(res.data.length !== 0){
-            next();
-          }else {
-            next('/'); // redirect to /
-          }
-        })
-      }
+     
     },
-    { path: "/contactus", name: "ContactUs", component: ContactUs },
+    { path: "/ContactUs", component: ContactUs },
     {
       path: "/login",
-      name: "Login",
+
       component: Login,
       meta: { guestOnly: true },
     },
     {
       path: "/SignUp",
-      name: "Register",
+
       component: SignUp,
       meta: { guestOnly: true },
     },
     {
       path: "/forgotpassword",
-      name: "ForgotPassword",
+
       component: ForgotPassword,
       meta: { guestOnly: true },
     },
@@ -155,7 +231,6 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    
     next(); // make sure to always call next()!
   }
 });
@@ -171,8 +246,9 @@ app
       "178409542204-l33r0orgtr7st0blomdqpbv99f7iqr94.apps.googleusercontent.com",
   })
   .use(Chat);
-  app.config.globalProperties.eventEmitter = false
+app.config.globalProperties.eventEmitter = false;
 app.component("font-awesome-icon", FontAwesomeIcon);
+
 
 app.config.globalProperties.emitter = emitter;
 app.mount("#app");
