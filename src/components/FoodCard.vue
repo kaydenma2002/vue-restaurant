@@ -182,7 +182,7 @@ export default {
     price: Number,
     description: String,
     image: String,
-    quantity: String,
+    quantity: Number,
     enableAddToCart: {
       type: Boolean,
       default: true,
@@ -205,7 +205,7 @@ export default {
     };
   },
   created() {
-    console.log(this.id);
+    
     if (this.checkRoute(this.$route.fullPath) == true) {
       this.quantityConfirmPricing = this.quantity;
     }
@@ -222,8 +222,10 @@ export default {
       HTTPS.post("removeCartById", {
         id: id,
       }).then((res) => {
-        console.log(res);
+        
         this.emitter.emit("cartUpdated");
+      }).catch((err) =>{
+        console.log(err)
       });
     },
     closePopUp() {

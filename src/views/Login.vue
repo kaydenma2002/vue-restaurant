@@ -4,15 +4,7 @@
       <div
         class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6"
       >
-        <div
-          class="grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0"
-        >
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            class="w-full"
-            alt="Sample image"
-          />
-        </div>
+        
         <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
           <form @submit.prevent="submitFormDebounced()">
             <div
@@ -175,10 +167,10 @@
               </button>
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Don't have an account?
-                <a
-                  href="/SignUp"
+                <router-link
+                to="/SignUp"
                   class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
-                  >Register</a
+                  >Register</router-link
                 >
               </p>
             </div>

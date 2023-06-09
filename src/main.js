@@ -16,6 +16,8 @@ import OrderDetails from "./views/OrderDetails.vue";
 import { AcademicCapIcon } from "@vue-hero-icons/outline";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -39,7 +41,8 @@ library.add(
   faRobot,
   faPaperPlane,
   faMicrophone,
-  faEye
+  faEye,
+  faCalendarDays
 );
 
 import { createRouter, createWebHistory } from "vue-router";
@@ -48,7 +51,8 @@ import { createPinia } from "pinia";
 import vue3GoogleLogin from "vue3-google-login";
 import facebookLogin from "facebook-login-vuejs";
 import Chat from "vue3-beautiful-chat";
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import App from "./App.vue";
 import mitt from "mitt";
 import { HTTPS } from "./axios/http-axios";
@@ -93,7 +97,7 @@ const router = createRouter({
       path: "/:web_id/menu",
 
       component: Menu,
-      meta: { authOnly: true },
+      
     },
     {
       path: "/:web_id/profile",
@@ -248,6 +252,7 @@ app
   .use(Chat);
 app.config.globalProperties.eventEmitter = false;
 app.component("font-awesome-icon", FontAwesomeIcon);
+app.component('VueDatePicker', VueDatePicker);
 
 
 app.config.globalProperties.emitter = emitter;

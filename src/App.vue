@@ -4,6 +4,7 @@ import Chatbot from "./components/Chatbot.vue";
 import Chat from "./components/Chat.vue";
 import Footer from "./components/Footer.vue";
 import { HTTP } from "./axios/http-axios"
+
 export default {
   data() {
     return {

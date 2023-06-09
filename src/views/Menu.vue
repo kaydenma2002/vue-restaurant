@@ -22,7 +22,9 @@
           >
             <div class="w-full md:w-1/2">
               <form class="flex items-center">
-                <label for="simple-search" class="sr-only">Search</label>
+                <label for="simple-search" class="sr-only"
+                  >Enter your zip code</label
+                >
                 <div class="relative w-full">
                   <div
                     class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -47,7 +49,7 @@
                     @input="search"
                     id="simple-search"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Search"
+                    placeholder="Enter your zip code"
                     required=""
                   />
                 </div>
@@ -178,34 +180,44 @@
     >
       {{ restaurant_name }}
     </div>
-    <div v-for="(category, index) in categories" :key="index" class="row menu">
-      <div
-        class="mt-5 text-center mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-4xl lg:text-5xl"
-        v-if="items.some((item) => item.category === category)"
+    <div class="flex space-x-4 mb-4">
+      <button
+        @click="showAllItems"
+        :class="{ 'bg-black text-white': selectedCategory === null }"
+        class="px-4 py-2 rounded"
+      >
+        All
+      </button>
+      <button
+        v-for="category in categories"
+        :key="category"
+        @click="showItemsByCategory(category)"
+        :class="{ 'bg-black text-white': selectedCategory === category }"
+        class="px-4 py-2 rounded"
       >
         {{ category }}
-      </div>
-      <div
-        class="xl:w-auto sm:w-auto lg:w-auto md:w-auto w-auto m-auto h-auto mt-5 grid grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 gap-4 mb-10"
-      >
-        <div
-          v-for="(item, index) in filteredItems(category)"
-          :key="index"
-          class="box-content ..."
-        >
-          <div class="overlay h-full h-auto">
-            <FoodCard
-              :restaurant_id="item.restaurant_id"
-              :id="item.id"
-              :name="item.title"
-              :description="item.description"
-              :price="item.price"
-              :image="item.image"
-            />
-          </div>
+      </button>
+    </div>
+
+    <div class="">
+  <div v-for="category in categories" :key="category">
+    <h2 v-if="category === selectedCategory || selectedCategory === null"  class="text-2xl font-bold mb-2 bg-black text-white my-20">{{ category }}</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div v-for="(item, index) in filteredItems(category)" :key="index" class="box-content">
+        <div class="overlay h-full h-auto">
+          <FoodCard
+            :restaurant_id="item.restaurant_id"
+            :id="item.id"
+            :name="item.title"
+            :description="item.description"
+            :price="item.price"
+            :image="item.image"
+          />
         </div>
       </div>
     </div>
+  </div>
+</div>
   </div>
 </template>
 <script>
@@ -247,86 +259,19 @@ export default {
       previousLoading: false,
       nextLoading: false,
       isRestaurant: localStorageExport("isRestaurant"),
-      items: String,
+      items: [],
       categories: [],
+      selectedCategory: null,
     };
   },
   methods: {
-    retrieveFromCache(pathParam) {
-      const cachedData = localStorage.getItem(pathParam);
-      if (cachedData) {
-        return JSON.parse(cachedData);
-      }
-      return null;
-    },
-
-    storeInCache(pathParam, data) {
-      localStorage.setItem(pathParam, JSON.stringify(data));
-    },
-
-    fetchData(pathParam) {
-      try {
-        console.log(pathParam);
-
-        const [restaurantResponse, menuResponse] = Promise.all([
-          HTTP.post("restaurant/find", { web_id: pathParam }),
-          HTTP.post("menu", { web_id: pathParam }),
-        ]);
-
-        console.log(restaurantResponse);
-
-        if (restaurantResponse.data.length !== 0) {
-          this.restaurant_name = restaurantResponse.data.name;
-          localStorageImport("isRestaurant", true);
-
-          this.items = menuResponse.data;
-
-          for (var i = 0; i < this.items.length; i++) {
-            this.categories.push(this.items[i].category);
-          }
-          this.categories = [...new Set(this.categories)];
-
-          localStorageImport("isRestaurant", true);
-
-          this.isRestaurant = localStorageExport("isRestaurant");
-          this.emitter.emit("isRestaurant", true);
-
-          this.storeInCache(pathParam, { restaurantResponse, menuResponse });
-        } else {
-          this.$nextTick(() => {
-            localStorageRemove("isRestaurant");
-            this.isRestaurant = localStorageExport("isRestaurant");
-          });
-        }
-      } catch (error) {
-        this.$nextTick(() => {
-          localStorageRemove("isRestaurant");
-        });
-        console.log(error);
-      }
-    },
-
-    processData(cachedData) {
-      const { restaurantResponse, menuResponse } = cachedData;
-
-      this.restaurant_name = restaurantResponse.data.name;
-
-      this.items = menuResponse.data;
-
-      for (var i = 0; i < this.items.length; i++) {
-        this.categories.push(this.items[i].category);
-      }
-      this.categories = [...new Set(this.categories)];
-    },
     ViewRestaurant(web_id) {
       HTTP.post("restaurant/find", { web_id: web_id })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.data.length != 0) {
-            
-              this.emitter.emit("isRestaurant", true);
-              
-            
+            this.emitter.emit("isRestaurant", true);
+
             this.$router.push(`/${web_id}`);
           } else {
             this.$nextTick(() => {
@@ -343,6 +288,21 @@ export default {
             this.$router.push("/");
           });
         });
+    },
+    async fetchCategoriesAndItems(web_id) {
+      try {
+        const response = await HTTP.post("menu", { web_id: web_id });
+        this.categories = response.data.category;
+        this.items = response.data.item;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    showAllItems() {
+      this.selectedCategory = null;
+    },
+    showItemsByCategory(category) {
+      this.selectedCategory = category;
     },
 
     search: debounce(async function () {
@@ -382,9 +342,25 @@ export default {
       zip_code: { required, numeric },
     };
   },
+  computed: {
+    filteredItems() {
+      return (category) => {
+        return this.displayedItems.filter((item) => item.category === category);
+      };
+    },
+    displayedItems() {
+      if (this.selectedCategory === null) {
+        return this.items;
+      } else {
+        return this.items.filter(
+          (item) => item.category === this.selectedCategory
+        );
+      }
+    },
+  },
   created() {
     console.log(localStorageExport("isRestaurant"));
-
+    
     const url = window.location.pathname;
     const match = url.match(/^\/([^/]+)/);
     const pathParam = match ? match[1] : null;
@@ -397,16 +373,15 @@ export default {
           this.restaurant_name = res.data.name;
           if (res.data.length != 0) {
             localStorageImport("isRestaurant", true);
+            this.fetchCategoriesAndItems(pathParam);
             this.$nextTick(() => {
               this.isRestaurant = localStorageExport("isRestaurant");
               this.emitter.emit("isRestaurant", true);
             });
           } else {
-            
-              this.emitter.emit("isRestaurant", true);
-              localStorageRemove("isRestaurant");
-              this.isRestaurant = localStorageExport("isRestaurant");
-            
+            this.emitter.emit("isRestaurant", true);
+            localStorageRemove("isRestaurant");
+            this.isRestaurant = localStorageExport("isRestaurant");
           }
         })
         .catch((error) => {
@@ -414,14 +389,6 @@ export default {
             localStorageRemove("isRestaurant");
           });
         });
-      this.fetchRestaurants();
-      const cachedData = this.retrieveFromCache(pathParam);
-
-      if (cachedData) {
-        this.processData(cachedData);
-      } else {
-        this.fetchData(pathParam);
-      }
     } else {
       this.$nextTick(() => {
         localStorageRemove("isRestaurant");
@@ -429,13 +396,6 @@ export default {
     }
 
     this.search();
-  },
-
-  computed: {
-    filteredItems() {
-      return (category) =>
-        this.items.filter((item) => item.category == category);
-    },
   },
 };
 </script>

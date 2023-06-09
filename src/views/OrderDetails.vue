@@ -1,41 +1,38 @@
 <template>
-    <div >
-  <div class="text-center text-lg">Order Detail</div>
-  <div class="grid grid-cols-6 gap-4 container mx-auto">
-    <div
-      v-for="(item, index) in order_items"
-      :key="index"
-      class="max-w-sm w-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-    >
-      <img
-        class="rounded-t-lg"
-        v-bind:src="`/src/img/menu/${item.image}`"
-        alt=""
-      />
-
-      <div class="p-5">
-        <h5
-          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+  <div class="p-4">
+    <h2 class="text-2xl font-bold mb-4">Order Details</h2>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="p-6">
+        <div
+          v-for="(item, index) in items"
+          :key="index"
+          class="flex items-center mb-6"
         >
-          {{ index + 1 }}
-        </h5>
+          <img
+            :src="item.item.image"
+            alt="Product Image"
+            class="w-20 h-20 mr-4"
+          />
+          <div>
+            <h3 class="text-lg font-semibold">{{ item.item.title }}</h3>
+            <p class="text-gray-500">Quantity: {{ item.quantity }}</p>
+          </div>
+        </div>
+        <div class="mt-8">
 
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {{ item.item.title }} ({{ item.item.category }})
-        </p>
-        <br>
-        
-        <p class="mb-3 text-xl text-gray-700 dark:text-gray-400">
-          ${{ item.item.price }}
-        </p>
+          <div class="mt-4 text-right">
+            <span class="text-gray-500">Date:</span>
+            <span class="font-medium">{{ created_at }}</span>
+          </div>
+          
+          <div class="mt-4 text-right">
+            <span class="text-gray-500">Total Price:</span>
+            <span class="font-semibold">${{ total }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-  <div class="ml-auto text-xl text-right">
-    <div style="margin-right: 2rem">Total: ${{ total }}</div>
-  </div>
-</div>
 </template>
 <script>
 import { HTTP, HTTPS } from "../axios/http-axios";
@@ -48,21 +45,23 @@ export default {
       params: { id: localStorageExport("order_id") },
     }).then((res) => {
       console.log(res);
-      this.order_items = res.data;
-      
+      this.items = res.data;
     });
     HTTPS.get("orderById", {
-      params: { id: localStorageExport("order_id"),web_id: this.$route.params.web_id },
+      params: {
+        id: localStorageExport("order_id"),
+        web_id: this.$route.params.web_id,
+      },
     }).then((res) => {
       this.total = res.data.total;
-      console.log(res)
+      console.log(res);
       this.created_at = res.data.created_at;
       this.note = res.data.note;
     });
   },
   data() {
     return {
-      order_items: "",
+      items: "",
       order_id: "",
       note: "",
       total: "",

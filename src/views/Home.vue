@@ -1,62 +1,59 @@
 <script></script>
 <template>
   <div class="container mx-auto">
-    <div class="grid grid-cols-2 gap 4">
-      <div class="">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:pr-11">
         <div v-if="!isRestaurant">
-          <p style="font-weight: 600" class="text-7xl">Re-claim Your</p>
-          <br />
-          <p style="font-weight: 600" class="text-7xl">Online Order.</p>
+          <p class="font-semibold text-4xl md:text-7xl mb-4">Re-claim Your</p>
+          <p class="font-semibold text-4xl md:text-7xl mb-10">Online Order.</p>
         </div>
         <div v-if="isRestaurant">
-          <p style="font-weight: 600" class="text-7xl">{{ restaurant_name }}</p>
+          <p class="font-semibold text-4xl md:text-7xl">{{ restaurant_name }}</p>
         </div>
-        <div class="mt-10 mb-10 text-2xl text-slate-400 pr-11">
-          EHL.AI&#39;s online ordering platform empowers thousands of restaurant
+        <p class="text-base md:text-lg lg:text-2xl text-slate-400 mb-10">
+          EHL.AI's online ordering platform empowers thousands of restaurant
           owners to regain control of their online ordering process. EHL.AI
           charges a small platform fee, ensuring that restaurant owners keep
           more profits.
-        </div>
-        <div>
-          <button
-            v-if="!isRestaurant"
-            @click.prevent="RegisterforRestaurant()"
-            class="bg-black px-4 py-4 rounded-lg text-white hover:bg-black text-lg shadow-lg shadow-black/50 mb-10"
-          >
-            Re-claim your business
-          </button>
-        </div>
+        </p>
+        <button
+          v-if="!isRestaurant"
+          @click.prevent="RegisterforRestaurant()"
+          class="bg-black px-3 py-3 rounded-lg text-white text-base md:text-lg lg:text-xl text-slate-400 mb-10"
+        >
+          Re-claim your business
+        </button>
       </div>
 
       <div
         id="indicators-carousel"
-        class="relative w-full"
+        class="relative w-full h-96 md:h-auto"
         data-carousel="static"
       >
         <!-- Carousel wrapper -->
-        <div class="relative h-96 w-auto overflow-hidden rounded-lg">
+        <div class="relative w-full h-full overflow-hidden rounded-lg">
           <!-- Item 1 -->
           <div class="carousel-item active">
-            <img src="/src/img/home/com_tam_1.jpg" alt="..." />
+            <img src="/src/img/home/com_tam_1.jpg" alt="..." class="w-full h-full object-cover">
           </div>
           <!-- Item 2 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com_tam_2.jpg" alt="..." />
+            <img src="/src/img/home/com_tam_2.jpg" alt="..." class="w-full h-full object-cover">
           </div>
           <!-- Item 3 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_1.jpg" alt="..." />
+            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_1.jpg" alt="..." class="w-full h-full object-cover">
           </div>
           <!-- Item 4 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_2.jpg" alt="..." />
+            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_2.jpg" alt="..." class="w-full h-full object-cover">
           </div>
           <!-- Item 5 -->
           <div class="carousel-item">
-            <img src="/src/img/home/Cơm-Tấm_1.jfif" alt="..." />
+            <img src="/src/img/home/Cơm-Tấm_1.jfif" alt="..." class="w-full h-full object-cover">
           </div>
           <div class="carousel-item">
-            <img src="/src/img/home/Cơm-Tấm_2.jpg" alt="..." />
+            <img src="/src/img/home/Cơm-Tấm_2.jpg" alt="..." class="w-full h-full object-cover">
           </div>
         </div>
       </div>
