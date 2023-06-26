@@ -26,8 +26,9 @@
                     :price="item?.item?.price"
                     :image="item?.image"
                     :quantity="item?.quantity"
-                    :enableAddToCart="false"
-                    :enableRemoveFromCart="true"
+                    :index="index"
+                    @deleteItemFromCart="deleteItemFromCart(item?.id,index)"
+                    @confirmIncreaseQuantity="confirmIncreaseQuantity(index,$event)"                    @confirmDecreaseQuantity="confirmDecreaseQuantity(index,$event)"
                   />
                 </div>
                 <div v-if="!Cart">
@@ -99,6 +100,14 @@ export default {
   },
   mounted() {},
   created() {
+    if(localStorageExport(`cookie-${this.$route.params.web_id}`)){
+      HTTPS.post("combineCart",{cookie: localStorageExport(`cookie-${this.$route.params.web_id}`)}).then(res =>{
+        this.emitter.emit("cartUpdated",true)
+      }).catch(error =>{
+        console.log(error)
+      })
+    }
+    
     this.emitter.on("cartUpdated", () => {
       HTTPS.get("cartByUserId", {
         params: { web_id: this.$route.params.web_id },
@@ -118,6 +127,7 @@ export default {
           } else if (res.data.message == "empty cart") {
             this.Cart = null
           for (var i = 0; i < res.data.length; i++) {
+            console.log(this.Cart)
             this.item_id.push(this.Cart[i].item_id);
           }
           localStorageImport("isRestaurant", true);
@@ -133,32 +143,78 @@ export default {
     HTTPS.get("cartByUserId", {
       params: { web_id: this.$route.params.web_id },
     })
-      .then((res) => {
-        if (
-          res.data.message != "empty cart" &&
-          res.data.message != "restaurant not exist"
-        ) {
-          this.Cart = res.data;
-          console.log(res);
+    .then((res) => {
+          if (
+            res.data.message != "empty cart" &&
+            res.data.message != "restaurant not exist"
+          ) {
+            this.Cart = res.data;
+            console.log(res);
+            for (var i = 0; i < res.data.length; i++) {
+              this.item_id.push(this.Cart[i].item_id);
+            }
+            localStorageImport("isRestaurant", true);
+            this.isRestaurant = localStorageExport("isRestaurant");
+          } else if (res.data.message == "empty cart") {
+            this.Cart = null
           for (var i = 0; i < res.data.length; i++) {
+            console.log(this.Cart)
             this.item_id.push(this.Cart[i].item_id);
           }
           localStorageImport("isRestaurant", true);
           this.isRestaurant = localStorageExport("isRestaurant");
-        } else if (res.data.message == "empty cart") {
-          this.$nextTick(() => {
-            this.Cart = null;
-          });
-          localStorageImport("isRestaurant", true);
-          this.isRestaurant = localStorageExport("isRestaurant");
-        } else {
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   },
   methods: {
+    deleteItemFromCart(id,index){
+      HTTPS.post("removeCartById", {
+        id: id,
+        
+      }).then((res) => {
+        this.$nextTick(() =>{
+          this.Cart.splice(index,1)
+          
+        this.emitter.emit("cartUpdated");
+        })
+      }).catch((err) =>{
+        
+      });
+    },
+    confirmIncreaseQuantity(index,newQuantity){
+      this.Cart[index].quantity = newQuantity;
+      console.log(newQuantity)
+      HTTPS.post("updateCartById", {
+        id: this.Cart[index].id,
+        type: "increase",
+        quantity: newQuantity,
+      })
+        .then((res) => {
+          this.emitter.emit("cartUpdated");
+        })
+        .catch((error) => {
+          
+        });
+    },
+    confirmDecreaseQuantity(index,newQuantity){
+      this.Cart[index].quantity = newQuantity;
+      console.log(newQuantity)
+      HTTPS.post("updateCartById", {
+        id: this.Cart[index].id,
+        type: "decrease",
+        quantity: newQuantity,
+      })
+        .then((res) => {
+          this.emitter.emit("cartUpdated");
+        })
+        .catch((error) => {
+          
+        });
+    },
     updateCardNumber(cardNumber) {
       this.cardNumber = cardNumber;
     },

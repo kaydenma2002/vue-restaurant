@@ -4,7 +4,6 @@
       <div
         class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6"
       >
-        
         <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
           <form @submit.prevent="submitFormDebounced()">
             <div
@@ -85,15 +84,7 @@
                 type="text"
                 id="email"
                 v-model="email"
-                class="py-3
-                      px-4
-                      block
-                      w-full
-                      border-2 border-gray-200
-                      rounded-md
-                      text-sm
-                      focus:border-black focus:ring-black
-                      shadow-sm"
+                class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                 placeholder="Email address"
               />
               <span v-if="v$.email.$error">
@@ -105,15 +96,7 @@
             <div class="mb-6">
               <input
                 type="password"
-                class="py-3
-                      px-4
-                      block
-                      w-full
-                      border-2 border-gray-200
-                      rounded-md
-                      text-sm
-                      focus:border-black focus:ring-black
-                      shadow-sm"
+                class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-black focus:ring-black shadow-sm"
                 id="password"
                 placeholder="Password"
                 v-model="password"
@@ -168,7 +151,7 @@
               <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                 Don't have an account?
                 <router-link
-                to="/SignUp"
+                  to="/SignUp"
                   class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                   >Register</router-link
                 >
@@ -191,6 +174,7 @@ import Swal from "sweetalert2";
 import {
   localStorageImport,
   localStorageExport,
+  localStorageRemove,
 } from "../localStorage/local-storage";
 import { decodeCredential } from "vue3-google-login";
 
@@ -209,7 +193,10 @@ export default {
       password: { required, minLengthValue: minLength(8) },
     };
   },
-
+  created() {
+    console.log(localStorageExport("isRestaurant"));
+    console.log(localStorageExport("isPayment"));
+  },
   methods: {
     async TraditionalLogin() {
       this.v$.$validate();
@@ -230,7 +217,22 @@ export default {
                 "success"
               ).then((res) => {
                 this.emitter.emit("login", true);
-                this.$router.push("/");
+                console.log(localStorageExport("isRestaurant"));
+
+                if (localStorageExport("isRestaurant")) {
+                  console.log(1)
+                  if (localStorageExport("toPayment")) {
+                    console.log(1)
+                    localStorageRemove("toPayment");
+                    this.$router.push(`/${this.$route.params.web_id}/pricing`);
+                    console.log(localStorageExport("isRestaurant"));
+                  } else {
+                    console.log(localStorageExport("isRestaurant"));
+                    this.$router.push(`/${this.$route.params.web_id}`);
+                  }
+                } else {
+                  this.$router.push("/");
+                }
               });
             })
             .catch((error) => {

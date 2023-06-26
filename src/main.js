@@ -5,7 +5,6 @@ import Home from "./views/Home.vue";
 import Menu from "./views/Menu.vue";
 import Services from "./views/Services.vue";
 import Pricing from "./views/Pricing.vue";
-import ContactUs from "./views/ContactUs.vue";
 import Profile from "./views/Profile.vue";
 import Login from "./views/Login.vue";
 import getStarted from "./views/getStarted.vue";
@@ -118,7 +117,7 @@ const router = createRouter({
       meta: { authOnly: true },
       
     },
-    { path: "/:web_id/ContactUs", component: ContactUs },
+    
     {
       path: "/:web_id/login",
 
@@ -183,7 +182,7 @@ const router = createRouter({
       meta: { authOnly: true },
      
     },
-    { path: "/ContactUs", component: ContactUs },
+    
     {
       path: "/login",
 

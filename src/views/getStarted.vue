@@ -5,6 +5,7 @@
       tools to help grow your <br />
       restaurant business online
     </div>
+    
     <div class="text-center text-2xl mt-10">
       <div>Book a free demo today</div>
       <div>
@@ -78,9 +79,8 @@
                 <tr
                   v-for="(item, index) in restaurant"
                   :key="index"
-                  
                   class="cursor-pointer bg-gray-200 border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  @click="item.status == 'Pending' ? claimRestaurant(item.restaurant_id): null"
+                  @click="claimRestaurant(item.restaurant_id, item.status)"
                 >
                   <th
                     scope="row"
@@ -215,16 +215,12 @@ import {
   minLength,
 } from "@vuelidate/validators";
 import { debounce } from "lodash";
-
+import { localStorageExport } from "../localStorage/local-storage";
 export default {
   data() {
     return {
       v$: useValidate(),
-      name: "",
-      email: "",
-      company: "",
-      phone: "",
-      zip_code: "",
+      file: "",
       restaurant: [],
       searchTerm: "",
       total: "",
@@ -236,18 +232,14 @@ export default {
     };
   },
   methods: {
-    submitReservation(id) {
+    submitClaimYourRestaurant(id, file) {
       this.v$.$validate(); // checks all
-      console.log(this.v$);
+      console.log(file);
       if (!this.v$.$error) {
         // if ANY fail validation
-        HTTP.post("/create/demo", {
+        HTTP.post("/create/claim", {
           restaurant_id: id,
-          name: this.name,
-          company: this.company,
-          zip_code: this.zip_code,
-          email: this.email,
-          phone: this.phone,
+          file: file,
         })
           .then(
             Swal.fire(
@@ -269,36 +261,53 @@ export default {
         console.log(this.v$.$error);
       }
     },
-    async claimRestaurant(id) {
-      Swal.fire({
-        title: "PLease enter client details",
-        html:
-          '<input id="input1" class="swal2-input" placeholder="Enter name">' +
-          '<input id="input2" class="swal2-input" placeholder="Enter email">' +
-          '<input id="input3" class="swal2-input" placeholder="Enter phone">' +
-          '<input id="input4" class="swal2-input" placeholder="Enter zip_code">' +
-          '<input id="input5" class="swal2-input" placeholder="Enter company">',
-        focusConfirm: false,
-        preConfirm: () => {
-          return [
-            document.getElementById("input1").value,
-            document.getElementById("input2").value,
-            document.getElementById("input3").value,
-            document.getElementById("input4").value,
-            document.getElementById("input5").value,
-          ];
-        },
-      }).then((result) => {
-        if (result.value) {
-          const inputValues = result.value;
-          this.name = inputValues[0];
-          this.email = inputValues[1];
-          this.phone = inputValues[2];
-          this.zip_code = inputValues[3];
-          this.company = inputValues[4];
-          this.submitReservation(id);
+    async claimRestaurant(id, status) {
+      if (!localStorageExport("jwtToken")) {
+        Swal.fire({
+          title: "Authentication issue?",
+          text: "You need to login to be able to claim restaurants",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Login",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push("/login");
+          }
+        });
+      } else {
+        if(status ==="Pending"){
+          const { value: file } = await Swal.fire({
+          title: "Select image",
+          input: "file",
+          inputAttributes: {
+            accept: "image/*",
+            "aria-label": "Upload your profile picture",
+          },
+        });
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            console.log(e.target.result)
+            HTTPS.post('create/claim',{
+              file: e.target.result,
+              restaurant_id: id
+            }).then(res =>{
+              console.log(res)
+            }).catch(error => {
+              console.log(error)
+            })
+          };
+          reader.readAsDataURL(file);
+        } else {
+
         }
-      });
+        }else{
+
+        }
+      }
     },
 
     search: debounce(async function () {
@@ -329,11 +338,7 @@ export default {
   },
   validations() {
     return {
-      name: { required },
-      email: { required, minLengthValue: minLength(10), email },
-      company: { required, minLengthValue: minLength(10) },
-      phone: { required },
-      zip_code: { required, numeric },
+      file: { required },
     };
   },
   created() {

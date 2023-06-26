@@ -23,25 +23,25 @@
         </p>
         <p class="text-lg text-gray-700 dark:text-gray-400">${{ price }}</p>
         <div
-          v-if="quantityConfirmPricing != null"
+          v-if="quantity != null"
           class="flex mb-2 px-16 mt-2 justify-between"
         >
           <button
             :class="{
-              'cursor-not-allowed': quantityConfirmPricing <= 1,
+              'cursor-not-allowed': quantity <= 1,
               'focus:outline-none': true,
             }"
-            :disabled="quantityConfirmPricing <= 1"
-            @click.stop.prevent="confirmDecreaseQuantity(id)"
+            :disabled="quantity <= 1"
+            @click.stop.prevent="confirmDecreaseQuantity(index)"
           >
             <font-awesome-icon
               class="text-gray-900 bg-gray-300 hover:bg-gray-400 rounded p-2 transition duration-250"
               :icon="['fas', 'minus']"
             />
           </button>
-          <div class="">{{ quantityConfirmPricing }}</div>
+          <div class="">{{ quantity }}</div>
           <button
-            @click.stop.prevent="confirmIncreaseQuantity(id)"
+            @click.stop.prevent="confirmIncreaseQuantity(index)"
             :class="{ 'focus:outline-none': true }"
           >
             <font-awesome-icon
@@ -52,7 +52,7 @@
         </div>
         <div class="text-right">
           <button
-            v-if="quantityConfirmPricing != null"
+            v-if="quantity != null"
             @click.stop.prevent="deleteItemFromCart(id)"
             :class="{ 'focus:outline-none': true }"
           >
@@ -176,6 +176,7 @@ import {
 export default {
   props: {
     id: Number,
+    index: Number,
     restaurant_id: Number,
     name: String,
     category: String,
@@ -191,6 +192,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    deleteItemFromCart: {
+      type: Function
+    },
+    confirmIncreaseQuantity: {
+      type: Function
+    },
+    confirmDecreaseQuantity: {
+      type: Function
+    }
   },
 
   data() {
@@ -200,15 +210,13 @@ export default {
       nameConfirm: null,
       priceConfirm: null,
       quantityConfirm: 1,
-      quantityConfirmPricing: null,
+      
       descriptionConfirm: null,
     };
   },
   created() {
     
-    if (this.checkRoute(this.$route.fullPath) == true) {
-      this.quantityConfirmPricing = this.quantity;
-    }
+    
   },
 
   methods: {
@@ -219,46 +227,21 @@ export default {
       return pattern.test(route);
     },
     deleteItemFromCart(id) {
-      HTTPS.post("removeCartById", {
-        id: id,
-      }).then((res) => {
-        
-        this.emitter.emit("cartUpdated");
-      }).catch((err) =>{
-        console.log(err)
-      });
+      
+      this.$emit('deleteItemFromCart', id);
     },
     closePopUp() {
       this.quantityConfirm = 1;
       this.showPopup = false;
     },
-    confirmIncreaseQuantity(id) {
-      this.quantityConfirmPricing++;
-      HTTPS.post("updateCartById", {
-        id: id,
-        type: "increase",
-        quantity: this.quantityConfirmPricing,
-      })
-        .then((res) => {
-          this.emitter.emit("cartUpdated");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    confirmIncreaseQuantity() {
+      this.$emit('confirmIncreaseQuantity', this.quantity + 1);
+      
     },
-    confirmDecreaseQuantity(id) {
-      this.quantityConfirmPricing--;
-      HTTPS.post("updateCartById", {
-        id: id,
-        type: "increase",
-        quantity: this.quantityConfirmPricing,
-      })
-        .then((res) => {
-          this.emitter.emit("cartUpdated");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    confirmDecreaseQuantity() {
+      this.$emit('confirmDecreaseQuantity', this.quantity - 1);
+      this.quantity--;
+      
     },
     decreaseQuantity() {
       this.$nextTick(() => {
@@ -293,9 +276,10 @@ export default {
       if (pathParam) {
         HTTP.post("restaurant/find", { web_id: pathParam })
           .then((res) => {
-            console.log(res);
+            
             if (res.data.length != 0) {
-              HTTPS.post("/create/cart", {
+              if(localStorageExport("jwtToken")){
+                HTTPS.post("/create/cart", {
                 restaurant_id: parseInt(restaurant_id),
                 item_id: item_id,
                 quantity: quantity,
@@ -308,10 +292,30 @@ export default {
                 })
                 .catch((error) => {
                   this.emitter.emit("cartUpdated");
-                  console.log(error);
-                });
+                  
+                })
+              }else{
+                
+                HTTP.post("/create/cartBeforeLogin", {
+                cookie: localStorageExport(`cookie-${this.$route.params.web_id}`),
+                restaurant_id: parseInt(restaurant_id),
+                item_id: item_id,
+                quantity: quantity,
+              })
+                .then((res) => {
+                  
+                  this.emitter.emit("isRestaurant", true);
+                  localStorageImport("isRestaurant", true);
+                  this.isRestaurant = localStorageExport("isRestaurant");
+                  this.emitter.emit("cartUpdated");
+                })
+                .catch((error) => {
+                  this.emitter.emit("cartUpdated");
+                  
+                })
+              }
             } else {
-              console.log(80);
+              
             }
           })
           .catch((error) => {
@@ -334,7 +338,7 @@ export default {
           this.emitter.emit("cartUpdated");
         })
         .catch((error) => {
-          console.log(error);
+          
         });
     },
   },

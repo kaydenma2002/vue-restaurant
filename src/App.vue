@@ -45,8 +45,9 @@ export default {
     <div style="margin-top: 8rem"></div>
     <Chat v-if="$route.meta.authOnly == true" />
     <Chatbot v-if="$route.meta.authOnly == true" />
+    <Footer />
     <router-view></router-view>
 
-    <Footer />
+    
   </div>
 </template>

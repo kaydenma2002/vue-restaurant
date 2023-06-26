@@ -200,24 +200,33 @@
     </div>
 
     <div class="">
-  <div v-for="category in categories" :key="category">
-    <h2 v-if="category === selectedCategory || selectedCategory === null"  class="text-2xl font-bold mb-2 bg-black text-white my-20">{{ category }}</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      <div v-for="(item, index) in filteredItems(category)" :key="index" class="box-content">
-        <div class="overlay h-full h-auto">
-          <FoodCard
-            :restaurant_id="item.restaurant_id"
-            :id="item.id"
-            :name="item.title"
-            :description="item.description"
-            :price="item.price"
-            :image="item.image"
-          />
+      <div v-for="category in categories" :key="category">
+        <h2
+          v-if="category === selectedCategory || selectedCategory === null"
+          class="text-2xl font-bold mb-2 bg-black text-white my-20"
+        >
+          {{ category }}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div
+            v-for="(item, index) in filteredItems(category)"
+            :key="index"
+            class="box-content"
+          >
+            <div class="overlay h-full h-auto">
+              <FoodCard
+                :restaurant_id="item.restaurant_id"
+                :id="item.id"
+                :name="item.title"
+                :description="item.description"
+                :price="item.price"
+                :image="item.image"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
   </div>
 </template>
 <script>
@@ -265,29 +274,25 @@ export default {
     };
   },
   methods: {
-    ViewRestaurant(web_id) {
-      HTTP.post("restaurant/find", { web_id: web_id })
-        .then((res) => {
-          console.log(res);
-          if (res.data.length != 0) {
-            this.emitter.emit("isRestaurant", true);
+    async ViewRestaurant(web_id) {
+      try {
+        const res = await HTTP.post("restaurant/find", { web_id: web_id });
 
-            this.$router.push(`/${web_id}`);
-          } else {
-            this.$nextTick(() => {
-              localStorageRemove("isRestaurant");
-              this.isRestaurant = localStorageExport("isRestaurant");
-            });
-
-            this.$router.push("/");
-          }
-        })
-        .catch((error) => {
+        if (res.data.length !== 0) {
+          this.emitter.emit("isRestaurant", true);
           this.$nextTick(() => {
-            localStorageRemove("isRestaurant");
-            this.$router.push("/");
+            this.$router.push(`/${web_id}`);
           });
-        });
+        } else {
+          localStorageRemove("isRestaurant");
+          this.isRestaurant = localStorageExport("isRestaurant");
+          this.$router.push("/");
+        }
+      } catch (error) {
+        console.log(error);
+        localStorageRemove("isRestaurant");
+        this.$router.push("/");
+      }
     },
     async fetchCategoriesAndItems(web_id) {
       try {
@@ -312,7 +317,7 @@ export default {
       this.restaurant = res.data.data;
       this.current_page = res.data.current_page;
       this.last_page = res.data.last_page;
-    }, 50),
+    }, 200),
 
     fetchRestaurants(page) {
       this.loading = true;
@@ -360,7 +365,7 @@ export default {
   },
   created() {
     console.log(localStorageExport("isRestaurant"));
-    
+
     const url = window.location.pathname;
     const match = url.match(/^\/([^/]+)/);
     const pathParam = match ? match[1] : null;
@@ -370,18 +375,21 @@ export default {
       HTTP.post("restaurant/find", { web_id: pathParam })
         .then((res) => {
           console.log(res.data.length);
-          this.restaurant_name = res.data.name;
+
           if (res.data.length != 0) {
+            this.restaurant_name = res.data.name;
             localStorageImport("isRestaurant", true);
             this.fetchCategoriesAndItems(pathParam);
+
+            this.isRestaurant = localStorageExport("isRestaurant");
+            this.emitter.emit("isRestaurant", true);
+          } else {
+            localStorageRemove("isRestaurant");
+            this.emitter.emit("isNotRestaurant", true);
+            
             this.$nextTick(() => {
               this.isRestaurant = localStorageExport("isRestaurant");
-              this.emitter.emit("isRestaurant", true);
             });
-          } else {
-            this.emitter.emit("isRestaurant", true);
-            localStorageRemove("isRestaurant");
-            this.isRestaurant = localStorageExport("isRestaurant");
           }
         })
         .catch((error) => {

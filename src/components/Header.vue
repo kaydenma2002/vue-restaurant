@@ -225,7 +225,7 @@
           </button>
         </li>
         <li>
-          <div v-if="isLoggedIn && isRestaurant" class="cart-button">
+          <div v-if="isRestaurant && shouldRender" class="cart-button">
             <button class="bg-black" @click="show = !show">
               <font-awesome-icon icon="fa-solid fa-cart-shopping" />
 
@@ -240,7 +240,7 @@
               <div class="inner">
                 <a href="#">
                   <h5
-                    class="mb-2 text-2xl font-bold tracking-tight text-white dark:text-white"
+                    class="mb-2 text-2xl font-bold tracking-tight text-black dark:text-white"
                   >
                     My cart({{ quantity }})
                   </h5>
@@ -250,9 +250,12 @@
                   2021 so far, in reverse chronological order.
                 </p>
                 <button
-                  @click.prevent="navigateToPayment()"
+                  @click.prevent="
+                    navigateToPayment();
+                    show = !show;
+                  "
                   type="button"
-                  class="text-white bg-gray-800 hover:bg-white focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  class="text-white bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                 >
                   Continue to Payment
                 </button>
@@ -268,14 +271,14 @@
         <li>
           <router-link
             v-if="!isLoggedIn"
-            to="/Login"
+            :to="isRestaurant ? `/${$route.params.web_id}/login` : '/login'"
             class="text-gray-800 text-sm"
             >LOGIN</router-link
           >
 
           <router-link
             v-if="!isLoggedIn"
-            to="/SignUp"
+            :to="isRestaurant ? `/${$route.params.web_id}/SignUp` : '/SignUp'"
             class="bg-black px-4 py-2 rounded text-white hover:bg-black text-sm ml-2"
             >SIGNUP</router-link
           >
@@ -392,7 +395,19 @@ export default {
         email: "",
       },
       isRestaurant: null,
+      prevQuantity: 0,
+      shouldRender: false,
     };
+  },
+  watch: {
+    quantity(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.prevQuantity = oldVal;
+        this.shouldRender = true;
+      } else {
+        this.shouldRender = false;
+      }
+    },
   },
   methods: {
     updateScroll() {
@@ -404,8 +419,18 @@ export default {
       this.$router.push("/profile");
     },
     navigateToPayment() {
+      
+      console.log(this.$route.params.web_id);
       if (this.quantity != 0) {
-        this.$router.push(`/${this.$route.params.web_id}/pricing`);
+        if(!localStorageExport("jwtToken")){
+          
+          this.$router.push(`/${this.$route.params.web_id}/login`)
+          localStorageImport("toPayment",true)
+        }else{
+          this.$router.push(`/${this.$route.params.web_id}/pricing`)
+        }
+
+        
       } else {
         Swal.fire({
           title: "<strong>You have not ordered yet !</strong>",
@@ -433,10 +458,14 @@ export default {
         if (result.isConfirmed) {
           HTTPS.post("logout").then(() => {
             Swal.fire("", "User logged out!", "success").then((res) => {
-              this.emitter.emit("logout", true);
-              localStorage.removeItem("jwtToken");
+              localStorage.clear();
               this.isLoggedIn = false;
-              this.$router.push("/");
+              this.isRestaurant = null;
+              this.$nextTick(() => {
+              
+                this.$router.push("/");
+                this.emitter.emit("logout", true);
+              });
             });
           });
         }
@@ -447,12 +476,20 @@ export default {
   mounted() {},
 
   created() {
-    console.log(this.isRestaurant);
+    if(localStorageExport(`cookie-${this.$route.params.web_id}`)){
+      HTTPS.post("combineCart",{cookie: localStorageExport(`cookie-${this.$route.params.web_id}`)}).then(res =>{
+        console.log("khong ton tai")
+      }).catch(error =>{
+        console.log("1")
+      })
+    }else{
+      console.log("khong ton tai")
+    }
     this.date = new Date();
     const url = window.location.pathname;
     const match = url.match(/^\/([^/]+)/);
     const pathParam = match ? match[1] : null;
-    console.log(1);
+    console.log(url);
     if (pathParam) {
       console.log(pathParam);
       HTTP.post("restaurant/find", { web_id: pathParam })
@@ -462,8 +499,40 @@ export default {
             this.restaurant_name = res.data.name;
             this.emitter.emit("isRestaurant", true);
             localStorageImport("isRestaurant", true);
-            this.$nextTick(() => {
-              this.isRestaurant = localStorageExport("isRestaurant");
+
+            this.isRestaurant = localStorageExport("isRestaurant");
+            if (!localStorageExport("jwtToken")) {
+              if (!localStorageExport(`cookie-${this.$route.params.web_id}`)) {
+                const characters =
+                  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                let randomString = "";
+                for (let i = 0; i < 3; i++) {
+                  randomString += characters.charAt(
+                    Math.floor(Math.random() * characters.length)
+                  );
+                }
+
+                localStorageImport(
+                  `cookie-${this.$route.params.web_id}`,
+                  (randomString += this.$route.params.web_id)
+                );
+              } else {
+                HTTP.get("/getCartBeforeLogin", {
+                  params: {
+                    cookie: localStorageExport(
+                      `cookie-${this.$route.params.web_id}`
+                    ),
+                    web_id: this.$route.params.web_id,
+                  },
+                }).then((res) => {
+                  this.quantity = res.data.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + currentValue.quantity,
+                    0
+                  );
+                });
+              }
+            } else {
               HTTPS.get("cartByUserId", { params: { web_id: pathParam } })
                 .then((res) => {
                   this.quantity = res.data.reduce(
@@ -473,13 +542,12 @@ export default {
                   );
                 })
                 .catch((error) => console.log(error));
-            });
+            }
           } else {
             console.log(1);
             localStorageRemove("isRestaurant");
-            this.$nextTick(() => {
-              this.isRestaurant = localStorageImport("isRestaurant");
-            });
+
+            this.isRestaurant = localStorageImport("isRestaurant");
 
             this.$router.options.routes.forEach((route) => {
               console.log(route);
@@ -503,65 +571,175 @@ export default {
       });
     }
     window.addEventListener("scroll", this.updateScroll);
-    this.emitter.on("isRestaurant", () => {
-      localStorageImport("isRestaurant", true);
-      this.isRestaurant = localStorageExport("isRestaurant");
-      HTTPS.get("cartByUserId", {
-        params: { web_id: this.$route.params.web_id },
+    this.emitter.on("isRestaurant", async () => {
+      const isRestaurant = true;
+      const jwtToken = localStorageExport("jwtToken");
+      const cookieParam = `cookie-${this.$route.params.web_id}`;
+      const existingCookie = localStorageExport(cookieParam);
+      console.log(this.$route.params.web_id);
+      if (!jwtToken) {
+        if (!existingCookie) {
+          const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          const randomString = Array.from({ length: 3 }, () =>
+            characters.charAt(Math.floor(Math.random() * characters.length))
+          ).join("");
+
+          localStorageImport(
+            cookieParam,
+            randomString + this.$route.params.web_id
+          );
+        } else {
+          try {
+            const res = await HTTP.get("/getCartBeforeLogin", {
+              params: {
+                cookie: existingCookie,
+                web_id: this.$route.params.web_id,
+              },
+            });
+            console.log(res)
+            console.log(existingCookie, this.$route.params.web_id);
+            if (
+              res.data.message !== "empty cart" &&
+              res.data.message !== "restaurant not exist"
+            ) {
+              this.quantity = res.data.reduce(
+                (accumulator, currentValue) =>
+                  accumulator + currentValue.quantity,
+                0
+              );
+              console.log(res)
+            } else if (res.data.message === "empty cart") {
+              this.quantity = 0;
+            } else {
+              console.log("hello");
+              localStorageRemove("isRestaurant");
+              this.isRestaurant = localStorageExport("isRestaurant");
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } else {
+        if(localStorageExport(`cookie-${this.$route.params.web_id}`)){
+      HTTPS.post("combineCart",{cookie: localStorageExport(`cookie-${this.$route.params.web_id}`)}).then(res =>{
+        this.emitter.emit("cartUpdated",true)
+      }).catch(error =>{
+        console.log("1")
       })
-        .then((res) => {
+    }else{
+      try {
+          const res = await HTTPS.get("cartByUserId", {
+            params: { web_id: this.$route.params.web_id },
+          });
+          console.log(res)
           if (
-            res.data.message != "empty cart" &&
-            res.data.message != "restaurant not exist"
+            res.data.message !== "empty cart" &&
+            res.data.message !== "restaurant not exist"
           ) {
-            localStorageImport("isRestaurant", true);
-            this.isRestaurant = localStorageExport("isRestaurant");
             this.quantity = res.data.reduce(
               (accumulator, currentValue) =>
                 accumulator + currentValue.quantity,
               0
             );
-          } else if (res.data.message == "empty cart") {
-            localStorageImport("isRestaurant", true);
-            this.isRestaurant = localStorageExport("isRestaurant");
+          } else if (res.data.message === "empty cart") {
             this.quantity = 0;
           } else {
             localStorageRemove("isRestaurant");
             this.isRestaurant = localStorageExport("isRestaurant");
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.log(error);
-        });
+        }
+    }
+        
+      }
+      console.log(isRestaurant);
+      this.isRestaurant = isRestaurant;
+    });
+    this.emitter.on("isNotRestaurant", () => {
+      this.isRestaurant = localStorageExport("isRestaurant");
     });
     this.emitter.on("cartUpdated", () => {
-      HTTPS.get("cartByUserId", {
-        params: { web_id: this.$route.params.web_id },
-      })
-        .then((res) => {
-          if (
-            res.data.message != "empty cart" &&
-            res.data.message != "restaurant not exist"
-          ) {
-            localStorageImport("isRestaurant", true);
-            this.isRestaurant = localStorageExport("isRestaurant");
-            this.quantity = res.data.reduce(
-              (accumulator, currentValue) =>
-                accumulator + currentValue.quantity,
-              0
+      if (!localStorageExport("jwtToken")) {
+        if (!localStorageExport(`cookie-${this.$route.params.web_id}`)) {
+          const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          let randomString = "";
+          for (let i = 0; i < 3; i++) {
+            randomString += characters.charAt(
+              Math.floor(Math.random() * characters.length)
             );
-          } else if (res.data.message == "empty cart") {
-            localStorageImport("isRestaurant", true);
-            this.isRestaurant = localStorageExport("isRestaurant");
-            this.quantity = 0;
-          } else {
-            localStorageRemove("isRestaurant");
-            this.isRestaurant = localStorageExport("isRestaurant");
           }
+
+          localStorageImport(
+            `cookie-${this.$route.params.web_id}`,
+            (randomString += this.$route.params.web_id)
+          );
+        } else {
+          HTTP.get("/getCartBeforeLogin", {
+            params: {
+              cookie: localStorageExport(`cookie-${this.$route.params.web_id}`),
+              web_id: this.$route.params.web_id,
+            },
+          })
+
+            .then((res) => {
+              console.log(res)
+              if (
+                res.data.message != "empty cart" &&
+                res.data.message != "restaurant not exist"
+              ) {
+                localStorageImport("isRestaurant", true);
+                this.isRestaurant = localStorageExport("isRestaurant");
+                this.quantity = res.data.reduce(
+                  (accumulator, currentValue) =>
+                    accumulator + currentValue.quantity,
+                  0
+                );
+              } else if (res.data.message == "empty cart") {
+                localStorageImport("isRestaurant", true);
+                this.isRestaurant = localStorageExport("isRestaurant");
+                this.quantity = 0;
+              } else {
+                localStorageRemove("isRestaurant");
+                this.isRestaurant = localStorageExport("isRestaurant");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } else {
+        HTTPS.get("cartByUserId", {
+          params: { web_id: this.$route.params.web_id },
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((res) => {
+            console.log(res)
+            if (
+              res.data.message != "empty cart" &&
+              res.data.message != "restaurant not exist"
+            ) {
+              localStorageImport("isRestaurant", true);
+              this.isRestaurant = localStorageExport("isRestaurant");
+              this.quantity = res.data.reduce(
+                (accumulator, currentValue) =>
+                  accumulator + currentValue.quantity,
+                0
+              );
+            } else if (res.data.message == "empty cart") {
+              localStorageImport("isRestaurant", true);
+              this.isRestaurant = localStorageExport("isRestaurant");
+              this.quantity = 0;
+            } else {
+              localStorageRemove("isRestaurant");
+              this.isRestaurant = localStorageExport("isRestaurant");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     });
     this.emitter.on("removeCart", () => {
       HTTPS.get("cartByUserId", { params: { web_id: pathParam } })
@@ -587,7 +765,9 @@ export default {
           });
       }
     });
+
     this.isLoggedIn = !!localStorage.getItem("jwtToken");
+
     if (this.isLoggedIn) {
       HTTPS.get("user")
         .then((res) => {

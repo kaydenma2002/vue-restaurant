@@ -7,8 +7,10 @@
           <p class="font-semibold text-4xl md:text-7xl mb-4">Re-claim Your</p>
           <p class="font-semibold text-4xl md:text-7xl mb-10">Online Order.</p>
         </div>
-        <div v-if="isRestaurant">
-          <p class="font-semibold text-4xl md:text-7xl">{{ restaurant_name }}</p>
+        <div  v-if="isRestaurant">
+          <p  class="font-semibold text-4xl md:text-7xl">
+            {{ restaurant_name }}
+          </p>
         </div>
         <p class="text-base md:text-lg lg:text-2xl text-slate-400 mb-10">
           EHL.AI's online ordering platform empowers thousands of restaurant
@@ -34,26 +36,50 @@
         <div class="relative w-full h-full overflow-hidden rounded-lg">
           <!-- Item 1 -->
           <div class="carousel-item active">
-            <img src="/src/img/home/com_tam_1.jpg" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/com_tam_1.jpg"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
           <!-- Item 2 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com_tam_2.jpg" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/com_tam_2.jpg"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
           <!-- Item 3 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_1.jpg" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/com-t-m-su-n-non-nu-ng_1.jpg"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
           <!-- Item 4 -->
           <div class="carousel-item">
-            <img src="/src/img/home/com-t-m-su-n-non-nu-ng_2.jpg" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/com-t-m-su-n-non-nu-ng_2.jpg"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
           <!-- Item 5 -->
           <div class="carousel-item">
-            <img src="/src/img/home/Cơm-Tấm_1.jfif" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/Cơm-Tấm_1.jfif"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
           <div class="carousel-item">
-            <img src="/src/img/home/Cơm-Tấm_2.jpg" alt="..." class="w-full h-full object-cover">
+            <img
+              src="/src/img/home/Cơm-Tấm_2.jpg"
+              alt="..."
+              class="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
@@ -72,40 +98,43 @@ export default {
     return {
       isRestaurant: localStorageExport("isRestaurant"),
       restaurant_name: null,
+      prevRestaurantName: null,
+      memoRestaurantName: null,
     };
   },
   created() {
     const url = window.location.pathname;
     const match = url.match(/^\/([^/]+)/);
     const pathParam = match ? match[1] : null;
-
+    
     if (pathParam) {
-      console.log(pathParam);
+      
       HTTP.post("restaurant/find", { web_id: pathParam })
-        .then((res) => {
-          console.log(res);
-          this.restaurant_name = res.data.name;
-          if (res.data.length != 0) {  
-              this.emitter.emit("isRestaurant", true);
-          } else {
-            this.$nextTick(() => {
-            localStorageRemove("isRestaurant");
-            this.$router.push("/");
-          });
-          }
-        })
-        .catch((error) => {
-          this.$nextTick(() => {
-            localStorageRemove("isRestaurant");
-            this.$router.push("/");
-          });
-        });
+  .then((res) => {
+    
+    this.restaurant_name = res.data.name;
+
+    if (res.data.length !== 0) {
+      this.emitter.emit("isRestaurant", true);
+    } else {
+      localStorageRemove("isRestaurant");
+      this.$router.push("/");
+    }
+  })
+  .catch((error) => {
+    localStorageRemove("isRestaurant");
+    this.$router.push("/");
+  });
     } else {
       this.$nextTick(() => {
         localStorageRemove("isRestaurant");
         this.$router.push("/");
       });
     }
+    this.emitter.on("logout",() =>{
+      this.isRestaurant = localStorageExport("isRestaurant")
+      console.log(this.isRestaurant)
+    })
   },
 
   mounted() {

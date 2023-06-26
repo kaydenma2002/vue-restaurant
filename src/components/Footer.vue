@@ -207,6 +207,7 @@ export default {
     };
   },
   created() {
+    
     const url = window.location.pathname;
     const match = url.match(/^\/([^/]+)/);
     const pathParam = match ? match[1] : null;
@@ -261,15 +262,18 @@ export default {
         .catch((error) => {});
     } else {
       this.$nextTick(() =>{
-        const map = new window.Microsoft.Maps.Map(
-        document.getElementById("map"),
-        {
-          credentials:
-            "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
+        window.initMap = () => {
+        const map = new window.Microsoft.Maps.Map(document.getElementById("map"), {
+          credentials: "AiLmafM3OHWwmxY7Gxfh10u7x5duyWrRgue5hxMmdU3qTgPJkPCEoYU0g1BKBM6z",
           center: new window.Microsoft.Maps.Location(38.8708297, -77.15816881230292),
           zoom: 17,
-        }
-      );
+        });
+      };
+
+      // Load the Microsoft Maps library
+      const script = document.createElement("script");
+      script.src = "https://www.bing.com/api/maps/mapcontrol?callback=initMap";
+      document.body.appendChild(script);
 
       // Customize the map options and add markers, etc.
       // Example:
@@ -359,7 +363,9 @@ export default {
       }
     });
   },
-  mounted() {},
+  mounted() {
+    
+  },
 };
 </script>
 
