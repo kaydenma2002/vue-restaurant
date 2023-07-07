@@ -1,6 +1,6 @@
 <script></script>
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto min-h-screen	">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="md:pr-11">
         <div v-if="!isRestaurant">

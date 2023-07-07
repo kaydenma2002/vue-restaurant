@@ -1,16 +1,10 @@
 <template>
-  <div v-if="!isRestaurant" class="container mx-auto mt-5">
+  <div v-if="!isRestaurant" class="container mx-auto ">
     <div class="text-center text-2xl lg:text-5xl md:text-3xl sm:text-2xl">
-      Select to view 1 of 11531 <br />
+      Select to view 1 of 111531 <br />
       menu restaurant right away
     </div>
-    <div class="text-center text-2xl mt-10">
-      <div>Book a free demo today</div>
-      <div>
-        or call us at
-        <p class="underline">data@emersonhlee.com</p>
-      </div>
-    </div>
+    
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
       <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         <!-- Start coding here -->
@@ -182,6 +176,7 @@
     </div>
     <div class="flex space-x-4 mb-4">
       <button
+        v-if="isLoggedIn"
         @click="showAllItems"
         :class="{ 'bg-black text-white': selectedCategory === null }"
         class="px-4 py-2 rounded"
@@ -189,20 +184,41 @@
         All
       </button>
       <button
-        v-for="category in categories"
-        :key="category"
-        @click="showItemsByCategory(category)"
-        :class="{ 'bg-black text-white': selectedCategory === category }"
-        class="px-4 py-2 rounded"
+      v-for="(category, index) in categories"
+      :key="index"
+      @click="showItemsByCategory(category)"
+      :class="{
+        'bg-black text-white': isLoggedIn && selectedCategory === category,
+        'bg-black text-white': !isLoggedIn && (selectedCategory === category || selectedCategory === null),
+      }"
+      class="px-4 py-2 rounded "
+      v-show="!isLoggedIn && index == 0"
       >
-        {{ category }}
-      </button>
+      {{ category }}
+    </button>
+    
+    <button
+      v-for="(category, index) in categories"
+      :key="index"
+      @click="showItemsByCategory(category)"
+      :class="{
+        'bg-black text-white': isLoggedIn && selectedCategory === category,
+        
+      }"
+      class="px-4 py-2 rounded "
+      v-show="isLoggedIn"
+      >
+      {{ category }}
+    </button>
     </div>
 
     <div class="">
-      <div v-for="category in categories" :key="category">
+      <div v-for="(category, index) in categories" :key="category">
         <h2
-          v-if="category === selectedCategory || selectedCategory === null"
+          v-if="
+            (isLoggedIn && (index === 0 || category === selectedCategory)) ||
+            (!isLoggedIn && index === 0)
+          "
           class="text-2xl font-bold mb-2 bg-black text-white my-20"
         >
           {{ category }}
@@ -271,6 +287,7 @@ export default {
       items: [],
       categories: [],
       selectedCategory: null,
+      isLoggedIn: null,
     };
   },
   methods: {
@@ -299,6 +316,7 @@ export default {
         const response = await HTTP.post("menu", { web_id: web_id });
         this.categories = response.data.category;
         this.items = response.data.item;
+        console.log(this.categories);
       } catch (error) {
         console.error(error);
       }
@@ -355,6 +373,10 @@ export default {
     },
     displayedItems() {
       if (this.selectedCategory === null) {
+        if (!this.isLoggedIn) {
+          const firstCategory = this.categories[0];
+          return this.items.filter((item) => item.category === firstCategory);
+        }
         return this.items;
       } else {
         return this.items.filter(
@@ -364,6 +386,7 @@ export default {
     },
   },
   created() {
+    this.isLoggedIn = localStorageExport("jwtToken");
     console.log(localStorageExport("isRestaurant"));
 
     const url = window.location.pathname;
@@ -386,7 +409,7 @@ export default {
           } else {
             localStorageRemove("isRestaurant");
             this.emitter.emit("isNotRestaurant", true);
-            
+
             this.$nextTick(() => {
               this.isRestaurant = localStorageExport("isRestaurant");
             });

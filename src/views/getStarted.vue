@@ -5,14 +5,8 @@
       tools to help grow your <br />
       restaurant business online
     </div>
+
     
-    <div class="text-center text-2xl mt-10">
-      <div>Book a free demo today</div>
-      <div>
-        or call us at
-        <p class="underline">data@emersonhlee.com</p>
-      </div>
-    </div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
       <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
         <!-- Start coding here -->
@@ -80,7 +74,7 @@
                   v-for="(item, index) in restaurant"
                   :key="index"
                   class="cursor-pointer bg-gray-200 border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  @click="claimRestaurant(item.restaurant_id, item.status)"
+                  @click="claimRestaurant(item.restaurant_id, item.status,item.web_id)"
                 >
                   <th
                     scope="row"
@@ -216,6 +210,8 @@ import {
 } from "@vuelidate/validators";
 import { debounce } from "lodash";
 import { localStorageExport } from "../localStorage/local-storage";
+import dbx from "../dropbox/dropbox";
+
 export default {
   data() {
     return {
@@ -261,14 +257,14 @@ export default {
         console.log(this.v$.$error);
       }
     },
-    async claimRestaurant(id, status) {
+    async claimRestaurant(restaurant_id, status,web_id) {
       if (!localStorageExport("jwtToken")) {
         Swal.fire({
           title: "Authentication issue?",
           text: "You need to login to be able to claim restaurants",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
+          confirmButtonColor: "black",
           cancelButtonColor: "#d33",
           confirmButtonText: "Login",
         }).then((result) => {
@@ -277,35 +273,49 @@ export default {
           }
         });
       } else {
-        if(status ==="Pending"){
-          const { value: file } = await Swal.fire({
-          title: "Select image",
-          input: "file",
-          inputAttributes: {
-            accept: "image/*",
-            "aria-label": "Upload your profile picture",
-          },
-        });
-
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            console.log(e.target.result)
-            HTTPS.post('create/claim',{
-              file: e.target.result,
-              restaurant_id: id
-            }).then(res =>{
-              console.log(res)
-            }).catch(error => {
-              console.log(error)
-            })
-          };
-          reader.readAsDataURL(file);
+        if (status === "Pending") {
+          console.log(web_id)
+         this.$router.push(`/${web_id}/verify-claim`)
+          // if (file) {
+          //   console.log(file);
+          //   const reader = new FileReader();
+          //   reader.onload = async (e) => {
+          //     try {
+          //       const response = await dbx.filesUpload({
+          //         path: "/kayden/verify_image/" + file.name,
+          //         contents: file,
+          //       });
+          //       HTTPS.post("create/claim", {
+          //         file: file.name,
+          //         restaurant_id: restaurant_id,
+          //         company: file.company,
+          //         address: file.address,
+          //         city: file.city,
+          //         state: file.state,
+          //         zip: file.zip,
+          //         phone: file.phone,
+          //       })
+          //         .then((res) => {
+          //           Swal.fire(
+          //             "Success",
+          //             "File uploaded successfully",
+          //             "success"
+          //           );
+          //           console.log("File uploaded successfully:", response);
+          //         })
+          //         .catch((error) => {
+          //           Swal.fire("Error", "Failed to upload file", "error");
+          //           console.error("Error uploading file:", error);
+          //         });
+          //     } catch (error) {
+          //       Swal.fire("Error", "Failed to upload file", "error");
+          //       console.error("Error uploading file:", error);
+          //     }
+          //   };
+          //   reader.readAsArrayBuffer(file);
+          // } else {
+          // }
         } else {
-
-        }
-        }else{
-
         }
       }
     },
@@ -322,9 +332,11 @@ export default {
     async fetchRestaurants(page) {
       this.loading = true;
       try {
+        
         const res = await HTTPS.get(
           `/restaurant/search?search=${this.searchTerm}&page=${page}`
         );
+        
         this.restaurant = res.data.data;
         this.current_page = res.data.current_page;
         this.last_page = res.data.last_page;
@@ -357,3 +369,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.swal2-input-row {
+  display: flex;
+  
+  justify-content: space-between;
+}
+</style>

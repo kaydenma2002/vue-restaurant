@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto min-h-screen	">
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
       <div class="text-lg">Order History</div>
       <div class="mx-auto max-w-screen-xl px-4 lg:px-12">

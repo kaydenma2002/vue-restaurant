@@ -12,6 +12,7 @@ import SignUp from "./views/Signup.vue";
 import ForgotPassword from "./views/forgotPassword.vue";
 import Order from "./views/Order.vue";
 import OrderDetails from "./views/OrderDetails.vue";
+import VerifyClaim from "./views/VerifyClaim.vue";
 import { AcademicCapIcon } from "@vue-hero-icons/outline";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -96,6 +97,13 @@ const router = createRouter({
       path: "/:web_id/menu",
 
       component: Menu,
+      
+    },
+    {
+      path: "/:web_id/verify-claim",
+
+      component: VerifyClaim,
+      meta: {authOnly: true}
       
     },
     {
@@ -199,7 +207,7 @@ const router = createRouter({
       path: "/forgotpassword",
 
       component: ForgotPassword,
-      meta: { guestOnly: true },
+      meta: { guestOnly: true,verifyClaim: true },
     },
   ],
 });
